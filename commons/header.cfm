@@ -70,11 +70,12 @@
 
 				<!---  search bar --->
 				<form action="index.cfm" class="navbar-form navbar-left" role="search" method="get">
-					<div class="form-group has-feedback">
-						<input type="text" id="product_searchbox" name="q" class="form-control" placeholder="Search Products Here..">
-						<span class="glyphicon glyphicon-search form-control-feedback"></span>
+					<div class="input-group">
+						<input type="text" id="product_searchbox" name="q" class="form-control" placeholder="Search Products..">
+						<span class="input-group-btn">
+                            <button type="submit" class="btn btn-search"><span class="glyphicon glyphicon-search"></span></butotn>
+                        </span>
 					</div>
-					<input type="submit" class="btn btn-primary btn-sm">
 				</form>
 
 
@@ -130,8 +131,9 @@
 				</ul>
 
                 <ul class="nav navbar-nav navbar-right" >
-					<li><a href="cart.cfm" role="button" class="cart_button">
-                        <span class="glyphicon glyphicon-shopping-cart"></span>  Cart <span class="badge" id="badge">
+					<li class="" style="background-color: #d3d6ad;"><a href="cart.cfm" role="button" class="cart_button">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>  <span class="">Cart</span>
+                        <span class="badge" id="badge">
                         <cfif session.loggedin>
                               <cfquery name="cart_q" >
                                   SELECT * from [Cart] Where UserId = #session.user.userid#

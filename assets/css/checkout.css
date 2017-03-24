@@ -1,4 +1,14 @@
 
+#newaddress-form label{
+    width: 30%;
+}
+#newaddress-form .form-control{
+    width: 50%;
+    display: inline-block;
+    position : relative;
+    right: 0;
+}
+
 /*ORDER SUMMARY SECTION*/
 #order_summary .subsection{
     display:flex;

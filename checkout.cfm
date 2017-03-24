@@ -59,18 +59,32 @@
                 <h4 class="modal-title">New Shipping address</h4>
             </div>
             <div class="modal-body">
-                <form onsubmit="validateShippingAddressAndSubmit();" method="POST">
-                    <input type="text" maxlength="100" name="AddresLine" required>
-                    <input type="number" maxlength="15" name="PostalCold" min="0" required>
-                    <input type="text" maxlength="50" name="City" required>
-                    <input type="text" maxlength="20" name="State" required>
-                    <input type="text" maxlength="20" name="Country" required>
-                    <input type="button">Save &amp; continue</button>
+                <form onsubmit="validateShippingAddressAndSubmit();" method="POST" id="newaddress-form">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="text" class="form-control" maxlength="100" name="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pincode:</label>
+                        <input type="number" class="form-control" maxlength="15" name="PostalCode" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address:</label>
+                        <input type="text" class="form-control" maxlength="50" name="AddressLine" rows="3" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Landmark:</label>
+                        <input type="text" class="form-control" maxlength="20" name="LandMark" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Country:</label>
+                        <input type="text" class="form-control" maxlength="20" name="Country" required>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary" form="newaddress-form">Save changes</button>
             </div>
         </div>
     </div>

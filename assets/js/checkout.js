@@ -3,6 +3,22 @@ var addressid = undefined;
 $(document).ready(function(){
     $(".show_when_collapsed").hide();
     gotoCheckOutStep();
+    $("#newaddress-form").validate({
+        rules:{
+            Name:
+            PostalCode:
+            AddressLine:
+            LandMark:
+            Country:
+        },
+        messages:{
+            Name:
+            PostalCode:
+            AddressLine:
+            LandMark:
+            Country:
+        }
+    });
 
 });
 

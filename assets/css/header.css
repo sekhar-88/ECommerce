@@ -1,28 +1,10 @@
-/*.btn-warning{
-    background-color: #ffdd75;
-    height: 70%;
-}
-#product_searchbox{
-    background-color: #f7fbfe;
-    padding: 8px;
-    border-radius: 20px;
-}
-#product_searchbox::-webkit-input-placeholder { /* Chrome/Opera/Safari
-  color: grey;
-  font-weight: 100;
-}
-#product_searchbox::-moz-placeholder { /* Firefox 19+
-  color: grey;
-  font-weight: 100;
-}
-#product_searchbox:-ms-input-placeholder { /* IE 10+
-  color: grey;
-  font-weight: 100;
-}
-#product_searchbox:-moz-placeholder { /* Firefox 18-
-  color: grey;
-  font-weight: 100;
+/*#header{
+    position: fixed;
+    top:0;
+    right: 0;
+    width: 100%;
 }*/
+
 input:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0px 9999px white;
 }
@@ -76,9 +58,28 @@ label.error{
     background-color: rgba(255,255,255,0);
     border: none;
 }
+.btn-search{
+    /*background-color: #ff9e93;*/
+    /*background-color: #ffe100;*/
+    background-color: #ffc054;
+    color: white;
+}
+#product_searchbox{
+    outline: 0px;
+    border: 0px;
+}
+#product_searchbox:focus,#product_searchbox:active{
+    border: 0px;
+    outline: 0px;
+    box-shadow: 0px;
+}
+.glyphicon-shopping-cart,.glyphicon-user{
+    color:white;
+    font-size: 15px;
+    padding: 0px;
+}
 
-/*
-.cart_button {
+/*.cart_button {
   background: #ffef40;
   background-image: -webkit-linear-gradient(top, #ffef40, #ffce91);
   background-image: -moz-linear-gradient(top, #ffef40, #ffce91);
