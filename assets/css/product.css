@@ -1,0 +1,87 @@
+.verdana{
+    font-family: verdana;
+}
+.georgia{
+    font-family: Georgia;
+}
+body{
+    background-color: #eee;
+}
+a:hover{
+    text-decoration: none;
+}
+.strikethrough {
+    text-decoration: line-through;
+}
+
+/*page content*/
+
+.filter{
+    background-color: white;
+    float:left;
+    width: 18%;
+    height: inherit;
+}
+.products{
+    float: right;
+    width: 78%;
+}
+
+.product, .no-product{
+    background-color: white;
+    border-radius: 2px;
+    min-height: 200px;
+    margin-bottom: 5px;
+    transition: box-shadow 0.3s ease-in-out;
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+
+}
+.no-product{
+    transition: box-shadow 0.3s ease-in-out;
+    padding: 20px;
+    color: purple;
+}
+.no-product:hover{
+    box-shadow: 1px 1px 30px grey;
+}
+
+.product:hover{
+    box-shadow: 1px 1px 30px grey;
+    cursor: pointer;
+}
+
+/*product left side content*/
+/*containg only image*/
+.product_image{
+    /*padding: 10px;*/
+    margin: 10px;
+    width: 250px;
+    border-right: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+/*product middle div content*/
+.product_content{
+    margin-top: 10px;
+    overflow: auto;
+    /*padding: 0 10px 10px 10px;*/
+}
+.product_name{
+    font-family: Arial;
+    font-size: 20px;
+    color: black;
+}
+
+/*product right side content*/
+.product_pricing{
+    margin-left: 10%;
+}
+
+.product_price, .product_discounted_price {
+    font-size: 25px;
+    font-weight: bold;
+}

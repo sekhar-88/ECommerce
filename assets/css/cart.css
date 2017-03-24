@@ -1,0 +1,36 @@
+#items_pane{
+    float:left;
+    width: 78%;
+    padding: 20px;
+    background-color: #fefdf1;
+    min-height: 200px;
+}
+/*sub items_pane element*/
+.item{
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+/*sub item divs*/
+.item_info{
+
+}
+.item_actions{
+
+}
+
+/*right to items_pane*/
+#checkout_pane{
+    width: 20%;
+    float:right;
+    /*background-color: #e8ffe8;*/
+    padding: 20px;
+    display: flex;
+
+}
+.btn{
+    border-radius: 2px;
+}

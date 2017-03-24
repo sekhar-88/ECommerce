@@ -1,0 +1,63 @@
+
+#section-product > .nav-bar{
+    border-bottom: 2px solid #f0f0f0;
+    background-color: #fefefe;
+}
+
+.action_li{
+    padding:4px;
+}
+
+.product_action_button{
+     padding: 8px;
+     cursor: pointer;
+     font-size: 16px;
+     color: black;
+     background-color: #efefef;
+ }
+ .products{
+     cursor: pointer;
+     margin-bottom: 8px;
+     /*border-bottom: 1px solid green;*/
+ }
+.admin-logo{
+    text-transform: uppercase;
+    padding: 8px;
+    font-size: 40px;
+    color: red;
+    /*text-shadow: 2px 2px 2px white;*/
+    background-color: #eee;
+    margin-top:-30px;
+    margin-bottom: 5px;
+    display: none;
+}
+
+form#product_add_form{
+    padding: 10px;
+    width: 600px;
+}
+
+#product_add_form label{
+    width: 160px;
+    /*border:1px solid black;*/
+}
+#product_add_form select{
+    padding: 2px;
+    font-size: 16px;
+    border-color: lightgrey;
+    background-color: #fcffff;
+}
+
+#ve_product_view_edit_form{
+    border: 1px solid black;
+    padding: 8px;
+}
+#ve_product_view_edit_form label{
+    width: 30%;
+}
+.row > *{
+    padding: 10px;
+}
+#products-list{
+    padding-left: 20px;
+}

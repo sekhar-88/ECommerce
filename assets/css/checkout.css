@@ -1,0 +1,166 @@
+
+/*ORDER SUMMARY SECTION*/
+#order_summary .subsection{
+    display:flex;
+    flex-flow: column nowrap;
+}
+.summary_subsection_header{
+    display:flex;
+    flex-flow: row nowrap;
+}
+.summary_subsection_header > * {
+    text-align: center;
+    border: 1px solid lightgrey;
+}
+.summary_subsection_header > :nth-child(1){
+    width: 50%;
+}
+.summary_subsection_header > :nth-child(2){
+    width: 20%;
+}
+.summary_subsection_header > :nth-child(3){
+    width: 20%;
+}
+.summary_subsection_header > :nth-child(4){
+    width: 10%;
+}
+#order_summary .subsection .items {
+    display: flex;
+    flex-flow: column nowrap;
+}
+/*.items > .item*/
+.item{
+        height: 180px;
+        display: flex;
+        flex-flow: row nowrap;
+        border-bottom: 1px solid lightgrey;
+}
+.item > * {
+    padding: 10px;
+    margin: 1px;
+    /*background-color: white;*/
+}
+.item > :nth-child(1){
+    width: 50%;
+}
+.item > :nth-child(2){
+    width: 25%;
+}
+.item > :nth-child(3){
+    width: 15%;
+}
+.item > :nth-child(4){
+    width: 9%;
+    height: 100%;
+}
+.item > :nth-child(4) > *{
+    display:flex;
+    align-items: center;
+}
+.cart_product_image{
+    float: left;
+    padding: 20px;
+}
+.cart_thumbnail{
+    width: 170px;
+    height: 100px;
+}
+/*.item{
+    background-color: green;
+    margin: 2px;
+}*/
+/*-----------------------------*/
+
+
+
+/*CHECKOUT SECTION*/
+.checkout_section{
+}
+.section{
+
+}
+/*--------------------------------------*/
+
+
+
+/*ADDRESS SECTION*/
+#address_section{
+    display:flex;
+    flex-flow: column nowrap;
+    border-top:1px solid #e5e50a;
+}
+.section{
+    border-bottom: 1px solid #e5e50a;
+    border-left:1px solid #e5e50a;
+    border-right:1px solid #e5e50a;
+}
+
+.section_header{
+    padding: 5px;
+    background-color: #fefdf1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-changeaddress{
+    background-color: #ffffcc;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+.section_header .header_text{
+    color: grey;
+    font-size: 16px;
+    font-family: "verdana";
+    padding: 2px;
+}
+
+.addresses{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    overflow: auto;
+}
+.address{
+    border: 1px solid lightgrey;
+    margin: 5px;
+    padding: 8px;
+    width: 220px;
+}
+.new_address {
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.new_address span{
+    color: green;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.new_address:hover{
+    color: white;
+    background-color: #fdfdfd;
+    outline:1px solid lightgrey;
+}
+/*--------------------------------------*/
+
+
+
+
+/*OTHERS*/
+.subsection{
+
+}
+
+#payment_section{
+}
+
+/*-----------------------------------------*/
+
+
+/*GLOBAL*/
+.btn, .btn-info, .btn-success, .btn-primary, .btn-default, .btn-warning{
+    border-radius: 2px;
+}

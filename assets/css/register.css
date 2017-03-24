@@ -1,0 +1,92 @@
+#signup-content{
+  background-color: #F8FAFF;
+  width: 95%;
+  margin: auto;
+  padding: 10px;
+}
+  #signup_form{
+    width: 350px;
+    margin: auto;
+    /*for debugging */
+    border: 4px solid lightgrey;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px;
+    padding: 10px ;
+    background-color: white;
+  }
+  .form-group > label{
+      color:red;
+  }
+  .form-group > label:first-child{
+    color: dodgerblue;
+  }
+  h1{
+  }
+    color: white;
+    font-family: "verdana";
+    margin-bottom: 10px;
+    background-color:#8196CB;
+    text-transform: capitalize;
+    padding: 5px;
+    width: 95%;
+    margin: 1% auto 4px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+  error-msg{
+      color: red;
+  }
+  .required::after {
+      content: '*';
+      color: red;
+  }
+
+
+/*------------------------------------------------------------------*/
+ /*PASSWORD STRENGTH METER STYLING */
+
+  /*for webkit based browsers*/
+  meter[value="1"]::-webkit-meter-optimum-value { background: red; }
+  meter[value="2"]::-webkit-meter-optimum-value { background: yellow; }
+  meter[value="3"]::-webkit-meter-optimum-value { background: orange; }
+  meter[value="4"]::-webkit-meter-optimum-value { background: green; }
+
+  /* Gecko based browsers */
+  meter[value="1"]::-moz-meter-bar { background: red; }
+  meter[value="2"]::-moz-meter-bar { background: yellow; }
+  meter[value="3"]::-moz-meter-bar { background: orange; }
+  meter[value="4"]::-moz-meter-bar { background: green; }
+
+  meter, meter::-webkit-meter-bar{
+      width: 100%;
+      height: .5em;
+      margin: 0 auto 1em;
+      border-radius: 5px;
+  }
+
+  /*meter {
+    /* Reset the default appearance
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+
+    margin: 0 auto 1em;
+    width: 100%;
+    height: 0.5em;
+
+    /* Applicable only to Firefox
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  meter::-webkit-meter-bar {
+    background: none;
+    background-color: rgba(0, 0, 0, 0.1);
+  }*/
