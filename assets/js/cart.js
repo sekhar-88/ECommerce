@@ -72,3 +72,38 @@ function removeFromSessionCart(pid){
         }
     });
 }
+
+function fetchCartItems(){
+    $.ajax({
+        url: "cfc/cart.cfc?method=getCartItems",
+        dataType: "json"
+    }).done(function(response){
+        if(response.length) {                   //Cart not empty
+
+            var fnOpen;
+            if("CartId" in response[0]) fnOpen = "user_removeFromCart("; // in user Cart
+            else                        fnOpen = "removeFromSessionCart("; //in session Cart
+            var fnClose = ")";
+
+            $.each(response, function(i, item){
+                    console.log(item);
+                    var itemStr = '<div id="item_'+item.ProductId+'" class="item">'
+                                    +   '<div class="item_info">'
+                                    +       item.ProductId + ' ' + item.Name
+                                    +   '</div>'
+                                    +   '<div class="item_actions">'
+                                    +       '<button type="button" class="btn btn-warning" onclick="'+fnOpen+item.ProductId+fnClose+'">Remove</button>'
+                                    +   '</div>'
+                                + '</div> '
+                    $("#items_pane").append(itemStr);
+            });
+
+        }
+        else {
+            $("#items_pane").append("<div class='item'>Currently No items in the cart</div>");
+        }
+    }).fail(function(error){
+        console.log("error: \n");
+        console.log(error);
+    });
+}

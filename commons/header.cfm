@@ -6,7 +6,7 @@
   </style>
 </head>
 
-<body onload="updateCartCount();">
+<body>
 
 <cfset userCFC = createObject("cfc.user") />
 <cfset headerCFC = createObject("cfc.header") />

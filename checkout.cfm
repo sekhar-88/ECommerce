@@ -1,37 +1,3 @@
-
-
-<!--- CLASS/ ID STRUCTURE
-
-.checkout_section .container-fluid
-    .section #address_section
-        .subsection_header #address_header
-            .header_text
-            .show_when_collapsed
-        .subsection
-            .addresses
-                .address  / .no_address
-            .new_address
-
-    .section #order_summary
-        .subsection_header #summary_header
-            .header_text
-            .show_when_collapsed
-        .subsection .items
-            .summary_subsection_header
-                .item_name_header
-                .item_qty_header
-                .item_price_header
-            .item
-                .item_name
-                .item_qty
-                .item_price
-
-    .section #payment_section
-        .subsection_header #payment_header
-            .header_text
-            .show_when_collapsed
-        .subsection
---->
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,11 +24,12 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">New Shipping address</h4>
             </div>
-            <div class="modal-body">
-                <form onsubmit="validateShippingAddressAndSubmit();" method="POST" id="newaddress-form">
+
+            <form method="POST" id="newaddress-form">
+                <div class="modal-body">
                     <div class="form-group">
                         <label>Name:</label>
-                        <input type="text" class="form-control" maxlength="100" name="Name" required>
+                        <input type="text" class="form-control" maxlength="100" name="Name" placeholder="Enter your name.." required>
                     </div>
                     <div class="form-group">
                         <label>Pincode:</label>
@@ -70,22 +37,31 @@
                     </div>
                     <div class="form-group">
                         <label>Address:</label>
-                        <input type="text" class="form-control" maxlength="50" name="AddressLine" rows="3" required>
+                        <input type="text" class="form-control" maxlength="50" name="AddressLine" rows="3" placeholder="Contact Details.." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone No:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">+91</span>
+                            <input type="number" class="form-control" name="PhoneNo" maxlength="10" min="0" data-validation-error-msg-container="#error-container" required>
+                        </div>
+                        <label id="PhoneNo-error" class="error" for="PhoneNo"></label>
                     </div>
                     <div class="form-group">
                         <label>Landmark:</label>
-                        <input type="text" class="form-control" maxlength="20" name="LandMark" required>
+                        <input type="text" class="form-control" maxlength="20" name="LandMark">
                     </div>
                     <div class="form-group">
                         <label>Country:</label>
-                        <input type="text" class="form-control" maxlength="20" name="Country" required>
+                        India
+                        <!--- <input type="text" class="form-control" maxlength="20" name="Country" required> --->
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="newaddress-form">Save changes</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -218,3 +194,37 @@
 <cfinclude template="commons/footer.cfm" />
 </body>
 </html>
+
+
+<!--- CLASS/ ID STRUCTURE
+
+.checkout_section .container-fluid
+    .section #address_section
+        .subsection_header #address_header
+            .header_text
+            .show_when_collapsed
+        .subsection
+            .addresses
+                .address  / .no_address
+            .new_address
+
+    .section #order_summary
+        .subsection_header #summary_header
+            .header_text
+            .show_when_collapsed
+        .subsection .items
+            .summary_subsection_header
+                .item_name_header
+                .item_qty_header
+                .item_price_header
+            .item
+                .item_name
+                .item_qty
+                .item_price
+
+    .section #payment_section
+        .subsection_header #payment_header
+            .header_text
+            .show_when_collapsed
+        .subsection
+--->

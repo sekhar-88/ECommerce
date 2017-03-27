@@ -1,6 +1,7 @@
 var login_validator
 $(document).ready(function(){
     login_validator = $("#login-form").validate();
+    updateCartCount();
 });
 
     $(document.body).on("mouseenter", ".category", function(event) {
@@ -13,7 +14,7 @@ $(document).ready(function(){
     $(document.body).on('click', '.category', function(e){
         e.stopPropagation();
     });
-    $(document.body).on('keypress', 'form input', function(e){
+    $(document.body).on('keypress', '#login-form input', function(e){
         if(e.which == 13){
             submitform($("#login-form")[0]);
         }
@@ -62,7 +63,6 @@ function updateCartCount(){
         url: "cfc/cart.cfc?method=getCartCount",
         dataType: "json"
     }).done(function(response){
-        console.log(response);
         $("#badge").text(response);
     }).fail(function(error){
         console.log(error);

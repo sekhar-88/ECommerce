@@ -136,4 +136,33 @@
         </cftry>
     </cffunction>
 
+    <cffunction name="saveShippingAddress" output="true" access="remote" returnformat="JSON" returntype="boolean"  >
+        <cfargument name="AddressLine" type="string" required="true" >
+        <cfargument name="Name"        type="string" required="true" >
+        <cfargument name="LandMark"    type="string" required="true" >
+        <cfargument name="PhoneNo"     type="string" required="true" >
+        <cfargument name="PostalCode"  type="string" required="true" >
+        <cftry >
+            <cfquery >
+                INSERT INTO [Address]
+                (UserId,AddressLine,Name,LandMark,PhoneNo,PostalCode,Country,AddressType)
+                VALUES
+                (   #session.User.UserId#,
+                    <cfqueryparam value="#arguments.AddressLine#" />,
+                    <cfqueryparam value="#arguments.Name#"       cfsqltype="cf_sql_nvarchar">    ,
+                    <cfqueryparam value="#arguments.LandMark#"   cfsqltype="cf_sql_nvarchar">    ,
+                    <cfqueryparam value="#arguments.PhoneNo#"    cfsqltype="cf_sql_nvarchar">,
+                    <cfqueryparam value="#arguments.PostalCode#" cfsqltype="cf_sql_nvarchar">,
+                    'India',
+                    0
+                )
+            </cfquery>
+                <cfreturn true/>
+            <cfcatch >
+                <cfdump var="#cfcatch#" />
+                <cfreturn false/>
+            </cfcatch>
+        </cftry>
+    </cffunction>
+
 </cfcomponent>

@@ -1,13 +1,34 @@
-
-#newaddress-form label{
-    width: 30%;
+#newaddress-form {
+    width: 400px;
+    margin: auto;
 }
-#newaddress-form .form-control{
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+/*#newaddress-form label:first-child {
+    width: 30%;
+}*/
+/*#newaddress-form label.error{
+    position: relative;
+    left: 32%;
+}*/
+/*#newaddress-form .form-control{
     width: 50%;
     display: inline-block;
     position : relative;
     right: 0;
-}
+}*/
+/*#newaddress-form .form-group > :nth-child(2){
+    width: 60%;
+    border : 1px solid blue;
+}*/
+/*#newaddress-form .form-group > div {
+    border: 1px solid blue;
+    width: 60%;
+    display: inline-block;
+}*/
 
 /*ORDER SUMMARY SECTION*/
 #order_summary .subsection{
@@ -126,7 +147,7 @@
 .addresses{
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: flex-start;
     overflow: auto;
 }
 .address{

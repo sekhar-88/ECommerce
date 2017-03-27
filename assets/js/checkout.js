@@ -5,22 +5,65 @@ $(document).ready(function(){
     gotoCheckOutStep();
     $("#newaddress-form").validate({
         rules:{
-            Name:
-            PostalCode:
-            AddressLine:
-            LandMark:
-            Country:
+            Name: "required",
+            PostalCode: {
+                    required: true,
+                    minlength: "6",
+                    maxlength: "6"
+            },
+            AddressLine: "required",
+            PhoneNo : {
+                required: true,
+                minlength: "10"
+            },
+            Country: "required"
         },
         messages:{
-            Name:
-            PostalCode:
-            AddressLine:
-            LandMark:
-            Country:
+            Name:  "Enter The name Belonging to the address",
+            PostalCode: {
+                    required: "Enter a valid Postal code",
+                    maxlength: "enter 6 digits"
+            },
+            AddressLine: "Enter The Contact Details",
+            // LandMark: ""
+            Country: "Enter the country",
+            PhoneNo: {
+                required: "Enter The Phone no. to receive updates",
+            }
         }
     });
-
+    $("#newaddress-form").submit(function(e){
+        e.preventDefault();
+        if($("#newaddress-form").valid())
+        {
+            alert("going to submit ");
+            addNewAddress(this);
+            $(this).submit();
+        }
+    });
 });
+
+function addNewAddress(oform){
+    var form = oform.elements;
+    console.log(form);
+    $.ajax({
+        url: "cfc/checkout.cfc?method=saveShippingAddress",
+        data:
+        {
+            AddressLine: form.AddressLine.value,
+            Name: form.Name.value,
+            LandMark: form.LandMark.value,
+            PhoneNo: form.PhoneNo.value,
+            PostalCode: form.PostalCode.value
+        },
+        dataType: "json"
+    }).done(function(response){
+        console.log(response);
+    }).fail(function(error){
+        console.log("Error");
+        console.log(error);
+    });
+}
 
 function gotoCheckOutStep(){
     $.ajax({
@@ -249,12 +292,12 @@ function addNewAddressShowModal(){
 }
 
 
-function myfun(){
-    console.log('thisss');
-    //DELETE Payment details from Session from here == Checkout Step 2
-
-}
-window.onunload = function(){
-  myfun();
-  return 'Are you sure you want to leave?';
-};
+// function myfun(){
+//     console.log('thisss');
+//     //DELETE Payment details from Session from here == Checkout Step 2
+//
+// }
+// window.onunload = function(){
+//   myfun();
+//   return 'Are you sure you want to leave?';
+// };
