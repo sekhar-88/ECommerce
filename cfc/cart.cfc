@@ -47,4 +47,20 @@
             </cfcatch>
             </cftry>
     </cffunction>
+
+    <cffunction name="getCartCount" output="true" returnType="numeric" returnFormat="json" access="remote" >
+        <cfif session.loggedin>
+            <cfquery name="cartcount">
+                SELECT COUNT(*) AS count from [Cart]
+                Where UserId = #Session.User.UserId#
+            </cfquery>
+            <cfreturn #cartcount.count#/>
+        <cfelse>
+            <cfif StructKeyExists(session, "cart")>
+                <cfreturn #ArrayLen(session.cart)#/>
+            <cfelse>
+                <cfreturn 0/>
+            </cfif>
+        </cfif>
+    </cffunction>
 </cfcomponent>

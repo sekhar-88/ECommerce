@@ -6,7 +6,7 @@
   </style>
 </head>
 
-<body>
+<body onload="updateCartCount();">
 
 <cfset userCFC = createObject("cfc.user") />
 <cfset headerCFC = createObject("cfc.header") />
@@ -133,20 +133,7 @@
                 <ul class="nav navbar-nav navbar-right" >
 					<li class="" style="background-color: #d3d6ad;"><a href="cart.cfm" role="button" class="cart_button">
                         <span class="glyphicon glyphicon-shopping-cart"></span>  <span class="">Cart</span>
-                        <span class="badge" id="badge">
-                        <cfif session.loggedin>
-                              <cfquery name="cart_q" >
-                                  SELECT * from [Cart] Where UserId = #session.user.userid#
-                              </cfquery>
-                              <cfoutput>#cart_q.recordCount#</cfoutput>
-                         <cfelse>
-                             <cfif StructKeyExists(session, "cart")>
-                                 <cfoutput>#ArrayLen(session.cart)#</cfoutput>
-                             <cfelse>
-                                 <cfoutput>0</cfoutput>
-                             </cfif>
-                        </cfif>
-                        </span></a>
+                        <span class="badge" id="badge"></span></a><!--- badge count of cart --->
                     </li>
                 </ul>
 

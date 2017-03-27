@@ -17,7 +17,7 @@ $(document).ready(function(){
         if(e.which == 13){
             submitform($("#login-form")[0]);
         }
-    })
+    });
 
     function submitform(form){
         oform = form.elements;
@@ -56,4 +56,16 @@ $(document).ready(function(){
         }
     }
 
+//update cart count pageonload bind
+function updateCartCount(){
+    $.ajax({
+        url: "cfc/cart.cfc?method=getCartCount",
+        dataType: "json"
+    }).done(function(response){
+        console.log(response);
+        $("#badge").text(response);
+    }).fail(function(error){
+        console.log(error);
+    });
+}
 // alert('header.js loaded');
