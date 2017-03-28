@@ -192,6 +192,14 @@
 
     <cffunction name="updateShippingAddress" access="remote" output="true" returntype="string" returnformat="json">
         <cfargument name="addressid" required="true" type="numeric" />
+        <cfargument name="formdata" required="true" type="string" />
+
+        <cfoutput>
+            #addressid#
+            #formdata#
+
+        </cfoutput>
+
         <!--- <cfquery name="update_address">
             UPDATE [Address]
             SET

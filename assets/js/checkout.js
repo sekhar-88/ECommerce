@@ -347,11 +347,13 @@ function editAddress(editBtn){
 }
 
 function editAddressAndSave(form,address_id){
-    alert('clicked' + addressid);
+    alert('clicked' + address_id);
+
     $.ajax({
         url: "cfc/checkout.cfc?method=updateShippingAddress",
         data: {
-            addressid : address_id
+            addressid : address_id,
+            formdata : $(form).serialize()
         },
         success: function(response){
             console.log(response);

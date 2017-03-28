@@ -26,7 +26,7 @@
         <div class="tab-content">
             <div id="section-product" class="tab-pane active fade in">
                 <div role="navigation" class="nav nav-bar">
-                    <ul class="nav nav-pills nav-stacked" style="width: 20%;">
+                    <ul class="nav nav-tabs">
                         <li><a>Category:
                             <select id="category_selectlist" onchange="fillSubCategory(this.value);" tabindex="1">
                                 <option value="">select Category</option>
