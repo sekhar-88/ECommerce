@@ -38,14 +38,13 @@ $(document).ready(function(){
         {
             alert("going to submit ");
             addNewAddress(this);
-            $(this).submit();
+            // $(this).submit();
         }
     });
 });
 
 function addNewAddress(oform){
     var form = oform.elements;
-    console.log(form);
     $.ajax({
         url: "cfc/checkout.cfc?method=saveShippingAddress",
         data:
@@ -59,6 +58,7 @@ function addNewAddress(oform){
         dataType: "json"
     }).done(function(response){
         console.log(response);
+        window.location.reload(false);
     }).fail(function(error){
         console.log("Error");
         console.log(error);
@@ -291,6 +291,17 @@ function addNewAddressShowModal(){
     $("#address_modal").modal('show');
 }
 
+function deleteAddress(dltBtn){
+    $.ajax({
+        url: "cfc/checkout.cfc?method=deleteAddress&addressid="+dltBtn.value,
+        dataType: "json"
+    }).done(function(response){
+        console.log(response + " removed Address");
+        $(dltBtn).parents(".address").remove();
+    }).fail(function(error){
+        console.log(error);
+    });
+}
 
 // function myfun(){
 //     console.log('thisss');

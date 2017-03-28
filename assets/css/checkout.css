@@ -7,28 +7,9 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
-/*#newaddress-form label:first-child {
-    width: 30%;
-}*/
-/*#newaddress-form label.error{
-    position: relative;
-    left: 32%;
-}*/
-/*#newaddress-form .form-control{
-    width: 50%;
-    display: inline-block;
-    position : relative;
-    right: 0;
-}*/
-/*#newaddress-form .form-group > :nth-child(2){
-    width: 60%;
-    border : 1px solid blue;
-}*/
-/*#newaddress-form .form-group > div {
-    border: 1px solid blue;
-    width: 60%;
-    display: inline-block;
-}*/
+.modal-header{
+    background-color: #ececec;
+}
 
 /*ORDER SUMMARY SECTION*/
 #order_summary .subsection{
@@ -120,15 +101,15 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
     flex-flow: column nowrap;
     border-top:1px solid #e5e50a;
 }
-.section{
-    border-bottom: 1px solid #e5e50a;
-    border-left:1px solid #e5e50a;
-    border-right:1px solid #e5e50a;
+.section {
+    border-bottom: 2px solid #81D4FA;
+    border-left: 1px solid #CFD8DC;
+    border-right: 1px solid #CFD8DC;
 }
 
 .section_header{
     padding: 5px;
-    background-color: #fefdf1;
+    background-color: #E1F5FE;
     display: flex;
     justify-content: space-between;
 }
@@ -145,6 +126,9 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
 }
 
 .addresses{
+    background-color: #f2f2f2;
+    height: 190px;
+    padding: 10px;
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
@@ -154,7 +138,10 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
     border: 1px solid lightgrey;
     margin: 5px;
     padding: 8px;
-    width: 220px;
+    flex:0 0 220px;
+    height: 168px;
+    background-color: rgba(255,255,255,0.9);
+    /*background-color: #E0E0E0;*/
 }
 .new_address {
     background-color: #f2f2f2;

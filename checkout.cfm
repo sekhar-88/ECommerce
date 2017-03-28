@@ -22,7 +22,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">New Shipping address</h4>
+                <h4 class="modal-title text-capitalize " align="center">New Shipping address</h4>
             </div>
 
             <form method="POST" id="newaddress-form">
@@ -59,7 +59,7 @@
                 </div>
                 <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save &amp; Continue</button>
                 </div>
             </form>
         </div>
@@ -105,15 +105,18 @@
                 <cfif addresses.recordCount>    <!--- populate the address inside addres section --->
                 <cfoutput>
                 <cfloop query="addresses" >
-                    <div class="address">
-                            #session.user.username# <br />
+                    <div class="address" style="position:relative;">
+                            <h4>#Name#</h4>
+                            <hr />
                             #AddressLine#   <br />
                             #PostalCode#    <br />
                             #City#  <br />
                             #State# <br />
-                        <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);">   Deliver Here  </button>
-                        <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button>
-                        <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);">  Delete        </button>
+                            <div style="position:absolute; bottom:3px;">
+                                <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);">   Deliver Here  </button>
+                                <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button>
+                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);">  Delete        </button>
+                            </div>
                     </div>
                 </cfloop>
                 </cfoutput>

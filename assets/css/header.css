@@ -14,7 +14,7 @@ label.error{
 }
 #login-form .form-group > label:first-child{
     width: 100%;
-    background-color: #baffba;
+    /*background-color: #baffba;*/
 }
 
 .subcat_list_div {

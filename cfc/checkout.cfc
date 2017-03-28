@@ -165,4 +165,18 @@
         </cftry>
     </cffunction>
 
+    <cffunction name="deleteAddress" access="remote" output="true" returntype="any" returnFormat="json">
+        <cfargument name="addressid" required="true" type="numeric" />
+        <cftry>
+            <cfquery name="deleteAddress">
+                DELETE FROM [Address]
+                WHERE AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="CF_SQL_BIGINT"  />
+            </cfquery>
+            <cfreturn true/>
+        <cfcatch>
+            <cfdump var="#cfcatch#" />
+            <cfreturn false/>
+        </cfcatch>
+        </cftry>
+    </cffunction>
 </cfcomponent>
