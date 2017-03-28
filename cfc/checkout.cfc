@@ -189,4 +189,13 @@
         </cfcatch>
         </cftry>
     </cffunction>
+
+    <cffunction name="updateShippingAddress" access="remote" output="true" returntype="string" returnformat="json">
+        <cfargument name="addressid" required="true" type="numeric" />
+        <!--- <cfquery name="update_address">
+            UPDATE [Address]
+            SET
+        </cfquery> --->
+
+    </cffunction>
 </cfcomponent>

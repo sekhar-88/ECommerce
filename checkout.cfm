@@ -26,6 +26,7 @@
             </div>
 
             <form method="POST" id="newaddress-form">
+
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Name:</label>
@@ -58,9 +59,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary modal-submit-link" onclick="">Save &amp; Continue</button>
-                        <button type="reset">Clear</button>
+                        <button type="reset"  class="btn btn-default">Clear</button>
                 </div>
             </form>
         </div>
@@ -104,13 +105,13 @@
                 <cfif addresses.recordCount>    <!--- populate the address inside addres section --->
                 <cfoutput>
                 <cfloop query="addresses" >
-                    <div class="address" style="position:relative;" data-name="#Name#" data-address-line="#AddressLine#" data-postal-code="#PostalCode#" data-city="#City#" data-state="#State#" data-phone-no="#PhoneNo#" data-landmark="#LandMark#">
+                    <div class="address" style="position:relative;" data-addressid="#AddressId#" data-name="#Name#" data-address-line="#AddressLine#" data-postal-code="#PostalCode#" data-city="#City#" data-state="#State#" data-phone-no="#PhoneNo#" data-landmark="#LandMark#">
                             <h5>#Name#</h5>
                             <span class="separator" role="separator"></span>
                             <div style="height:120px; padding: 4px;">
                             #AddressLine#   <br />
-                            #PostalCode#    <br />
-                            Mob: #PhoneNo#
+                            <span class="text-success">PIN</span>: #PostalCode#    <br />
+                            <span class="text-success">Mob</span>: #PhoneNo#
                             </div>
                             <div style="">
                                 <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);">   Deliver Here  </button>
@@ -195,13 +196,42 @@
             </div>
 
             <div class="subsection" style="display: none;">
-                subsection
+                <div style="padding:10px; margin: 20px; height: 300px;position: relative;">
+                    <nav style="float:left; width: 20%;">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="active"><a data-toggle="pill" href="#debitcard-section"><i class="fa fa-credit-card-alt"></i> Debit Card</a></li>
+                        <li><a data-toggle="pill" href="#cod-section"><i class="fa fa-inr"></i> Cash On Delivery</a></li>
+                        <li><a data-toggle="pill" href="#netbanking-section" ><i class="fa fa-university"></i> Net Banking</a></li>
+                    </ul>
+                    </nav>
+
+                    <div class="tab-content" style="">
+                        <div id="cod-section" class="tab-pane fade">
+                            <h6>pay using cash on delivery</h6>
+                            <span class="separator"></span>
+
+                            <div class="payment-subsection"> <button type="button" class="btn btn-warning" onclick="placeOrderByCOD()"> PLACE ORDER</button> </div>
+                        </div>
+                        <div id="netbanking-section" class="tab-pane fade">
+                            <h6>pay using net banking</h6>
+                            <span class="separator"></span>
+
+                            <div class="payment-subsection">netbanking-section</div>
+                        </div>
+                        <div id="debitcard-section" class="tab-pane fade in active">
+                            <h6>pay using Debit Card</h6>
+                            <span class="separator"></span>
+
+                            <div class="payment-subsection">Pay Using Debit Card</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--- <cfdump var="#session#" /> --->
     </cfif>
     </div>
-    <!--- <cfset session.status = "finishedCheckout" /> --->
+
 <cfinclude template="commons/footer.cfm" />
 </body>
 </html>

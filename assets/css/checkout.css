@@ -178,13 +178,30 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
 
 
 
-/*OTHERS*/
-.subsection{
-
-}
-
+/*              PAYMENT SECTION                 */
 #payment_section{
+    background-color: #fbfbfb;
 }
+
+#payment_section .subsection nav{    /*left*/
+    height: 200px;
+    background-color: white;
+}
+#payment_section .subsection nav li a{
+    padding: 16px;
+}
+#payment_section .subsection .tab-content{  /*right*/
+    position: absolute;
+    left: 25%;
+    top:-20px;
+    width: 70%;
+}
+.payment-subsection{
+    padding: 20px;
+    height: 250px;
+    background-color: white;
+}
+
 
 /*-----------------------------------------*/
 
@@ -193,5 +210,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
 .btn, .btn-info, .btn-success, .btn-primary, .btn-default, .btn-warning{
     border-radius: 1px;
     margin: 0;
-
+}
+.fa{
+    color: black;
 }

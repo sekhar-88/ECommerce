@@ -75,14 +75,13 @@ function gotoStep0(){
     $("#address_section .subsection").show();
 }
 function revertToStep0(){
-    $("#order_summary .subsection, #address_section .show_when_collapsed").hide();
+    $("#order_summary .subsection,#payment_section .subsection, #address_section .show_when_collapsed, #order_summary .show_when_collapsed").hide();
     $("#address_section .subsection").show(300);
     revertToStep(0);
 }
 
-
 function gotoStep1(){  //hide delivery address pane & show review order pane
-    $("#order_summary .subsection").show(300);
+    $("#order_summary .subsection").show();  //animation 300 delay
     $("#address_section .show_when_collapsed").fadeIn();
     $.ajax({
         async: false,
@@ -275,7 +274,7 @@ function gotoPaymentSection(el){
 }
 function reviewOrder(el){
     $("#payment_section .subsection, #order_summary .show_when_collapsed").hide();
-    $("#order_summary .subsection").show(300);
+    $("#order_summary .subsection").show(); // animation 300
     // revertToStep(1);
 }
 
@@ -335,6 +334,7 @@ function deleteAddress(dltBtn){
 function editAddress(editBtn){
     var addressDiv = $(editBtn).parents(".address");
 
+
     $("#newaddress-form input[name='Name']").val(addressDiv.data('name'));
     $("input[name='PostalCode']").val(addressDiv.data('postal-code'));
     $("input[name='AddressLine']").val(addressDiv.data('address-line'));
@@ -342,15 +342,43 @@ function editAddress(editBtn){
     $("input[name='LandMark']").val(addressDiv.data('landmark'));
 
     $(".modal-title").text("Edit Address");
-    $(".modal-submit-link").attr("onclick", "editAddressAndSave(this.form)");
+    $(".modal-submit-link").attr("onclick", "editAddressAndSave(this.form,"+addressDiv.data('addressid')+")");
     $("#address_modal").modal('show');
 }
 
-function editAddressAndSave(form){
-    alert('clicked');
+function editAddressAndSave(form,address_id){
+    alert('clicked' + addressid);
+    $.ajax({
+        url: "cfc/checkout.cfc?method=updateShippingAddress",
+        data: {
+            addressid : address_id
+        },
+        success: function(response){
+            console.log(response);
+        },
+        error: function(error){
+            console.log(error);
+        }
+    })
     console.log(form);
+
 }
 
+
+function placeOrderByCOD(){
+    $.ajax({
+        url: "cfc/checkout.cfc?method=orderPlacedByCOD",
+        data:{},
+        dataType: "json",
+        success: function(response){
+
+        },
+        error: function(error){
+            alert("error while processing COD request.");
+            console.log(error);
+        }
+    })
+}
 // function myfun(){
 //     console.log('thisss');
 //     //DELETE Payment details from Session from here == Checkout Step 2

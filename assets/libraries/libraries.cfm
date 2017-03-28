@@ -13,4 +13,10 @@
 <script src="assets/js/libraries/jquery.validate.js"    charset="utf-8"></script>
 <!--- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.js"></script> --->
 
+
+<!--- no local link --->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
 <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
