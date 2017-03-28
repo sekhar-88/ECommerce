@@ -22,7 +22,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title text-capitalize " align="center">New Shipping address</h4>
+                <h4 class="modal-title text-capitalize " align="center"></h4>
             </div>
 
             <form method="POST" id="newaddress-form">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="form-group">
                         <label>Address:</label>
-                        <input type="text" class="form-control" maxlength="50" name="AddressLine" rows="3" placeholder="Contact Details.." required>
+                        <input type="text" class="form-control" maxlength="100" name="AddressLine" rows="3" placeholder="Contact Details.." required>
                     </div>
                     <div class="form-group">
                         <label>Phone No:</label>
@@ -59,7 +59,8 @@
                 </div>
                 <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save &amp; Continue</button>
+                        <button type="button" class="btn btn-primary modal-submit-link" onclick="">Save &amp; Continue</button>
+                        <button type="reset">Clear</button>
                 </div>
             </form>
         </div>
@@ -67,10 +68,9 @@
 </div>
 
     <div class="container-fluid checkout_section">
-
         <cfset cartCFC = createObject("cfc.cart")/>
         <cfset cartIsEmpty = cartCFC.isCartEmpty()/>
-        <!--- LEFT that part where status in session is checkout --->
+
     <cfif NOT session.loggedin>
         <h4 class="jumbotron well">Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To complete Checkout Process</h4>
     <cfelseif cartIsEmpty>
@@ -91,11 +91,10 @@
         </cfif>
 
         <div id="address_section" class="section">
-
             <div id="address_header" class="section_header">
                 <div class="header_text">Delivery Address</div>
                 <div class="show_when_collapsed" style="display:none;">
-                    <button type="button" class="btn btn-changeaddress" onclick="revertToStep0();">Change address</button>
+                    <button type="button" class="btn btn-review" onclick="revertToStep0();">Change address</button>
                 </div>
             </div>
 
@@ -105,14 +104,15 @@
                 <cfif addresses.recordCount>    <!--- populate the address inside addres section --->
                 <cfoutput>
                 <cfloop query="addresses" >
-                    <div class="address" style="position:relative;">
-                            <h4>#Name#</h4>
-                            <hr />
+                    <div class="address" style="position:relative;" data-name="#Name#" data-address-line="#AddressLine#" data-postal-code="#PostalCode#" data-city="#City#" data-state="#State#" data-phone-no="#PhoneNo#" data-landmark="#LandMark#">
+                            <h5>#Name#</h5>
+                            <span class="separator" role="separator"></span>
+                            <div style="height:120px; padding: 4px;">
                             #AddressLine#   <br />
                             #PostalCode#    <br />
-                            #City#  <br />
-                            #State# <br />
-                            <div style="position:absolute; bottom:3px;">
+                            Mob: #PhoneNo#
+                            </div>
+                            <div style="">
                                 <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);">   Deliver Here  </button>
                                 <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button>
                                 <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);">  Delete        </button>
@@ -130,14 +130,14 @@
                 <span class=""><span class="glyphicon glyphicon-plus"></span> New Address</span>
             </div>
             </div>
-
         </div>
+
 
         <div id="order_summary" class="section">
             <div id="summary_header" class="section_header">
                 <div class="header_text">Order Summary</div>
                 <div class="show_when_collapsed" style="display:none;">
-                    <button type="button">Review Order</button>
+                    <button type="button" onclick="reviewOrder()" class="btn btn-review">Review Order</button>
                 </div>
             </div>
 <!---
@@ -174,6 +174,13 @@
                     </div>
                 -->
                 </div>
+                <div>
+                    <button type="button" class="btn btn-success" onclick="gotoPaymentSection(this);" style="float:right;padding: 10px; font-size: 17px; font-weight: 400;box-shadow:1px 1px 5px lightgrey">Proceed to Payment</button>
+                    <div style="float:right;padding: 5px;">
+                        <span style="font-weight:bold; padding: 10px;">Total:</span>
+                        <span id="total-checkout-price"></span>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -191,6 +198,7 @@
                 subsection
             </div>
         </div>
+        <!--- <cfdump var="#session#" /> --->
     </cfif>
     </div>
     <!--- <cfset session.status = "finishedCheckout" /> --->

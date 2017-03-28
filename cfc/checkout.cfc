@@ -35,6 +35,7 @@
                         <cfset ArrayClear(session.User.checkout.itemsInfo) /> <!---  delete the array --->
                         <cfset session.User.checkout.step = 0/>
                     </cfif>
+                    <cfset session.cartDataChanged = false/>
                     <cfreturn 0/>
                 <cfelse>
                     <cfreturn #session.User.checkout.step#/>
@@ -68,6 +69,7 @@
                 <cfswitch expression= "#arguments.step#" >
                     <cfcase value="0" >
                         <cfset StructDelete(session.User.checkout, "AddressId")/>
+                        <cfset StructDelete(session.User.checkout, "totalPrice")/>
                         <cfset session.User.checkout.step = 0 />
                         <cfreturn true/>
                     </cfcase>
@@ -81,7 +83,7 @@
 
     </cffunction>
 
-    <cffunction output="false" name="getOrderSummary" access="remote" returntype="Array" returnformat="json">
+    <cffunction output="false" name="getOrderSummary" access="remote" returntype="Struct" returnformat="json">
         <cftry>
         <!--- Query for Items in Cart & their price for showing in Step 1 of (CHECKOUT PAGE)--->
                 <cfquery name="itemsQuery">
@@ -92,6 +94,7 @@
                     Where c.UserId = #session.User.UserId#
                 </cfquery>
 
+                <cfset totalPrice = 0 />
                 <cfset itemsArray = [] />
                 <cfloop query="itemsQuery">
 
@@ -109,15 +112,22 @@
                            "discount"  = #dscnt#,
                            "discountedPrice"   = #DiscountedPrice#
                            }) />
+                    <cfset totalPrice += #ListPrice# />
                 </cfloop>
                 <!--- SET the step 1 checkout variables inside session --->
+                <cfset session.User.checkout.totalPrice = #totalPrice# />
                 <cfset session.User.checkout.itemsInfo = #itemsArray#/>
+
+                <cfset itemsInfo= {
+                    "totalPrice" = #totalPrice#,
+                    "itemsArray" = #itemsArray#
+                } />
         <cfcatch>
                 <cfdump var="#cfcatch#" />
         </cfcatch>
         </cftry>
 
-        <cfreturn #itemsArray#/>
+        <cfreturn #itemsInfo#/>
     </cffunction>
 
     <cffunction name = "getAvailableQuantity" returnType="Numeric" returnFormat="json" access="remote">

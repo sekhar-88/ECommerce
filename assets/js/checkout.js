@@ -32,38 +32,7 @@ $(document).ready(function(){
             }
         }
     });
-    $("#newaddress-form").submit(function(e){
-        e.preventDefault();
-        if($("#newaddress-form").valid())
-        {
-            alert("going to submit ");
-            addNewAddress(this);
-            // $(this).submit();
-        }
-    });
 });
-
-function addNewAddress(oform){
-    var form = oform.elements;
-    $.ajax({
-        url: "cfc/checkout.cfc?method=saveShippingAddress",
-        data:
-        {
-            AddressLine: form.AddressLine.value,
-            Name: form.Name.value,
-            LandMark: form.LandMark.value,
-            PhoneNo: form.PhoneNo.value,
-            PostalCode: form.PostalCode.value
-        },
-        dataType: "json"
-    }).done(function(response){
-        console.log(response);
-        window.location.reload(false);
-    }).fail(function(error){
-        console.log("Error");
-        console.log(error);
-    });
-}
 
 function gotoCheckOutStep(){
     $.ajax({
@@ -120,9 +89,13 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
         url: "cfc/checkout.cfc?method=getOrderSummary",
         dataType: "json",
         success: function(response){
+            console.log(response);
+            // response.itemsArray
+            // response.totalPrice
             $("#order_summary .items").empty();  //empty the previously populated items in ORDER SUMMARY
 
-            $.each(response, function(index, item){
+
+            $.each(response.itemsArray, function(index, item){
                 console.log(item);
                     var name = item.name;
                     var desc = "description";
@@ -152,6 +125,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                                         + "></span></div>" ;
 
                     $("#order_summary .items").append("<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + removeContent + "</div>");   //data-session_index is for removing the corresponding entry from sessoin user Arry(session.User.checkout.itemsInfo(type array) ) while removed from checkout Page
+                    $("#total-checkout-price").text( "₹ "+ response.totalPrice + "/-");
             });
         },
         error: function(error){
@@ -239,6 +213,13 @@ function revertToStep1(){
     revertToStep(1);
 }
 
+function gotoStep2(){
+    $("#payment_section .subsection").show(300);
+    $("#order_summary .show_when_collapsed").fadeIn();
+}
+// function revertToStep2(){
+//     revertToStep(2);
+// }
 
 function revertToStep(stp){
     $.ajax({
@@ -266,7 +247,7 @@ function revertToStep(stp){
 
 
 
-function storeAddressGotoStep1(el){
+function storeAddressGotoStep1(el){  //gotoOrderSummary Section
     addressid = $(el).val();
 
     $.ajax({
@@ -287,20 +268,87 @@ function storeAddressGotoStep1(el){
     gotoStep1();
 }
 
+function gotoPaymentSection(el){
+    $("#order_summary .subsection").hide();  //this is only here because it is not needed when page refreshed
+    gotoStep2();                             //others are in this function
+
+}
+function reviewOrder(el){
+    $("#payment_section .subsection, #order_summary .show_when_collapsed").hide();
+    $("#order_summary .subsection").show(300);
+    // revertToStep(1);
+}
+
 function addNewAddressShowModal(){
+    document.getElementById("newaddress-form").reset();
+    $(".modal-title").text("New Shipping Address");
+    $(".modal-submit-link").attr("onclick", "addAddress(this.form)");
     $("#address_modal").modal('show');
 }
 
-function deleteAddress(dltBtn){
+function addAddress(form){
+    if($("#newaddress-form").valid())
+    {
+        alert("going to submit ");
+        addNewAddress(form);
+    }
+}
+
+function addNewAddress(oform){
+    var form = oform.elements;
     $.ajax({
-        url: "cfc/checkout.cfc?method=deleteAddress&addressid="+dltBtn.value,
+        url: "cfc/checkout.cfc?method=saveShippingAddress",
+        data:
+        {
+            AddressLine: form.AddressLine.value,
+            Name: form.Name.value,
+            LandMark: form.LandMark.value,
+            PhoneNo: form.PhoneNo.value,
+            PostalCode: form.PostalCode.value
+        },
         dataType: "json"
     }).done(function(response){
-        console.log(response + " removed Address");
-        $(dltBtn).parents(".address").remove();
+        console.log(response);
+        window.location.reload(false);
     }).fail(function(error){
+        console.log("Error");
         console.log(error);
     });
+}
+
+function deleteAddress(dltBtn){
+    if( confirm("Sure to Delete the Address?") == true ){
+        $.ajax({
+            url: "cfc/checkout.cfc?method=deleteAddress&addressid="+dltBtn.value,
+            dataType: "json"
+        }).done(function(response){
+            console.log(response + " removed Address");
+            $(dltBtn).parents(".address").remove();
+        }).fail(function(error){
+            console.log(error);
+        });
+    }
+    else {
+    }
+}
+
+function editAddress(editBtn){
+    var addressDiv = $(editBtn).parents(".address");
+
+    $("#newaddress-form input[name='Name']").val(addressDiv.data('name'));
+    $("input[name='PostalCode']").val(addressDiv.data('postal-code'));
+    $("input[name='AddressLine']").val(addressDiv.data('address-line'));
+    $("input[name='PhoneNo']").val(addressDiv.data('phone-no'));
+    $("input[name='LandMark']").val(addressDiv.data('landmark'));
+
+    $(".modal-title").text("Edit Address");
+    $(".modal-submit-link").attr("onclick", "editAddressAndSave(this.form)");
+    $("#address_modal").modal('show');
+}
+
+function editAddressAndSave(form){
+    alert('clicked');
+    console.log(form);
 }
 
 // function myfun(){

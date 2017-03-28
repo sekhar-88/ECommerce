@@ -59,7 +59,7 @@
     </cffunction>
 
     <cffunction name="getCartItems" returnformat="JSON" returntype="Array" access="remote" output="true">
-        <cfset pList = []/>
+        <cfset pList = []/> 
         <cfif session.loggedin>
             <cfset userid= #SESSION.User.UserId# />
             <cftry>
