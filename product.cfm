@@ -20,8 +20,17 @@
 
             <div class="container-fluid">
 
-                <div class="filter">
-                    under construction..
+                <div class="filters">
+
+                    <div class="filter filter-brand">
+                        <div class="filter-header">Brands</div>
+                    </div>
+                    <div class="filter filter-price">
+                        <div class="filter-header">Price</div>
+                    </div>
+                    <div class="filter filter-other">
+                        <div class="filter-header"></div>
+                    </div>
                 </div>
                 <!--- <div id="product_listing"> --->
                 <!--- show product category wise --->
@@ -36,17 +45,19 @@
                                     <div class="product">
                                         <a href="productDetails.cfm?pid=#ProductId#"></a>
                                         <div class="product_image">
-                                            <img class="" src="assets/images/products/medium/#Image#" width="200px">
+                                            <img class="" src="assets/images/products/medium/#Image#" width="120px">
                                         </div>
                                         <div class="product_content">
                                             <div class="product_name"> #Name# </div>
-                                            <ul>
-                                                #Description#
-                                            </ul>
                                             <div class="product_pricing">
                                                 <div class="product_price"> #ListPrice#  </div>
                                                 <div class="product_discounted_price">#DiscountPercent#</div>
                                             </div>
+                                            <ul>
+                                                <cfloop index="i" list="#Description#" delimiters="`"  >
+                                                    <li>#i#</li>
+                                                </cfloop>
+                                            </ul>
                                         </div>
                                     </div>
                                 </cfloop>

@@ -4,6 +4,7 @@ $(document).ready(function(){
         getSubCategoryId();
     });
     $("#product_add_form").validate();
+    $("#subcategory_textbox").prop('disabled', true);
 });
 
 function addProductToDB(oform){
@@ -170,4 +171,60 @@ function showProduct(prdt_div){
                             +'</div>'
                         +'</form>';
     $("#products-info").html( "<div class=''>" + productForm + "</div>"); //.addClass("no-background");
+}
+function addBrands(el){
+    var BrandName = $(el).prev().val();
+                    $(el).next().children(".list").append("<p class='list-item'>" + BrandName + "</p>");
+}
+
+function addSubCategory(el){
+    var inputElement = $(el).prev();
+    var categoryid = inputElement.data('categoryid');
+    var categoryname = inputElement.data('categoryname');
+    var SubCategoryName = ($(el).prev().val()).trim();
+    
+    if( SubCategoryName != ""){
+        $.ajax({
+            url: "cfc/admin.cfc?method=addSubCategory",
+            data: { categoryid : categoryid, subcategoryname : SubCategoryName },
+            dateType: "JSON",
+            success: function(res){
+                console.log("added " + SubCategoryName);  //update Database
+                $(el).next().children(".list").append("<p class='list-item'>" + SubCategoryName + "</p>"); //Update UI
+            },
+            error:function(err){
+                console.log(err);
+            }
+        });
+    }
+    else{
+        alert('no name');
+    }
+}
+
+function enableSubCategoryTextField(el){
+    $(".cnb-subcategory .list").empty();
+
+    var categoryname = $(el).find(":selected").val();
+    var categoryid = $(el).find(":selected").attr('id');
+
+    if( categoryname != "invalid" ) {
+        $.ajax({
+            url: "cfc/admin.cfc?method=getSubCategoriesJSON",
+            data: { categoryid: categoryid },
+            dataType: "json",
+            success:function(arr){
+                console.log(arr);
+                $.each(arr, function(i, item){
+                    $(".cnb-subcategory .list").append("<p class='list-item'>" + item + "</p>")
+                });
+            }
+        });
+        $("#subcategory_textbox").data('categoryid', categoryid);
+        $("#subcategory_textbox").data('categoryname', categoryname);
+        $("#subcategory_textbox").prop('disabled', false);
+    }
+    else{
+        $("#subcategory_textbox").prop('disabled', true);
+    }
 }

@@ -1,6 +1,6 @@
 <cfcomponent>
     <cffunction name="getCategories" returntype="Query" access="remote" output="false" >
-        <cfquery name="categories" cachedWithin="#CreateTimeSpan(0,0,10,0)#">
+        <cfquery name="categories">
             Select *
             From [ProductCategory]
         </cfquery>
@@ -9,13 +9,14 @@
 
     <cffunction name="getSubCategories" returntype="Query" output="false" >
         <cfargument name="CategoryId" type="numeric" required="true"  />
-        <cfquery name="subcategories" cachedWithin="#createTimeSpan(0,0,10,0)#">
+        <cfquery name="subcategories">
             Select SubCategoryId, SubCategoryName
             from [ProductSubCategory]
             WHERE CategoryId = #arguments.CategoryId#
         </cfquery>
         <cfreturn #subcategories# />
     </cffunction>
+
     <cffunction name="getSubCategoriesJSObject" returnType="any" returnFormat="json" access="remote" output="true">
         <cfargument name="categoryname" required="true" type="string"/>
         <cftry>

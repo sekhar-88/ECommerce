@@ -48,7 +48,7 @@
 
 			<div class="footer-left">
 
-				<h3>Company<span>logo</span></h3>
+				<h3>Shopping<span>BUZZ</span></h3>
 
 				<p class="footer-links">
 					<a href="index.cfm">Home</a>
@@ -64,26 +64,25 @@
 					<a href="#">Contact</a>
 				</p>
 
-				<p class="footer-company-name">Company Name &copy; 2015</p>
+				<p class="footer-company-name">shoppingBuzz &copy; 2017</p>
 			</div>
 
 			<div class="footer-center">
 
 				<div>
 					<i class="fa fa-map-marker"></i>
-					<p><span>21 Revolution Street</span> Paris, France</p>
+					<p><span>DLF Cybercity</span> Bhubaneswar, Odisha, India</p>
 				</div>
 
 				<div>
 					<i class="fa fa-phone"></i>
-					<p>+1 555 123456</p>
+					<p>+91 7504 785308</p>
 				</div>
 
 				<div>
 					<i class="fa fa-envelope"></i>
-					<p><a href="mailto:support@company.com">support@company.com</a></p>
+					<p><a href="mailto:cs09.fb@gmail.com">ChandraSekhar@gmail.com</a></p>
 				</div>
-
 			</div>
 
 			<div class="footer-right">

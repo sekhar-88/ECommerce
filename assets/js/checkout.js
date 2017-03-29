@@ -1,5 +1,6 @@
 var addressid = undefined;
 var orderSummary = "";
+var amountPayble = 0;
 
 $(document).ready(function(){
     $(".show_when_collapsed").hide();
@@ -130,14 +131,15 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                                             +   itemQtyContent
                                             + "</div>";
                             $("#order_summary .items").append("<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + removeContent + "</div>");   //data-session_index is for removing the corresponding entry from sessoin user Arry(session.User.checkout.itemsInfo(type array) ) while removed from checkout Page
-                            orderSummary =  "<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + "</div>";
+                            orderSummary +=  "<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemPrice + "/item" + "</div>";
                         },
                         error: function(error){
                             alert('Error retrieving Available Product Quantity');
                         }
                     });
-
-                    $("#total-checkout-price").text((response.totalPrice).toLocaleString('en-IN'));
+                    var x = (response.totalPrice).toLocaleString('en-IN')
+                    $("#total-checkout-price").text(x);
+                    amountPayble = x;
             });
         },
         error: function(error){
@@ -165,21 +167,14 @@ function validateItemCount(element, value, max, cartId){
         },
         success:function(cartTotal){
             console.log(cartTotal);
-            $("#total-checkout-price").text(parseInt(cartTotal).toLocaleString('en-IN'));
+            var x = parseInt(cartTotal).toLocaleString('en-IN');
+            $("#total-checkout-price").text(x);
+            amountPayble = x;
         },
         error: function(error){
 
         }
     });
-
-    var price = $(element).data('item_price');
-    // var total_amount = parseInt($(element).data('total_price'));
-
-    // console.log(value + " " + max);
-    // console.log(price + " " + total_amount);
-
-    // totalPrice = (total_amount - price) + (value * price);
-    // $("#total-checkout-price").text(totalPrice);
 }
 
 function removeItem(element){
@@ -253,14 +248,6 @@ function revertToStep(stp){
         }
     });
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -394,11 +381,14 @@ function placeOrderByCOD(){
             success: function(response){
                 if(response.status){
                     alert("added to Orders & Orderdetails");
-                    str = '<div style="height: 400px;"><h1 align="center" style="color: blue;"><span></span>Thank you for your order!</h1>'
+                    str = '<div><h1 align="center" style="color: blue;"><span></span>Thank you for your order!</h1>'
                             +'<span>Your order has been placed and is being processed. When the item(s) are shipped, you will receive an email with the details.</span></div>'
+                            +'<div><h2 align="center" style="color: teal;font-weight: bold;">Amount Payble:'+amountPayble+'</h2></div>'
                     $(".checkout_section").html(str + orderSummary);
-                    set step  = 0
+                    // set step  = 0
                     // cart datachanged = true
+                    // cart 0
+                    $("#badge").text(0);
                 }
             },
             error: function(error){

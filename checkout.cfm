@@ -7,8 +7,8 @@
     <script src="assets/js/checkout.js"></script>
     <style>
     </style>
-    <script>
-    </script>
+        <script>
+        </script>
 </head>
 <body>
 

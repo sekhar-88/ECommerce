@@ -67,4 +67,41 @@
 
     </cffunction>
 
+    <cffunction name="addSubCategory" access="remote" returntype="any" returnformat="JSON" output="true" >
+        <cfargument name="categoryid" type="numeric" required="true" />
+        <cfargument name="subcategoryname" type="string" required="true" />
+
+        <cftry>
+            <cfquery name="insertNewSubcategory">
+                INSERT INTO [ProductSubCategory]
+                (SubCategoryName, CategoryId)
+                VALUES
+                (
+                    <cfqueryparam value="#arguments.subcategoryname#" cfsqltype="cf_sql_nvarchar" />,
+                    <cfqueryparam value="#arguments.categoryid#" cfsqltype="cf_sql_int" />
+                )
+            </cfquery>
+            <cfreturn true>
+
+            <cfcatch>
+                <cfdump var="#cfcatch#" />
+                <cfreturn false/>
+            </cfcatch>
+        </cftry>
+    </cffunction>
+
+    <cffunction name="getSubCategoriesJSON" returntype="Array" returnformat="JSON" output="false" access="remote">
+        <cfargument name="categoryid" type="numeric" required="true"  />
+        <cfset result = []/>
+        <cfquery name="subcategories">
+            Select SubCategoryId, SubCategoryName
+            from [ProductSubCategory]
+            WHERE CategoryId = #arguments.categoryid#
+        </cfquery>
+
+        <cfloop query="subcategories" >
+            <cfset ArrayAppend(result, #SubCategoryName#)/>
+        </cfloop>
+        <cfreturn #result# />
+    </cffunction>
 </cfcomponent>

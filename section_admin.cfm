@@ -19,7 +19,7 @@
         <nav>
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#section-product">Products</a></li>
-            <li><a data-toggle="tab" href="#section-categories">Categories</a></li>
+            <li><a data-toggle="tab" href="#section-categories">Categories &amp; Brands</a></li>
             <li><a>list</a></li>
         </ul>
         </nav>
@@ -98,7 +98,46 @@
                 </div>
             </div>      <!--- end product view section --->
             <div id="section-categories" class="tab-pane fade">
-                categories section
+                <div class="sections">
+                    <div class="cnb-section">  <!---cnb for Category And Brand --->
+                        <input type="text">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addCategory(this)">Add Category</button>
+                        <div class="cnb-content cnb-category">
+                            <input type="text" placeholder="search..." class="cnb-search">
+                            <div class="list">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cnb-section">
+                            <select style="padding: 3px; width: 100%;" onchange="enableSubCategoryTextField(this);">
+                                    <option value="invalid">Select Category</option>
+                                <cfoutput>
+                                <cfloop query="categories">
+                                    <option value="#CategoryName#" id="#CategoryId#">#CategoryName#</option>
+                                </cfloop>
+                                </cfoutput>
+                            </select>
+                            <span class="clearfix"></span>
+                            <input type="text" id="subcategory_textbox" data-categoryid="" data-categoryname="">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addSubCategory(this)">Add SubCategory</button>
+                        <div class="cnb-content cnb-subcategory">
+                            <input type="text" placeholder="search..." class="cnb-search">
+                            <div class="list">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cnb-section">
+                        <input type="text" value="" placeholder="New Brand..">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addBrands(this)">Add Brands</button>
+                        <div class="cnb-content cnb-brand">
+                            <input type="text" placeholder="search..." class="cnb-search">
+                            <div class="list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>  <!--- end tab content --->
     </div>      <!--- end admin panel--->
@@ -116,12 +155,13 @@
 </html>
 <cftry>
 <cfif IsDefined("form.Image")>
-    <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/>
+    <!--- <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/> --->
+    <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
     <cffile action="upload"
             filefield="Image"
             destination="#path#"
             nameconflict="makeunique"
-            accept="image/jpeg,image/jpg"
+            accept="image/jpeg,image/jpg,image/png"
             result="uploadresult" />
             <!--- <cfdump var="#uploadresult#" /> --->
             <cfset image = "#uploadresult.SERVERFILE#" />
