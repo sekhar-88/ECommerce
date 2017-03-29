@@ -112,7 +112,7 @@
 #address_section{
     display:flex;
     flex-flow: column nowrap;
-    border-top:1px solid #e5e50a;
+    border-top:5px solid #607D8B;
 }
 .section {
     border-bottom: 2px solid #81D4FA;
