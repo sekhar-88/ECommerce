@@ -23,11 +23,13 @@
                 <cfif cart.recordCount>  <!--- in cart --->
                     <cfreturn true/>  <!--- THIS RETURN TRUE IS FOR sending (buynow) button that it is already in cart --->
                 <cfelse>                      <!--- not in cart --->
+
+                    <cfset price = getPriceOfProduct(arguments.pid)/>
                     <cfquery name="insetToCart">
                         INSERT INTO [Cart]
-                        (ProductId,Qty,UserId)
+                        (ProductId,Qty,UserId, TotalPrice)
                         VALUES
-                        (<cfqueryparam value="#arguments.pid#" cfsqltype="cf_sql_integer">, 1, #userid#)
+                        (<cfqueryparam value="#arguments.pid#" cfsqltype="cf_sql_integer">, 1, #userid#, #price#)
                     </cfquery>
                     <!--- cart data changed --->
                     <cfset session.cartDataChanged = true/>;
@@ -53,6 +55,17 @@
             WHERE SubCategoryId = <cfqueryparam value = "#arguments.scat#" CFSQLType = "[cf_sql_integer]">
         </cfquery>
         <cfreturn #products#/>
+    </cffunction>
+
+    <cffunction name="getPriceOfProduct" access="remote" returntype="boolean" output="true">
+        <cfargument name="pid" required="true" type="numeric"/>
+
+        <cfquery name="ProductPrice">
+            SELECT ListPrice
+            FROM [Product]
+            WHERE ProductId = <cfqueryparam value="#arguments.pid#" cfsqltype="cf_sql_bigint" />
+        </cfquery>
+        <cfreturn #ProductPrice.ListPrice#/>
     </cffunction>
 
 </cfcomponent>

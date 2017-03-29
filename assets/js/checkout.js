@@ -1,4 +1,5 @@
 var addressid = undefined;
+var orderSummary = "";
 
 $(document).ready(function(){
     $(".show_when_collapsed").hide();
@@ -88,16 +89,13 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
         url: "cfc/checkout.cfc?method=getOrderSummary",
         dataType: "json",
         success: function(response){
-            console.log(response);
-            // response.itemsArray
-            // response.totalPrice
+            console.log(response);       // response.itemsArray   // response.totalPrice
             $("#order_summary .items").empty();  //empty the previously populated items in ORDER SUMMARY
 
-
             $.each(response.itemsArray, function(index, item){
-                console.log(item);
+                // console.log(item);
                     var name = item.name;
-                    var desc = "description";
+                    var desc = "description";     //item.description
 
                     var itemDescContent = "<div>"
                                             + "<div class='cart_product_image'>"
@@ -106,14 +104,11 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                                             + "<h4>" + name + "</h4>"
                                             + desc
                                         + "</div>" ;
-                    var itemQtyContent = "<input data-toggle='tooltip' title='Max Quantity Exceeded' data-prev_val='1' data-item_id="+ item.id +" + type='number' name='itemQty' value='1' min='1' onkeyup='validateItemQuantity(this);' onmouseup='validateItemQuantity(this)'>";  //store (Product Id, prev_item_count) in custom (Data-* attributes)
+
                     var itemPriceContent = "&#8377; " + item.price;
 
                     var itemDesc = "<div class='itemInfo'>"
                                     + itemDescContent
-                                    + "</div>";
-                    var itemQty = "<div class='itemQty'>"
-                                    +   itemQtyContent
                                     + "</div>";
                     var itemPrice = "<div class='itemPrice'>"
                                     + itemPriceContent
@@ -123,8 +118,26 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                                         + item.id
                                         + "></span></div>" ;
 
-                    $("#order_summary .items").append("<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + removeContent + "</div>");   //data-session_index is for removing the corresponding entry from sessoin user Arry(session.User.checkout.itemsInfo(type array) ) while removed from checkout Page
-                    $("#total-checkout-price").text( "₹ "+ response.totalPrice + "/-");
+                    $.ajax({
+                        async: false,
+                        url: "cfc/checkout.cfc?method=getAvailableQuantity",
+                        data: { itemid: item.id },
+                        dataType: "json",
+                        success: function(maxQty){
+                            console.log("Available Products: " + maxQty);
+                            var itemQtyContent = "<input type='number' data-toggle='tooltip' title='Max Quantity Exceeded' data-card_id='"+item.cartId+"' data-item_id="+ item.id +" + data-item_price='"+item.price+"' name='itemQty' value='"+item.qty+"' min='1' max='"+maxQty+"' class='inputItemsQuantity' onkeyup='validateItemCount(this, this.value, this.max, "+item.cartId+");' onmouseup='validateItemCount(this, this.value, this.max, "+item.cartId+")'>";  //store (Product Id, prev_item_count) in custom (Data-* attributes)  & inputItemsQuantity class is required to validate item quantity count while placing order
+                            var itemQty = "<div class='itemQty'>"
+                                            +   itemQtyContent
+                                            + "</div>";
+                            $("#order_summary .items").append("<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + removeContent + "</div>");   //data-session_index is for removing the corresponding entry from sessoin user Arry(session.User.checkout.itemsInfo(type array) ) while removed from checkout Page
+                            orderSummary =  "<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + "</div>";
+                        },
+                        error: function(error){
+                            alert('Error retrieving Available Product Quantity');
+                        }
+                    });
+
+                    $("#total-checkout-price").text((response.totalPrice).toLocaleString('en-IN'));
             });
         },
         error: function(error){
@@ -133,35 +146,40 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
     });
 }
 
-function validateItemQuantity(element){
-    $(element).tooltip("hide");
-    var prev_val = $(element).data('prev_val');
-    var cur_val = $(element).val();
-    var item_id = $(element).data('item_id');  //  .data() for retrieving Value of Custom HTML5 (Data-* Attributes)
+function validateItemCount(element, value, max, cartId){
+    $(element).tooltip('hide');
+    var pid = $(element).data('item_id');
 
-    if(prev_val != cur_val){
-        // alert('validate with the database');
-        $(element).prop("readonly", true).delay(1500).prop("readonly", false);
-        $.ajax({
-            async: false,
-            url: "cfc/checkout.cfc?method=getAvailableQuantity",
-            data: {
-                itemid: item_id
-            },
-            dataType: "json",
-            success: function(maxQty){
-                console.log("Available Products: " + maxQty);
-                if( cur_val > maxQty ){
-                    $(element).val(maxQty-1);
-                    $(element).tooltip("show");
-                }
-            },
-            error: function(error){
-                alert('Error retrieving Available Product Quantity');
-            }
-        });
+    if(parseInt(value) > parseInt(max)){
+        $(element).tooltip('show');
+        element.value = max;
     }
-    $(element).data("prev_val", "" + cur_val);
+
+    $.ajax({
+        async: false,
+        url: "cfc/checkout.cfc?method=updateCartAndTotalPrice",
+        data: {
+            cartid: cartId,
+            pid: pid,
+            qty: element.value
+        },
+        success:function(cartTotal){
+            console.log(cartTotal);
+            $("#total-checkout-price").text(parseInt(cartTotal).toLocaleString('en-IN'));
+        },
+        error: function(error){
+
+        }
+    });
+
+    var price = $(element).data('item_price');
+    // var total_amount = parseInt($(element).data('total_price'));
+
+    // console.log(value + " " + max);
+    // console.log(price + " " + total_amount);
+
+    // totalPrice = (total_amount - price) + (value * price);
+    // $("#total-checkout-price").text(totalPrice);
 }
 
 function removeItem(element){
@@ -263,12 +281,12 @@ function storeAddressGotoStep1(el){  //gotoOrderSummary Section
         }
     });
     // alert(addressid);
-    $(el).parents(".subsection").hide();
+    $(el).parents(".subsection").slideUp(300);
     gotoStep1();
 }
 
 function gotoPaymentSection(el){
-    $("#order_summary .subsection").hide();  //this is only here because it is not needed when page refreshed
+    $("#order_summary .subsection").slideUp(300);  //this is only here because it is not needed when page refreshed
     gotoStep2();                             //others are in this function
 
 }
@@ -368,18 +386,67 @@ function editAddressAndSave(form,address_id){
 
 
 function placeOrderByCOD(){
-    $.ajax({
-        url: "cfc/checkout.cfc?method=orderPlacedByCOD",
-        data:{},
-        dataType: "json",
-        success: function(response){
+    if(validateItemQuantity()){  //purchasee section handling
+        $.ajax({
+            url: "cfc/checkout.cfc?method=orderPlacedByCOD",
+            data:{},
+            dataType: "json",
+            success: function(response){
+                if(response.status){
+                    alert("added to Orders & Orderdetails");
+                    str = '<div style="height: 400px;"><h1 align="center" style="color: blue;"><span></span>Thank you for your order!</h1>'
+                            +'<span>Your order has been placed and is being processed. When the item(s) are shipped, you will receive an email with the details.</span></div>'
+                    $(".checkout_section").html(str + orderSummary);
+                    set step  = 0
+                    // cart datachanged = true
+                }
+            },
+            error: function(error){
+                alert("error while processing COD request.");
+                console.log(error);
+            }
+        });
+    }
+    else{ //item quantity is not valid
+        alert("item quantity is not valid");
+    }
+}
 
-        },
-        error: function(error){
-            alert("error while processing COD request.");
-            console.log(error);
+function validateItemQuantity(){
+    var result;
+    var productCountvalid = true;
+
+    $.each($(".inputItemsQuantity"), function(i, element){
+        var qty = element.value;
+        var itemId = $(element).data('item_id');
+
+        console.log(qty + itemId);
+        if( qty > 0 ){
+            $.ajax({
+                    async: false,
+                    url: "cfc/checkout.cfc?method=getAvailableQuantity",
+                    data: {
+                        itemid: itemId
+                    },
+                    dataType: "json",
+                    success: function(maxQty){
+                        if( qty > maxQty ) {
+                            console.log('item quntity manipulated/not authentic');
+                            result = false;
+                        }
+                        else result = true;
+                    },
+                    error: function(error){ alert('Error retrieving Available Product Quantity'); }
+            });
         }
-    })
+        else{
+            productCountvalid = false;
+            result = false;
+            return false;  // equivalent to break;
+        }
+    });
+    if(!productCountvalid) alert("Invalid Product Quantity");
+    return result;
 }
 // function myfun(){
 //     console.log('thisss');

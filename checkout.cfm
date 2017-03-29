@@ -115,8 +115,8 @@
                             </div>
                             <div style="">
                                 <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);">   Deliver Here  </button>
-                                <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button>
-                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);">  Delete        </button>
+                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="editAddress(this);">    Edit          </button>
+                                <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="deleteAddress(this);">  Delete        </button>
                             </div>
                     </div>
                 </cfloop>
@@ -176,10 +176,10 @@
                 -->
                 </div>
                 <div>
-                    <button type="button" class="btn btn-success" onclick="gotoPaymentSection(this);" style="float:right;padding: 10px; font-size: 17px; font-weight: 400;box-shadow:1px 1px 5px lightgrey">Proceed to Payment</button>
+                    <button type="button" class="btn btn-success" onclick="if(validateItemQuantity()) { gotoPaymentSection(this);}" style="float:right;padding: 10px; font-size: 17px; font-weight: 400;box-shadow:1px 1px 5px lightgrey">Proceed to Payment</button>
                     <div style="float:right;padding: 5px;">
                         <span style="font-weight:bold; padding: 10px;">Total:</span>
-                        <span id="total-checkout-price"></span>
+                        <span class="fa fa-inr checkoutPrice"></span> <span class="checkoutPrice" id="total-checkout-price"> </span><span class="checkoutPrice">/-</span>
                     </div>
                 </div>
 
@@ -199,14 +199,14 @@
                 <div style="padding:10px; margin: 20px; height: 300px;position: relative;">
                     <nav style="float:left; width: 20%;">
                     <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a data-toggle="pill" href="#debitcard-section"><i class="fa fa-credit-card-alt"></i> Debit Card</a></li>
-                        <li><a data-toggle="pill" href="#cod-section"><i class="fa fa-inr"></i> Cash On Delivery</a></li>
+                        <li class="active"><a data-toggle="pill" href="#cod-section"><i class="fa fa-inr"></i> Cash On Delivery</a></li>
+                        <li><a data-toggle="pill" href="#debitcard-section"><i class="fa fa-credit-card-alt"></i> Debit Card</a></li>
                         <li><a data-toggle="pill" href="#netbanking-section" ><i class="fa fa-university"></i> Net Banking</a></li>
                     </ul>
                     </nav>
 
                     <div class="tab-content" style="">
-                        <div id="cod-section" class="tab-pane fade">
+                        <div id="cod-section" class="tab-pane fade in active">
                             <h6>pay using cash on delivery</h6>
                             <span class="separator"></span>
 
@@ -218,7 +218,7 @@
 
                             <div class="payment-subsection">netbanking-section</div>
                         </div>
-                        <div id="debitcard-section" class="tab-pane fade in active">
+                        <div id="debitcard-section" class="tab-pane fade">
                             <h6>pay using Debit Card</h6>
                             <span class="separator"></span>
 

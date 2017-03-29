@@ -17,7 +17,7 @@ function user_checkout(pid){
         dataType: "json",
         success: function(response){
             if(response == true) {
-                alert('Product is now in Cart\ngoing to address page...');
+                // alert('Product is now in Cart\ngoing to address page...');
                 window.location.href = "checkout.cfm";
             }
         },
