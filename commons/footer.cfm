@@ -52,15 +52,15 @@
 
 				<p class="footer-links">
 					<a href="index.cfm">Home</a>
-					·
+					&#8226;
 					<a href="#">Blog</a>
-					·
+					&#8226;
 					<a href="#">Pricing</a>
-					·
+					&#8226;
 					<a href="#">About</a>
-					·
+					&#8226;
 					<a href="#">Faq</a>
-					·
+					&#8226;
 					<a href="#">Contact</a>
 				</p>
 

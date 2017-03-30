@@ -15,3 +15,6 @@
 
 <link rel="stylesheet" href="assets/libraries/fontawesome/css/font-awesome.min.css">
 <!--- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> --->
+
+<script src="assets/libraries/bootstrapnotify/js/bootstrap-notify.min.js" charset="utf-8"></script>
+<link rel="stylesheet" href="assets/libraries/animate/css/animate.min.css">

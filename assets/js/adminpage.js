@@ -1,3 +1,6 @@
+//        FUNCTION TEMPLATE
+//        notify(msg, alertType, icon, title, icontype, enter_anim, exit_anim)
+
 $(document).ready(function(){
     $(document.body).on('keydown', '#product_action_add_button', function(e){
         populateBrandsSuppliers("brands_select_list","suppliers_select_list");
@@ -172,9 +175,43 @@ function showProduct(prdt_div){
                         +'</form>';
     $("#products-info").html( "<div class=''>" + productForm + "</div>"); //.addClass("no-background");
 }
+
+function addCategory(el){
+    var CategoryName = ($(el).prev().val()).trim();
+    if(CategoryName != ""){
+        $.ajax({
+            url: "cfc/admin.cfc?method=addCategory",
+            data: {categoryname: CategoryName},
+            // dataType: "JSON",
+        }).done(function(response){
+            if(response == "true")          $(el).next().children(".list").append("<p class='list-item'>" + BrandName + "</p>");
+            else if(response == "false")    alert("Same Category Name already Exists..");
+        }).fail();
+    }
+    else{
+        alert('Enter a Name First..');
+    }
+}
+
 function addBrands(el){
-    var BrandName = $(el).prev().val();
-                    $(el).next().children(".list").append("<p class='list-item'>" + BrandName + "</p>");
+    var BrandName = ($(el).prev().val()).trim();
+    if(BrandName != ""){
+        $.ajax({
+            url: "cfc/admin.cfc?method=addBrand",
+            data: { brand: BrandName },
+            success: function(response){ if(response == "true") {
+                                            $(el).next().children(".list").append("<p class='list-item'>" + BrandName + "</p>");
+                                        }
+                                        else if(response == "false"){
+                                            // notify(msg, alertType, icon_class , enter_Animation, Exit_animation);
+                                            notify("Brandname Already Exists", "danger", "fa fa-exclamation-circle");
+                                        }
+            }
+        });
+    }
+    else{
+        alert("Nothing to add");
+    }
 }
 
 function addSubCategory(el){
@@ -182,15 +219,21 @@ function addSubCategory(el){
     var categoryid = inputElement.data('categoryid');
     var categoryname = inputElement.data('categoryname');
     var SubCategoryName = ($(el).prev().val()).trim();
-    
+
     if( SubCategoryName != ""){
         $.ajax({
             url: "cfc/admin.cfc?method=addSubCategory",
             data: { categoryid : categoryid, subcategoryname : SubCategoryName },
             dateType: "JSON",
             success: function(res){
-                console.log("added " + SubCategoryName);  //update Database
-                $(el).next().children(".list").append("<p class='list-item'>" + SubCategoryName + "</p>"); //Update UI
+                if(res == "true"){
+                    notify("Added" + subcategoryname, "success", "fa fa-check")
+                    $(el).next().children(".list").append("<p class='list-item'>" + SubCategoryName + "</p>"); //Update UI
+                }
+                else if( res == "false"){
+                    notify("Subcategory Already Exists", "danger", "fa fa-exclamation-circle");
+                }
+
             },
             error:function(err){
                 console.log(err);
@@ -227,4 +270,39 @@ function enableSubCategoryTextField(el){
     else{
         $("#subcategory_textbox").prop('disabled', true);
     }
+}
+
+function notify(msg, alertType, icon, title, icontype, enter_anim, exit_anim){
+
+    // alert("message: " + msg + "\nalertType: " + alertType + "\nIcon: " + icon + "\nTitle: " + title + "\nIcontype: " + icontype + "\nEnterAnimation: " + enter_anim + "\nExitAnimation: " + exit_anim);
+
+    if(msg          == undefined || msg         == "" )   var msg = "no message";
+    if(alertType    == undefined || alertType   == "" )   var alertType = "success";
+    if(icon         == undefined || icon        == "" )   var icon = "";
+    if(title        == undefined || title       == "" )   var title="";
+    if(icontype     == undefined || icontype    == "" )   var icontype = "class";
+    if(enter_anim   == undefined || enter_anim  == "" )   var enter_anim = 'fadeInUp';
+    if(exit_anim    == undefined || exit_anim   == "" )   var exit_anim = 'fadeOutDown';
+
+    $.notify({
+        title: title,
+        message: "<span class='"+ icon +"'> " + msg + "</span>"
+    },
+    {
+        type: 'pastel-' + alertType,
+        // icon_type: icontype,
+        delay: 1000,
+        animate:    {
+                enter: "animated " + enter_anim,
+                exit: "animated " + exit_anim
+        },
+        placement: {
+            from: "bottom",
+            align: "center"
+        }
+        // template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+		//             '<span data-notify="title">{1}</span>' +
+		//             '<span data-notify="message">{2}</span>' +
+	    //           '</div>'
+    });
 }

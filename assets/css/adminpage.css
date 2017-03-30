@@ -11,12 +11,20 @@
 .cnb-content{
     margin-top: 20px;
 }
-.list-item{
+
+.cnb-category p.list-item{
+    color: #009688; background-color: #E0F2F1;  margin: 5px;    padding: 5px;   border-radius: 4px;
+}
+.cnb-subcategory p.list-item{
     color: blue; background-color: #e3f2fd; margin: 5px; padding: 5px; border-radius: 4px;
+}
+.cnb-brand p.list-item{
+    color: #FF5722; background-color: #FFF3E0; margin: 5px; padding: 5px; border-radius: 4px;
 }
 .cnb-search{
     border: 0px;
     border-bottom: 1px solid lightgrey;
+    width: 100%;
 }
 .cnb-search:focus{
     outline: 0px;
@@ -82,4 +90,35 @@ form#product_add_form{
 }
 #products-list{
     padding-left: 20px;
+}
+
+
+/* pastel theme for bootstrap NOTIFY by Mark Gilliland*/
+
+
+@import url(http://fonts.googleapis.com/css?family=Old+Standard+TT:400,700);
+[data-notify="container"][class*="alert-pastel-"] {
+	background-color: rgb(141, 141, 139);
+	border-width: 0px;
+	border-left: 15px solid rgb(255, 240, 106);
+	border-radius: 0px;
+	box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.3);
+	font-family: 'Old Standard TT', serif;
+	letter-spacing: 1px;
+}
+[data-notify="container"].alert-pastel-info {
+	border-left-color: rgb(255, 179, 40);
+}
+[data-notify="container"].alert-pastel-danger {
+	border-left-color: rgb(255, 103, 76);
+}
+[data-notify="container"][class*="alert-pastel-"] > [data-notify="title"] {
+	color: rgb(255, 255, 255);
+	display: block;
+	font-weight: 700;
+	margin-bottom: 5px;
+}
+[data-notify="container"][class*="alert-pastel-"] > [data-notify="message"] {
+    color: white;
+	font-weight: 400;
 }

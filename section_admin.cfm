@@ -103,8 +103,13 @@
                         <input type="text">
                         <button type="button" class="btn btn-success btn-sm" onclick="addCategory(this)">Add Category</button>
                         <div class="cnb-content cnb-category">
-                            <input type="text" placeholder="search..." class="cnb-search">
+                            <input type="text" placeholder="search categories..." class="cnb-search">
                             <div class="list">
+                                <cfoutput>
+                                    <cfloop query="categories">
+                                        <p class='list-item'>#CategoryName#</p>
+                                    </cfloop>
+                                </cfoutput>
                             </div>
                         </div>
                     </div>
@@ -122,7 +127,7 @@
                             <input type="text" id="subcategory_textbox" data-categoryid="" data-categoryname="">
                         <button type="button" class="btn btn-success btn-sm" onclick="addSubCategory(this)">Add SubCategory</button>
                         <div class="cnb-content cnb-subcategory">
-                            <input type="text" placeholder="search..." class="cnb-search">
+                            <input type="text" placeholder="search subcategories..." class="cnb-search">
                             <div class="list">
                             </div>
                         </div>
@@ -132,8 +137,16 @@
                         <input type="text" value="" placeholder="New Brand..">
                         <button type="button" class="btn btn-success btn-sm" onclick="addBrands(this)">Add Brands</button>
                         <div class="cnb-content cnb-brand">
-                            <input type="text" placeholder="search..." class="cnb-search">
+                            <input type="text" placeholder="search brands..." class="cnb-search">
                             <div class="list">
+                                    <cfquery name="brands">
+                                    SELECT * from [Brand]
+                                    </cfquery>
+                                    <cfoutput>
+                                    <cfloop query="brands">
+                                <p class='list-item'>#BrandName#</p>
+                                    </cfloop>
+                                    </cfoutput>
                             </div>
                         </div>
                     </div>
