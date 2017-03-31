@@ -18,7 +18,7 @@ function checkout(){
     });
 }
 
-function user_removeFromCart(pid){
+function user_removeFromCart(el, pid){
     $.ajax({
         url: "cfc/cart.cfc?method=removeFromUserCart",
         data: {
@@ -34,6 +34,7 @@ function user_removeFromCart(pid){
                 if(val == 0) {
                     $("#checkout_pane button").attr("onclick", "alert('Add some products first..')").addClass("disabled");
                 }
+                notify("<span style='color: #42a5f5; font-weight: bold;'>" + $(el).data('name') + "</span> \rremoved from cart", "info", 'fa fa-check-circle', "", "", "fadeInUp", "fadeOutDown");
                 console.log('cart Data Changed');
             }
             else{
@@ -46,7 +47,7 @@ function user_removeFromCart(pid){
     })
 }
 
-function removeFromSessionCart(pid){
+function removeFromSessionCart(el, pid){
     $.ajax({
         url: "cfc/cart.cfc?method=removeFromSessionCart",
         data: {
@@ -61,6 +62,7 @@ function removeFromSessionCart(pid){
                 if(val == 0) {
                     $("#checkout_pane button").attr("onclick", "alert('Add some products first..')").addClass("disabled");
                 }
+                notify("<span style='color: #42a5f5; font-weight: bold;'>" + $(el).data('name') + "</span> \rremoved from cart", "info", 'fa fa-check-circle', "", "", "fadeInUp", "fadeOutDown");
                 // console.log('cart Data Changed');
             }
             else{
@@ -81,8 +83,8 @@ function fetchCartItems(){
         if(response.length) {                   //Cart not empty
 
             var fnOpen;
-            if("CartId" in response[0]) fnOpen = "user_removeFromCart("; // in user Cart
-            else                        fnOpen = "removeFromSessionCart("; //in session Cart
+            if("CartId" in response[0]) fnOpen = "user_removeFromCart(this,"; // in user Cart
+            else                        fnOpen = "removeFromSessionCart(this,"; //in session Cart
             var fnClose = ")";
 
             $.each(response, function(i, item){
@@ -92,7 +94,7 @@ function fetchCartItems(){
                                     +       item.ProductId + ' ' + item.Name
                                     +   '</div>'
                                     +   '<div class="item_actions">'
-                                    +       '<button type="button" class="btn btn-warning" onclick="'+fnOpen+item.ProductId+fnClose+'">Remove</button>'
+                                    +       '<button type="button" class="btn btn-warning" data-name="'+item.Name+'" onclick="'+fnOpen+item.ProductId+fnClose+'">Remove</button>'
                                     +   '</div>'
                                 + '</div> '
                     $("#items_pane").append(itemStr);

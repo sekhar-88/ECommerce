@@ -68,4 +68,21 @@
         <cfreturn #ProductPrice.ListPrice#/>
     </cffunction>
 
+    <cffunction name = "fetchProductDetails" access="remote" returntype="query" output="true">
+        <cfargument name="pid" required="true" type="numeric" />
+        <cftry>
+            <cfquery name="productDetails">
+                SELECT p.* , b.BrandName
+                FROM [Product] p
+                INNER JOIN [Brand] b
+                ON p.BrandId = b.BrandId
+                WHERE p.ProductId = <cfqueryparam value = "#pid#" CFSQLType = "[cf_sql_integer]">
+            </cfquery>
+            <cfreturn #productDetails#/>
+        <cfcatch>
+            <cfdump var="#cfcatch#" />
+            <cfreturn false/>
+        </cfcatch>
+        </cftry>
+    </cffunction>
 </cfcomponent>

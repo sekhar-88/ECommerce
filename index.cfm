@@ -45,21 +45,23 @@
 
                       <!-- Wrapper for slides -->
                       <div class="carousel-inner" role="listbox" style="height: 400px;">
+
                         <div class="item active">
+                          <a href="product.cfm?cat=2&amp;scat=3"><img src="assets/images/products/featured/frontpagecarousel/mensfashion.jpg" style="margin:auto; height: 400px; widht: 100%" alt="mensfashion"></a>
+                        </div>
+
+                        <div class="item">
                           <a href="product.cfm?cat=1&amp;scat=1"><img src="assets/images/products/featured/frontpagecarousel/mensfootwear.jpg" style="margin:auto; height: 400px; widht: 100%" alt="mensfootwear"></a>
                         </div>
 
                         <div class="item">
-                            <a href=""><img src="assets/images/products/featured/frontpagecarousel/casualstyle1.jpg" style="margin:auto; height: 400px; widht: 100%" alt="casualstyle"></a>
+                            <a href=""><img src="assets/images/products/featured/frontpagecarousel/casualstyle.jpg" style="margin:auto; height: 400px; widht: 100%" alt="casualstyle"></a>
                         </div>
 
-                        <div class="item">
-                          <a href="product.cfm?cat=2&amp;scat=3"><img src="assets/images/products/featured/frontpagecarousel/mensfashion1.jpg" style="margin:auto; height: 400px; widht: 100%" alt="mensfashion"></a>
-                        </div>
 
-                        <div class="item">
+                        <!--- <div class="item">
                           <img src="assets/images/products/featured/frontpagecarousel/menstshirts.jpg" style="margin:auto; height: 400px; widht: 100%" alt="menstshirts">
-                        </div>
+                        </div> --->
 
                       </div>
 

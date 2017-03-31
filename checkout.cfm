@@ -68,6 +68,13 @@
     </div>
 </div>
 
+<div>
+    <p>
+        <h3 style="background-color: #fff59d;" class="color-grey padding-10 margin-0 margin-top--19">
+            <span class="glyphicon glyphicon-shopping-cart color-black font-size-20"></span> Product checkout
+        </h3>
+    </p>
+</div>
     <div class="container-fluid checkout_section">
         <cfset cartCFC = createObject("cfc.cart")/>
         <cfset cartIsEmpty = cartCFC.isCartEmpty()/>
@@ -95,7 +102,7 @@
             <div id="address_header" class="section_header">
                 <div class="header_text">Delivery Address</div>
                 <div class="show_when_collapsed" style="display:none;">
-                    <button type="button" class="btn btn-review" onclick="revertToStep0();">Change address</button>
+                    <button type="button" class="btn btn-review border-radius-2" onclick="revertToStep0();">Change address</button>
                 </div>
             </div>
 
@@ -115,8 +122,8 @@
                             </div>
                             <div style="">
                                 <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);">   Deliver Here  </button>
-                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="editAddress(this);">    Edit          </button>
-                                <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="deleteAddress(this);">  Delete        </button>
+                                <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button>
+                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);">  Delete        </button>
                             </div>
                     </div>
                 </cfloop>
@@ -138,7 +145,7 @@
             <div id="summary_header" class="section_header">
                 <div class="header_text">Order Summary</div>
                 <div class="show_when_collapsed" style="display:none;">
-                    <button type="button" onclick="reviewOrder()" class="btn btn-review">Review Order</button>
+                    <button type="button" onclick="reviewOrder()" class="btn btn-review border-radius-2">Review Order</button>
                 </div>
             </div>
 <!---
@@ -176,7 +183,7 @@
                 -->
                 </div>
                 <div>
-                    <button type="button" class="btn btn-success" onclick="if(validateItemQuantity()) { gotoPaymentSection(this);}" style="float:right;padding: 10px; font-size: 17px; font-weight: 400;box-shadow:1px 1px 5px lightgrey">Proceed to Payment</button>
+                    <button type="button" class="btn btn-success" onclick="if(validateItemQuantity()) { gotoPaymentSection(this);}" style="float:right;padding: 10px; font-size: 17px; font-weight: 400;box-shadow:1px 1px 5px lightgrey; border-radius: 2px; z-index: 100;">Proceed to Payment</button>
                     <div style="float:right;padding: 5px;">
                         <span style="font-weight:bold; padding: 10px;">Total:</span>
                         <span class="fa fa-inr checkoutPrice"></span> <span class="checkoutPrice" id="total-checkout-price"> </span><span class="checkoutPrice">/-</span>
@@ -207,20 +214,17 @@
 
                     <div class="tab-content" style="">
                         <div id="cod-section" class="tab-pane fade in active">
-                            <h6>pay using cash on delivery</h6>
-                            <span class="separator"></span>
+                            <!--- <h6>pay using cash on delivery</h6> --->
 
-                            <div class="payment-subsection"> <button type="button" class="btn btn-warning" onclick="placeOrderByCOD()"> PLACE ORDER</button> </div>
+                            <div class="payment-subsection"> <button type="button" class="btn btn-warning no-border-radius" onclick="placeOrderByCOD()"> PLACE ORDER</button> </div>
                         </div>
                         <div id="netbanking-section" class="tab-pane fade">
-                            <h6>pay using net banking</h6>
-                            <span class="separator"></span>
+                            <!--- <h6>pay using net banking</h6> --->
 
                             <div class="payment-subsection">netbanking-section</div>
                         </div>
                         <div id="debitcard-section" class="tab-pane fade">
-                            <h6>pay using Debit Card</h6>
-                            <span class="separator"></span>
+                            <!--- <h6>pay using Debit Card</h6> --->
 
                             <div class="payment-subsection">Pay Using Debit Card</div>
                         </div>

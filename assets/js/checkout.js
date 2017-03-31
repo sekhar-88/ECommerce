@@ -78,7 +78,8 @@ function gotoStep0(){
 }
 function revertToStep0(){
     $("#order_summary .subsection,#payment_section .subsection, #address_section .show_when_collapsed, #order_summary .show_when_collapsed").hide();
-    $("#address_section .subsection").show(300);
+    $("#address_section .subsection").slideDown(200);
+    orderSummary = "";
     revertToStep(0);
 }
 
@@ -100,7 +101,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
 
                     var itemDescContent = "<div>"
                                             + "<div class='cart_product_image'>"
-                                            + "<img class='cart_thumbnail' src='assets/images/products/medium/"+ item.id +".jpeg' />"
+                                            + "<img class='cart_thumbnail' src='assets/images/products/medium/"+ item.image +"' />"
                                             + "</div>"
                                             + "<h4>" + name + "</h4>"
                                             + desc
@@ -111,9 +112,9 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                     var itemDesc = "<div class='itemInfo'>"
                                     + itemDescContent
                                     + "</div>";
-                    var itemPrice = "<div class='itemPrice'>"
+                    var itemPrice = "<div class='itemPrice'><div>"
                                     + itemPriceContent
-                                    + "</div>";
+                                    + "</div></div>";
                     var removeContent = "<div class='item_remove_icon'>"
                                         + "<span class='glyphicon glyphicon-remove' onclick='removeItem(this);' data-dismiss_id="
                                         + item.id
@@ -124,27 +125,38 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                         url: "cfc/checkout.cfc?method=getAvailableQuantity",
                         data: { itemid: item.id },
                         dataType: "json",
+
                         success: function(maxQty){
                             console.log("Available Products: " + maxQty);
-                            var itemQtyContent = "<input type='number' data-toggle='tooltip' title='Max Quantity Exceeded' data-card_id='"+item.cartId+"' data-item_id="+ item.id +" + data-item_price='"+item.price+"' name='itemQty' value='"+item.qty+"' min='1' max='"+maxQty+"' class='inputItemsQuantity' onkeyup='validateItemCount(this, this.value, this.max, "+item.cartId+");' onmouseup='validateItemCount(this, this.value, this.max, "+item.cartId+")'>";  //store (Product Id, prev_item_count) in custom (Data-* attributes)  & inputItemsQuantity class is required to validate item quantity count while placing order
-                            var itemQty = "<div class='itemQty'>"
-                                            +   itemQtyContent
-                                            + "</div>";
-                            $("#order_summary .items").append("<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + removeContent + "</div>");   //data-session_index is for removing the corresponding entry from sessoin user Arry(session.User.checkout.itemsInfo(type array) ) while removed from checkout Page
-                            orderSummary +=  "<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemPrice + "/item" + "</div>";
+
+                            //store (Product Id, prev_item_count)    in custom (Data-* attributes)  & inputItemsQuantity class is required to validate item quantity count while placing order
+                            var itemQtyContent = "<span><span class='inputItemsQuantityleft'>Qty:</span><input type='number' data-toggle='tooltip' title='Max Quantity Exceeded' data-card_id='"+item.cartId+"' data-item_id="+ item.id +" + data-item_price='"+item.price+"' name='itemQty' value='"+item.qty+"' min='1' max='"+maxQty+"' class='inputItemsQuantity' onkeyup='validateItemCount(this, this.value, this.max, "+item.cartId+");' onmouseup='validateItemCount(this, this.value, this.max, "+item.cartId+")'></span>";
+                            var itemQty = "<div class='itemQty'>" +   itemQtyContent + "</div>";
+
+
+                            //data-session_index is for removing the corresponding entry from sessoin user Arry(session.User.checkout.itemsInfo(type array) ) while removed from checkout Page
+                            $("#order_summary .items").append("<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + removeContent + "</div>");
+
+                            orderSummary +=  "<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemPrice + "/item" + "</div>"; //store in global variable
                         },
+
                         error: function(error){
-                            alert('Error retrieving Available Product Quantity');
+                            notify("Error Availabing Product Quantity", "danger", "glyphicon glyphicon-info-sign");
+                            console.log(error);
                         }
+
                     });
+
                     var x = (response.totalPrice).toLocaleString('en-IN')
                     $("#total-checkout-price").text(x);
                     amountPayble = x;
             });
         },
+
         error: function(error){
             alert("error retrieving Cart checkout Details " + error);
         }
+
     });
 }
 
@@ -412,7 +424,7 @@ function validateItemQuantity(){
         var itemId = $(element).data('item_id');
 
         console.log(qty + itemId);
-        if( qty > 0 ){
+        if( parseInt(qty) > 0 ){
             $.ajax({
                     async: false,
                     url: "cfc/checkout.cfc?method=getAvailableQuantity",
@@ -436,7 +448,7 @@ function validateItemQuantity(){
             return false;  // equivalent to break;
         }
     });
-    if(!productCountvalid) alert("Invalid Product Quantity");
+    if(!productCountvalid) notify("Invalid product quantity", "info", "fa fa-exclamation-circle");
     return result;
 }
 // function myfun(){

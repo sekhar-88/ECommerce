@@ -21,10 +21,10 @@
 
     <cffunction name="getCheckOutStep" access="remote" returntype="numeric" returnFormat="json" >
         <cftry>
-    <!---   if loggedin > if cartdata cartDataChanged  > if at checkout step 1
-            |              |                              /delete item info in checkout structure(created for easy product information retrieval)
-            |              /return user at step
-            /return -1 --->
+        <!---   if loggedin > if cartdata cartDataChanged  > if at checkout step 1
+                |              |                              /delete item info in checkout structure(created for easy product information retrieval)
+                |              /return user at step
+                /return -1 --->
 
             <cfif session.loggedin>
                 <cfif session.cartDataChanged>
@@ -63,6 +63,7 @@
         </cftry>
     </cffunction>
 
+
     <cffunction name="revertToStep" output="true" access="remote" returnType="boolean" returnFormat="json">
         <cfargument name="step" type="numeric" required="true" />
 
@@ -80,11 +81,10 @@
                         <cfreturn false/>
                     </cfdefaultcase>
                 </cfswitch>
-
     </cffunction>
 
 
-    <cffunction output="false" name="getOrderSummary" access="remote" returntype="Struct" returnformat="json">
+    <cffunction name="getOrderSummary" access="remote" returntype="Struct" returnformat="json" output="false">
 
         <cfset totalPrice = 0 />
         <cfset itemsArray = [] />
@@ -92,7 +92,7 @@
         <cftry>
         <!--- Query for Items in Cart & their price for showing in Step 1 of (CHECKOUT PAGE)--->
                 <cfquery name="itemsQuery">
-                    SELECT c.CartId, c.ProductId, c.Qty , p.Name, p.ListPrice , p.DiscountedPrice, p.Description
+                    SELECT c.CartId, c.ProductId, c.Qty , p.Name, p.ListPrice , p.DiscountedPrice, p.Description, p.Image
                     from [Cart] c
                     inner join [Product] p
                     ON c.ProductId = p.ProductId
@@ -115,7 +115,8 @@
                            "price" = #ListPrice#,
                            "discount"  = #dscnt#,
                            "discountedPrice"   = #DiscountedPrice#,
-                           "description" = #Description#
+                           "description" = #Description#,
+                           "image" = #Image#
                            }) />
                 </cfloop>
                 <!--- SET the step 1 checkout variables inside session --->
@@ -135,7 +136,7 @@
     </cffunction>
 
 
-    <cffunction name = "getAvailableQuantity" returnType="Numeric" returnFormat="json" access="remote">
+    <cffunction name="getAvailableQuantity" returnType="Numeric" returnFormat="json" access="remote">
         <cfargument name="itemid" required="true" type="numeric" />
 
         <cftry>

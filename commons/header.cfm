@@ -69,7 +69,7 @@
 				</ul>
 
 				<!---  search bar --->
-				<form action="index.cfm" class="navbar-form navbar-left" role="search" method="get">
+				<form action="index.cfm" class="navbar-form navbar-left" role="search" method="get" id="product-search-form">
 					<div class="input-group">
 						<input type="text" id="product_searchbox" name="q" class="form-control" placeholder="Search Products..">
 						<span class="input-group-btn">
@@ -141,3 +141,5 @@
             </div>
 		</div>
 	</nav>
+    <div id="notify-div" style="position:fixed; bottom: 20px; left: 0; width: 100%; height: 100px; overflow: hidden;z-index:1;">
+    </div>

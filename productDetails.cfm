@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="assets/css/productDetail.css" rel="stylesheet">
     <script src="assets/js/productDetail.js"></script>
     <cfinclude template = "assets/libraries/libraries.cfm">
 
@@ -33,19 +34,15 @@
 
 
     <cfif StructKeyExists(URL, "pid")>
-        <cfset pid="#url.pid#" />
-
-        <cfquery name="productdetails">
-            SELECT p.* , b.BrandName
-            FROM [Product] p
-            INNER JOIN [Brand] b
-            ON p.BrandId = b.BrandId
-            WHERE p.ProductId = <cfqueryparam value = "#pid#" CFSQLType = "[cf_sql_integer]">
-        </cfquery>
+        <cfset productCFC = createObject("cfc.product")/>
+        <cfset pd = productDetails = productCFC.fetchProductDetails(url.pid)/>
 
         <cfif productdetails.recordCount> <!--- Product Exists --->
             <cfoutput>
-                    #productdetails.BrandName# - #productdetails.Name# #productdetails.ListPrice#
+                    <div class="pd-image-container">
+                        <img src="assets/images/products/medium/#pd.Image#" alt="">
+                    </div>
+                    #pd.BrandName# - #pd.Name# #pd.ListPrice#
 
             <!--- check for if already in cart  --->
             <cfif session.loggedin>

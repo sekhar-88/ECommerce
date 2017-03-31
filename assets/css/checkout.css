@@ -50,40 +50,85 @@
 .item > * {
     padding: 10px;
     margin: 1px;
+    /*border: 1px solid blue;*/
     /*background-color: white;*/
 }
+
+
 .item > :nth-child(1){
     width: 50%;
 }
+
+
 .item > :nth-child(2){
     width: 20%;
 }
-.item > :nth-child(2) > input {
-    width: 100%;
+.item > :nth-child(2) > span {
+    display: block;
+    position: relative;
+    top: 34%;
+    margin: auto;
 }
+.item > :nth-child(2) > span > input {
+    width: 70%;
+}
+
+
 .item > :nth-child(3){
-    width: 15%;
+    width: 20%;
 }
+.item > :nth-child(3) > div{
+    position: relative;
+    top: 36%;
+    text-align: center;
+    color: #FF9800;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
 .item > :nth-child(4){
     width: 9%;
-    height: 100%;
+    position: relative;
 }
-.item > :nth-child(4) > *{
-    display:flex;
-    align-items: center;
+.item > :nth-child(4) > span{
+    position: absolute;
+    top: 34%;
+    left: 25%;
+    /*border: 1px solid black;*/
+    padding: 15%;
+    cursor: pointer;
 }
 .cart_product_image{
     float: left;
-    padding: 20px;
+    width: 170px;
+    height: 130px;
+    overflow: hidden;
 }
 .cart_thumbnail{
-    width: 170px;
-    height: 100px;
+    width: inherit;
+    /*height: inherit;*/
+    /*width: 170px;*/
+    /*height: 130px;*/
 }
 .checkoutPrice{
     font-size: 20px;
     font-weight: bold;
     color: #03A9F4;
+}
+.inputItemsQuantity{
+    border: 0px;
+    border-bottom: 1px solid #CDDC39;
+    /*text-align: center;*/
+    font-weight: bold;
+    color: #505050;
+}
+.inputItemsQuantity:focus{
+    outline: 0;
+}
+.inputItemsQuantityleft{
+    padding: 3px;
+    border-bottom: 1px solid #CDDC39;
 }
 /*.item{
     background-color: green;
@@ -95,15 +140,23 @@
 
 /*CHECKOUT SECTION*/
 .checkout_section{
+    min-height: 480px;
 }
 .section{
 
 }
 .nav-pills > li > a {
-    -webkit-border-radius: 1;
-    -moz-border-radius: 1;
-    border-radius: 1;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
 }
+.nav-pills > li.active > a {
+    background-color: #b9b9b9;
+}
+.nav-pills > li.active > a:focus{
+    background-color: #b9b9b9;
+}
+
 /*--------------------------------------*/
 
 
@@ -112,25 +165,29 @@
 #address_section{
     display:flex;
     flex-flow: column nowrap;
-    border-top:5px solid #607D8B;
+    /*border-top:5px solid #c4d2d8;*/
 }
 .section {
-    border-bottom: 2px solid #81D4FA;
-    border-left: 1px solid #CFD8DC;
-    border-right: 1px solid #CFD8DC;
+    border-radius: 5px;
+    margin-bottom: 1px;
+    /*border-bottom: 5px solid #c4d2d8;*/
+
+    /*border-left: 1px solid #CFD8DC;*/
+    /*border-right: 1px solid #CFD8DC;*/
 }
 
 .section_header{
     padding: 5px;
-    background-color: #E1F5FE;
+    background-color: #d0effd;
     display: flex;
     justify-content: space-between;
 }
 
 .btn-review{
-    background-color: #ffffcc;
+    background-color: #64b5f6;
     box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
     width: 160px;
+    color: white;
 }
 .section_header .header_text{
     color: grey;
@@ -149,7 +206,8 @@
     overflow: auto;
 }
 .address{
-    border: 1px solid lightgrey;
+    border-radius: 2px;
+    /*border: 1px solid lightgrey;*/
     margin: 5px;
     padding: 8px;
     flex:0 0 220px;         /* no stretch   no shrink   fixed width(basewidth) */
@@ -163,7 +221,7 @@
     /*border: 1px solid black;*/
 }
 .new_address {
-    background-color: #f2f2f2;
+    background-color: #e1f5fe;
     display: flex;
     justify-content: center;
     cursor: pointer;
@@ -194,20 +252,24 @@
 #payment_section .subsection nav{    /*left*/
     height: 200px;
     background-color: white;
+    height: 91%;
+    box-shadow: 1px 1px 5px lightgrey;
 }
 #payment_section .subsection nav li a{
     padding: 16px;
 }
 #payment_section .subsection .tab-content{  /*right*/
     position: absolute;
-    left: 25%;
-    top:-20px;
-    width: 70%;
+    left: 21%;
+    top: 10px;
+    width: 80%;
 }
 .payment-subsection{
     padding: 20px;
-    height: 250px;
+    height: 254px;
     background-color: white;
+    border-left: 1px solid lightgrey;
+    box-shadow: 1px 0px 5px lightgrey;
 }
 
 
@@ -216,9 +278,21 @@
 
 /*GLOBAL*/
 .btn, .btn-info, .btn-success, .btn-primary, .btn-default, .btn-warning{
-    border-radius: 1px;
-    margin: 0;
+    border-radius: 9px;
+    margin: 0px;
+    /*padding: 0px;*/
+    border: 0px;
 }
-.fa{
+/*.fa{
     color: black;
+}*/
+/*.glyphicon{
+    color: black;
+}*/
+.label {
+    border-radius: 7px;
+    border: 0px;
+    margin: 0px;
+    padding: 8px;
+    font-size: 12px;
 }
