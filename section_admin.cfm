@@ -100,6 +100,7 @@
             <div id="section-categories" class="tab-pane fade">
                 <div class="sections">
                     <div class="cnb-section">  <!---cnb for Category And Brand --->
+                        <h2 align="center">Add Category</h2>
                         <input type="text">
                         <button type="button" class="btn btn-success btn-sm" onclick="addCategory(this)">Add Category</button>
                         <div class="cnb-content cnb-category">
@@ -115,6 +116,7 @@
                     </div>
 
                     <div class="cnb-section">
+                            <h2 align="center">Add Subcategory</h2>
                             <select style="padding: 3px; width: 100%;" onchange="enableSubCategoryTextField(this);">
                                     <option value="invalid">Select Category</option>
                                 <cfoutput>
@@ -134,6 +136,7 @@
                     </div>
 
                     <div class="cnb-section">
+                        <h2 align="center">Add Brands</h2>
                         <input type="text" value="" placeholder="New Brand..">
                         <button type="button" class="btn btn-success btn-sm" onclick="addBrands(this)">Add Brands</button>
                         <div class="cnb-content cnb-brand">

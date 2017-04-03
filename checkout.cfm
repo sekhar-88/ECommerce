@@ -69,11 +69,10 @@
 </div>
 
 <div>
-    <p>
-        <h3 style="background-color: #fff59d;" class="color-grey padding-10 margin-0 margin-top--19">
+        <h3 id="section-checkout-header" style="background-color: #fff59d;" class="color-grey padding-10 margin-0 margin-top--19">
             <span class="glyphicon glyphicon-shopping-cart color-black font-size-20"></span> Product checkout
         </h3>
-    </p>
+        <p></p>
 </div>
     <div class="container-fluid checkout_section">
         <cfset cartCFC = createObject("cfc.cart")/>

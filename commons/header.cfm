@@ -141,5 +141,5 @@
             </div>
 		</div>
 	</nav>
-    <div id="notify-div" style="position:fixed; bottom: 20px; left: 0; width: 100%; height: 100px; overflow: hidden;z-index:1;">
-    </div>
+    <!--- <div id="notify-div" style="position:fixed; bottom: 20px; left: 0; width: 100%; height: 100px; overflow: hidden;z-index:1; pointer-events: none;">
+    </div> --->

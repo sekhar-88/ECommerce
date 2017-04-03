@@ -3,6 +3,7 @@
 <head>
   <title>eShopping</title>
   <cfinclude template = "assets/libraries/libraries.cfm" />
+  <link href="assets/css/index.css" rel="stylesheet">
   <script src="assets/js/index.js"></script>
   <style>
 
@@ -11,29 +12,70 @@
 <body>
 <div id="header"><cfinclude template = "commons/header.cfm"></div>
 
-<div class="container-fluid">
+<div class="container-fluid-parent">
     <cfif StructKeyExists(URL, "q")>
         <cfquery name = "searchResult">
-            select Name
+            select *
               from [Product]
              where Name LIKE '%#URL.q#%'
         </cfquery>
         <cfoutput>
-            #searchResult.recordCount# Results <br />
-            <cfif searchResult.recordCount>
-                <cfloop query="searchResult">
-                    <div class="product_search">
-                        <div class="product_image">
-                        </div>
-                        <div class="product_info">
-                            #searchResult.Name#
-                        </div>
+            <p id="product-count-show"> #searchResult.recordCount# Results </p>
+            <br />
+
+
+            <div class="container-fluid">
+            <cftry>
+                <div class="filters">
+                    <div class="filter filter-brand">
+                        <div class="filter-header">Brands</div>
                     </div>
-                </cfloop>
-            </cfif>
+                    <div class="filter filter-price">
+                        <div class="filter-header">Price</div>
+                    </div>
+                    <div class="filter filter-other">
+                        <div class="filter-header"></div>
+                    </div>
+                </div>
+            <cfif searchResult.recordCount>
+                <div class="products">
+                        <cfloop query="searchResult">
+                            <div class="product">
+                                <a href="productDetails.cfm?pid=#ProductId#"></a>
+                                <div class="product_image">
+                                    <img class="" src="assets/images/products/medium/#Image#">
+                                </div>
+                                <div class="product_content">
+                                    <div class="product_name"> #Name# </div>
+                                    <div class="product_pricing">
+                                        <div class="product_price"> #ListPrice#  </div>
+                                        <div class="product_discounted_price">#DiscountPercent#</div>
+                                    </div>
+                                    <ul>
+                                        <!--- <cfloop index="i" list="#Description#" delimiters="`"  >
+                                            <li>#i#</li>
+                                        </cfloop> --->
+                                    </ul>
+                                </div>
+                            </div>
+                        </cfloop>
+                </div>
+            <cfelse>
+                <div class="no-products">
+                    no products
+                </div>
+        </cfif>
+        <cfcatch>
+        <cfdump var="#cfcatch#" />
+        </cfcatch>
+        </cftry>
         </cfoutput>
-    <cfelse>
-            <div class="container carousel-container">
+
+
+
+    <cfelse>   <!--- home page section --->
+        <div class="container-fluid">
+            <div class="carousel-container">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                       <!-- Indicators -->
                       <ol class="carousel-indicators">
@@ -58,7 +100,6 @@
                             <a href=""><img src="assets/images/products/featured/frontpagecarousel/casualstyle.jpg" style="margin:auto; height: 400px; widht: 100%" alt="casualstyle"></a>
                         </div>
 
-
                         <!--- <div class="item">
                           <img src="assets/images/products/featured/frontpagecarousel/menstshirts.jpg" style="margin:auto; height: 400px; widht: 100%" alt="menstshirts">
                         </div> --->
@@ -76,6 +117,7 @@
                       </a>
                 </div>
             </div>
+        </div>
     </cfif>
 </div>
 

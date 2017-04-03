@@ -1,0 +1,109 @@
+#product-count-show{
+    background-color: #E1F5FE;
+    padding: 5px;
+}
+.container-fluid-parent{
+    background-color: #f9f9f9;
+}
+
+.filters{
+    float: left;
+    width: 21%;
+    background-color: white;
+    border: 1px solid #eaeaea;
+    height: ;
+}
+.filter{
+    border-radius: 5px;
+    background-color: white;
+}
+.filter-header{
+    padding: 5px;
+    border-bottom: 1px solid lightgrey;
+    font-weight: bold;
+    color: teal;
+    font-size: 15px;
+    font-family: arial;
+    background-color: white;
+}
+
+.products,.no-products{
+    background-color: white;
+    border: 1px solid #eaeaea;
+    padding: 10px;
+    float: right;
+    width: 78%;
+    display: flex;
+    flex-flow: row wrap;
+    min-height: 800px;
+    justify-content: space-between;
+}
+
+.product, .no-product{
+    border: 1px solid #f7f7f7;
+    background-color: white;
+    /*margin-right: 5px;*/
+    border-radius: 2px;
+    height: 380px;
+    /*margin-bottom: 5px;*/
+    transition: box-shadow 0.1s ease-in-out;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+
+}
+.no-product{
+    transition: box-shadow 0.3s ease-in-out;
+    padding: 20px;
+    color: purple;
+}
+.no-product:hover{
+    box-shadow: 1px 1px 30px grey;
+}
+
+.product:hover{
+    box-shadow: 1px 1px 30px grey;
+    cursor: pointer;
+}
+
+/*product left side content*/
+/*containg only image*/
+.product_image{
+    /*padding: 10px;*/
+    margin: 10px;
+    width: 250px;
+    height: 235px;
+    border-bottom: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+.product_image > img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+/*product middle div content*/
+.product_content{
+    margin-top: 5px;
+    overflow: auto;
+    /*padding: 0 10px 10px 10px;*/
+}
+.product_name{
+    padding: 8px;
+    width: 250px;
+    font-family: Arial;
+    font-size: 16px;
+    color: black;
+}
+
+/*product right side content*/
+.product_pricing{
+    margin-left: 10%;
+}
+
+.product_price, .product_discounted_price {
+    font-size: 25px;
+    font-weight: bold;
+    color: teal;
+}

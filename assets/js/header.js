@@ -6,11 +6,13 @@ $(document).ready(function(){
     login_validator = $("#login-form").validate();
     updateCartCount();
     $("#product-search-form").submit(function(e){
-        e.preventDefault();
         if($("#product_searchbox").val().trim() != "" ){
-            $("#product-search-form").submit();
+            var q = $("#product_searchbox").val().trim();
+            $("#product_searchbox").val(q);
+            fillBrands(q);
         }
         else{
+            e.preventDefault();
             notify("enter some value first..", "warning");
         }
     })
@@ -99,7 +101,7 @@ function notify(msg, alertType, icon, title, icontype, enter_anim, exit_anim){
         message: "<span class='"+ icon +"'> " + msg + "</span>"
     },
     {
-        element: '#notify-div',
+        // element: '#notify-div',
         type: 'pastel-' + alertType,
         // icon_type: icontype,
         delay: 1000,

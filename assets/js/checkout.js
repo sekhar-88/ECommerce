@@ -394,8 +394,10 @@ function placeOrderByCOD(){
             success: function(response){
                 if(response.status){
                     alert("added to Orders & Orderdetails");
+                    $("#section-checkout-header").remove();
+                    // $("p").eq(0).css("height","45px");
                     str = '<div><h1 align="center" style="color: blue;"><span></span>Thank you for your order!</h1>'
-                            +'<span>Your order has been placed and is being processed. When the item(s) are shipped, you will receive an email with the details.</span></div>'
+                            +'<span style="color: #4CAF50;">Your order has been placed and is being processed. When the item(s) are shipped, you will receive an email with the details.</span></div>'
                             +'<div><h2 align="center" style="color: teal;font-weight: bold;">Amount Payble:'+amountPayble+'</h2></div>'
                     $(".checkout_section").html(str + orderSummary);
                     // set step  = 0

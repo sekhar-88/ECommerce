@@ -184,7 +184,10 @@ function addCategory(el){
             data: {categoryname: CategoryName},
             // dataType: "JSON",
         }).done(function(response){
-            if(response == "true")          $(el).next().children(".list").append("<p class='list-item'>" + BrandName + "</p>");
+            if(response == "true") {
+                $(el).next().children(".list").append("<p class='list-item'>" + CategoryName + "</p>");
+                notify("Added category: " + CategoryName, "success", "glyphicon glyphicon-ok")
+            }
             else if(response == "false")    alert("Same Category Name already Exists..");
         }).fail();
     }
@@ -227,7 +230,7 @@ function addSubCategory(el){
             dateType: "JSON",
             success: function(res){
                 if(res == "true"){
-                    notify("Added" + subcategoryname, "success", "fa fa-check")
+                    notify("Added " + SubCategoryName, "success", "fa fa-check");
                     $(el).next().children(".list").append("<p class='list-item'>" + SubCategoryName + "</p>"); //Update UI
                 }
                 else if( res == "false"){
