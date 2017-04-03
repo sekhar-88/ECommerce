@@ -42,17 +42,22 @@
                         </cfquery>
 
                         <cfoutput>
-                        <cfloop query="subcats" >
+                        <cfloop query="subcats">
                             <div style="padding: 10px;" class="checkbox">
-                            <label><input type="checkbox" name="checkbox" value="#subcats.SubCategoryId#" > #subcats.SubCategoryName#</label>
+                                <label><input type="checkbox" name="checkbox" value="#subcats.SubCategoryId#" > #subcats.SubCategoryName#</label>
                             </div>
                         </cfloop>
                         </cfoutput>
 
                         </form>
                     </div>
+
                     <div class="filter filter-price">
                         <div class="filter-header">Price</div>
+                        <form id="filter-price">
+
+                        </form>
+
                     </div>
                     <div class="filter filter-other">
                         <div class="filter-header"></div>
@@ -61,7 +66,7 @@
 
                 <div class="products">
                         <cfloop query="searchResult">
-                            <div class="product">
+                            <div class="product scat_#SubCategoryId#">
                                 <a href="productDetails.cfm?pid=#ProductId#"></a>
                                 <div class="product_image">
                                     <img class="" src="assets/images/products/medium/#Image#">

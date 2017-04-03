@@ -9,7 +9,7 @@ $(document).ready(function(){
         if($("#product_searchbox").val().trim() != "" ){
             var q = $("#product_searchbox").val().trim();
             $("#product_searchbox").val(q);
-            fillBrands(q);
+            // fillBrands(q);
         }
         else{
             e.preventDefault();

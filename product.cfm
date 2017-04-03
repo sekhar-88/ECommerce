@@ -5,7 +5,7 @@
     <link href="assets/css/product.css" rel="stylesheet">
     <script src="assets/js/product.js"></script>
 
-    <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
+    <cfif StructKeyExists(session, "User") AND session.User.Role EQ "admin">
         <script src="assets/js/adminpage.js"></script>
     </cfif>
 </head>
@@ -107,7 +107,7 @@
                             <cfset productCFC = createObject("cfc.product") />
                             <cfset productsQuery = productCFC.getProductsForSubCat(scat = #URL.scat#) />
 
-                            <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
+                            <cfif StructKeyExists(session, "User") AND session.User.Role EQ "admin">
                             <cfoutput>
                             <div class="productadd" data-scat="#URL.scat#" onclick="addNewProduct(this);">
 
@@ -172,8 +172,8 @@
 
 <cftry>
 <cfif IsDefined("form.Image")>
-    <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/>
-    <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
+    <!--- <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/> --->
+    <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
     <cffile action="upload"
             filefield="Image"
             destination="#path#"
@@ -198,7 +198,7 @@
                     <cfqueryparam value="#image#" cfsqltype="cf_sql_nvarchar">
                 )
             </cfquery>
-
+            <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
 
 
             <!--- <cfset adminCFC = createObject("cfc.admin") />

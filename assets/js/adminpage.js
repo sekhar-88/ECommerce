@@ -88,7 +88,7 @@ function populateBrandsSuppliers(brand,supplier,ve){
         dataType: "json",
         success: function(response){
             $.each(response, function(key,value){
-                console.log("appending " + key + " " + value);
+                // console.log("appending " + key + " " + value);
                 $(supplierselectlist).append("<option value="+ key +">" + value + "</option>");
             });
             if( ve != undefined){ $(supplierselectlist).val(ve.sid); }  //ve contains all
