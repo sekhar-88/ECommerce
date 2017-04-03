@@ -351,7 +351,6 @@ function deleteAddress(dltBtn){
 function editAddress(editBtn){
     var addressDiv = $(editBtn).parents(".address");
 
-
     $("#newaddress-form input[name='Name']").val(addressDiv.data('name'));
     $("input[name='PostalCode']").val(addressDiv.data('postal-code'));
     $("input[name='AddressLine']").val(addressDiv.data('address-line'));

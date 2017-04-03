@@ -88,6 +88,7 @@ function populateBrandsSuppliers(brand,supplier,ve){
         dataType: "json",
         success: function(response){
             $.each(response, function(key,value){
+                console.log("appending " + key + " " + value);
                 $(supplierselectlist).append("<option value="+ key +">" + value + "</option>");
             });
             if( ve != undefined){ $(supplierselectlist).val(ve.sid); }  //ve contains all
@@ -203,6 +204,7 @@ function addBrands(el){
             url: "cfc/admin.cfc?method=addBrand",
             data: { brand: BrandName },
             success: function(response){ if(response == "true") {
+                                            notify("added Brand "+ BrandName, "success", "fa fa-check" );
                                             $(el).next().children(".list").append("<p class='list-item'>" + BrandName + "</p>");
                                         }
                                         else if(response == "false"){
@@ -273,4 +275,15 @@ function enableSubCategoryTextField(el){
     else{
         $("#subcategory_textbox").prop('disabled', true);
     }
+}
+
+
+
+// for PRODUCTS.CFM page
+
+function addNewProduct(el){
+    console.log("showing modal");
+    populateBrandsSuppliers("brands_select_list", "suppliers_select_list");
+    $("#subCategoryValue").val($(el).data('scat'));
+    $("#add-product-modal").modal('show');
 }

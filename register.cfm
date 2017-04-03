@@ -67,6 +67,14 @@
   <cfif isValid('string', form.FirstName)>
     <cfif isValid('email', form.Email)>
 
+        <!---
+        <cfset user_id = form.FirstName />
+        <cfset password = form.Password />
+        <cfset crypto = createObject('component', 'Crypto') />
+        <cfset salt = crypto.genSalt() />
+        <cfset passwordHash = crypto.computeHash(password,salt) />
+        --->
+
        	   <cfquery name="signup" >
        		   INSERT INTO [User]
              (FirstName, LastName, Email,	PhoneNo, 	Password, Role)

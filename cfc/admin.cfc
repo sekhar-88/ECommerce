@@ -222,6 +222,25 @@
                 <cfdump var="#cfcatch#" />
             </cfcatch>
         </cftry>
+    </cffunction>
+
+    <cffunction name="addProduct" output="true" access="remote" returntype="boolean" >
+        <cfdump var="#arguments#" />
+        <!--- <cfquery name="insertProduct">
+            INSERT INTO [Product]
+            (Name, BrandId, SubCategoryId, SupplierId, ListPrice, Qty, Description, Image)
+            VALUES
+            (
+                <cfqueryparam value="#form.Name#" cfsqltype="cf_sql_char" >,
+                <cfqueryparam value="#form.BrandId#" cfsqltype="cf_sql_int" >,
+                <cfqueryparam value="#form.SubCategoryId#" CFSQLType = "cf_sql_int" >,
+                <cfqueryparam value="#form.SupplierId#" cfsqltype="cf_sql_int" >,
+                <cfqueryparam value="#form.ListPrice#" cfsqltype="cf_sql_bigint" >,
+                <cfqueryparam value="#form.Qty#" cfsqltype="cf_sql_int" >,
+                <cfqueryparam value="#form.Description#" cfsqltype="CF_SQL_NVARCHAR" >,
+                <cfqueryparam value="#image#" cfsqltype="cf_sql_nvarchar">
+            )
+        </cfquery> --->
 
     </cffunction>
 

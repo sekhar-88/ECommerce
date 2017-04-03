@@ -23,12 +23,33 @@
             <p id="product-count-show"> #searchResult.recordCount# Results </p>
             <br />
 
-
             <div class="container-fluid">
             <cftry>
+
+            <cfif searchResult.recordCount>
                 <div class="filters">
-                    <div class="filter filter-brand">
-                        <div class="filter-header">Brands</div>
+                    <div class="filter filter-Category">
+                        <div class="filter-header">Category</div>
+
+                        <form id="category-checkbox">
+
+                        <cfquery name="subcats">
+                            SELECT DISTINCT psc.SubCategoryName, psc.SubCategoryId
+                            FROM [ProductSubCategory] psc
+                            INNER JOIN [Product] p
+                            ON psc.SubCategoryId = p.SubCategoryId
+                            WHERE p.Name LIKE '%#URL.q#%'
+                        </cfquery>
+
+                        <cfoutput>
+                        <cfloop query="subcats" >
+                            <div style="padding: 10px;" class="checkbox">
+                            <label><input type="checkbox" name="checkbox" value="#subcats.SubCategoryId#" > #subcats.SubCategoryName#</label>
+                            </div>
+                        </cfloop>
+                        </cfoutput>
+
+                        </form>
                     </div>
                     <div class="filter filter-price">
                         <div class="filter-header">Price</div>
@@ -37,7 +58,7 @@
                         <div class="filter-header"></div>
                     </div>
                 </div>
-            <cfif searchResult.recordCount>
+
                 <div class="products">
                         <cfloop query="searchResult">
                             <div class="product">
@@ -48,7 +69,7 @@
                                 <div class="product_content">
                                     <div class="product_name"> #Name# </div>
                                     <div class="product_pricing">
-                                        <div class="product_price"> #ListPrice#  </div>
+                                        <div class="product_price">#ListPrice#</div>
                                         <div class="product_discounted_price">#DiscountPercent#</div>
                                     </div>
                                     <ul>
@@ -89,19 +110,19 @@
                       <div class="carousel-inner" role="listbox" style="height: 400px;">
 
                         <div class="item active">
-                          <a href="product.cfm?cat=2&amp;scat=3"><img src="assets/images/products/featured/frontpagecarousel/mensfashion.jpg" style="margin:auto; height: 400px; widht: 100%" alt="mensfashion"></a>
+                          <a href="product.cfm?cat=2&amp;scat=3"><img src="assets/images/products/featured/frontpagecarousel/mensfashion.jpg" alt="mensfashion"></a>
                         </div>
 
                         <div class="item">
-                          <a href="product.cfm?cat=1&amp;scat=1"><img src="assets/images/products/featured/frontpagecarousel/mensfootwear.jpg" style="margin:auto; height: 400px; widht: 100%" alt="mensfootwear"></a>
+                          <a href="product.cfm?cat=1&amp;scat=1"><img src="assets/images/products/featured/frontpagecarousel/mensfootwear.jpg" alt="mensfootwear"></a>
                         </div>
 
                         <div class="item">
-                            <a href=""><img src="assets/images/products/featured/frontpagecarousel/casualstyle.jpg" style="margin:auto; height: 400px; widht: 100%" alt="casualstyle"></a>
+                            <a href=""><img src="assets/images/products/featured/frontpagecarousel/casualstyle.jpg" alt="casualstyle"></a>
                         </div>
 
                         <!--- <div class="item">
-                          <img src="assets/images/products/featured/frontpagecarousel/menstshirts.jpg" style="margin:auto; height: 400px; widht: 100%" alt="menstshirts">
+                          <img src="assets/images/products/featured/frontpagecarousel/menstshirts.jpg" alt="menstshirts">
                         </div> --->
 
                       </div>

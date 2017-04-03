@@ -171,8 +171,8 @@
 </html>
 <cftry>
 <cfif IsDefined("form.Image")>
-    <!--- <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/> --->
-    <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
+    <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/>
+    <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
     <cffile action="upload"
             filefield="Image"
             destination="#path#"
