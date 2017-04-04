@@ -12,6 +12,9 @@
 <body>
 <div id="header"><cfinclude template = "commons/header.cfm"></div>
 
+<!--- page refresh logic --->
+<input type="hidden" id="refreshed" value="no"/>
+
 <div class="container-fluid-parent">
     <cfif StructKeyExists(URL, "q")>
         <cfquery name = "searchResult">
@@ -20,10 +23,11 @@
              where Name LIKE '%#URL.q#%'
         </cfquery>
         <cfoutput>
-            <p id="product-count-show"> #searchResult.recordCount# Results </p>
+            <p id="product-count-show"> #searchResult.recordCount# Results for '#URL.q#'</p>
             <br />
 
             <div class="container-fluid">
+
             <cftry>
 
             <cfif searchResult.recordCount>
@@ -32,7 +36,6 @@
                         <div class="filter-header">Category</div>
 
                         <form id="category-checkbox">
-
                         <cfquery name="subcats">
                             SELECT DISTINCT psc.SubCategoryName, psc.SubCategoryId
                             FROM [ProductSubCategory] psc
@@ -43,7 +46,7 @@
 
                         <cfoutput>
                         <cfloop query="subcats">
-                            <div style="padding: 10px;" class="checkbox">
+                            <div class="checkbox" style="padding-left: 10px;padding-top: 2px;">
                                 <label><input type="checkbox" name="checkbox" value="#subcats.SubCategoryId#" > #subcats.SubCategoryName#</label>
                             </div>
                         </cfloop>

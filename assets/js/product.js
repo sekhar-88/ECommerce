@@ -16,4 +16,27 @@ $(document).ready(function(){
         window.location = $(this).find("a").attr("href");
         return false;
     });
+
+    $("#brands-filter :checkbox").change(function(){
+        if(this.checked){
+            $(".product").css("display","none");
+            $.each( $("#brands-filter :checkbox") , function(i, item){
+                if(this.checked)
+                $(".product.brand_"+this.value).css("display", "flex");
+            });
+        }
+        else{
+            if($("#brands-filter :checkbox:checked").length == 0)
+                $(".product").css("display", "flex");   //  show all Brands
+            else $(".product.brand_"+this.value).css("display","none");  //hide that Brand
+            // console.log(this.value);
+        }
+    })
 });
+
+
+onload = function () {
+                   var e = document.getElementById("refreshed");
+                   if (e.value == "no") e.value = "yes";
+                   else { e.value = "no"; location.reload(); }
+               }

@@ -1,15 +1,14 @@
-<cftry>
 <!DOCTYPE html>
 <head>
     <cfinclude template = "assets/libraries/libraries.cfm">
     <link href="assets/css/product.css" rel="stylesheet">
     <script src="assets/js/product.js"></script>
 
-    <cfif StructKeyExists(session, "User") AND session.User.Role EQ "admin">
+    <!--- <cfdump var="#session#" /> --->
+    <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
         <script src="assets/js/adminpage.js"></script>
     </cfif>
 </head>
-
 <!---
 .container-fluid
     .filter
@@ -22,6 +21,9 @@
 --->
     <body>
     <div id="header"><cfinclude template = "commons/header.cfm" /></div>
+
+    <!--- page refresh logic --->
+    <input type="hidden" id="refreshed" value="no"/>
 
     <div class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
       <div class="modal-dialog" role="document" style="width: 450px;">
@@ -56,22 +58,27 @@
                       <select name="SupplierId" id="suppliers_select_list" required>
                       </select>
                   </div>
+
                   <div class="form-group">
                       <label>Stock Quantity: </label>
                       <input type="number" min="0" name="Qty" value="1" required/>
                   </div>
+
                   <div class="form-group">
                       <label>ListPrice(&#8377;): </label>
                       <input type="number" min="0" name="ListPrice" required />
                   </div>
+
                   <div class="form-group">
                       <label>Description: </label>
                       <textarea name="Description" placeholder="Product Description Goes Here..." cols="22" value="Description"></textarea>
                   </div>
+
                   <div class="form-group">
                       <label>Images File: </label>
                       <input type="file" id="imageFile" name="Image" accept="image/jpeg" required>
                   </div>
+
                   <div class="form-group">
                       <button type="submit" name="submit">Add Product</button>
                       <button type="reset" name="reset">Clear</button>
@@ -88,11 +95,29 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+<!--- Body content --->
     <div class="container-fluid">
 
                 <div class="filters">
                     <div class="filter filter-brand">
                         <div class="filter-header">Brands</div>
+                        <cftry>
+                        <cfquery name="brands">
+                            SELECT DISTINCT b.BrandName , b.BrandId
+                            FROM [Brand] b
+                            INNER JOIN [Product] p
+                            ON b.BrandId = p.BrandId
+                            WHERE p.SubCategoryId = <cfqueryparam value="#URL.scat#" cfsqltype="cf_sql_int" />
+                        </cfquery>
+                        <cfoutput>
+                            <form id="brands-filter">
+                            <cfloop query="#brands#" >
+                                <div class="checkbox" style="padding-left: 10px;padding-top: 2px;">
+                                    <label><input type="checkbox" name="brand" value="#BrandId#"> #BrandName#</label>
+                                </div>
+                            </cfloop>
+                            </form>
+                        </cfoutput>
                     </div>
                     <div class="filter filter-price">
                         <div class="filter-header">Price</div>
@@ -100,6 +125,11 @@
                     <div class="filter filter-other">
                         <div class="filter-header"></div>
                     </div>
+
+                    <cfcatch>
+                        <cfdump var="#cfcatch#" />
+                    </cfcatch>
+                    </cftry>
                 </div>
 
                 <div class="products">
@@ -107,7 +137,7 @@
                             <cfset productCFC = createObject("cfc.product") />
                             <cfset productsQuery = productCFC.getProductsForSubCat(scat = #URL.scat#) />
 
-                            <cfif StructKeyExists(session, "User") AND session.User.Role EQ "admin">
+                            <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
                             <cfoutput>
                             <div class="productadd" data-scat="#URL.scat#" onclick="addNewProduct(this);">
 
@@ -122,34 +152,35 @@
                             </cfif>
 
                             <cfif productsQuery.recordCount>
-                            <cfoutput>
-                            <cfloop query = "productsQuery">
+                                <cfoutput>
+                                <cfloop query = "productsQuery">
 
-                                        <div class="product">
-                                            <a href="productDetails.cfm?pid=#ProductId#"></a>
-                                            <div class="product_image">
-                                                <img class="" src="assets/images/products/medium/#Image#">
-                                            </div>
-                                            <div class="product_content">
+                                        <div class="product brand_#BrandId# price_#ListPrice#">
 
-                                                <div class="product_name"> #Name# </div>
-                                                <div class="product_pricing">
-                                                    <div class="product_price"> #ListPrice#  </div>
-                                                    <div class="product_discounted_price">#DiscountPercent#</div>
+                                                <a href="productDetails.cfm?pid=#ProductId#"></a>
+                                                <div class="product_image">
+                                                    <img class="" src="assets/images/products/medium/#Image#">
+                                                </div>
+                                                <div class="product_content">
+
+                                                    <div class="product_name"> #Name# </div>
+                                                    <div class="product_pricing">
+                                                        <div class="product_price"> #ListPrice#  </div>
+                                                        <div class="product_discounted_price">#DiscountPercent#</div>
+                                                    </div>
+
+                                                    <ul>
+                                                    <cfloop index="i" list="#Description#" delimiters="`"  >
+                                                        <li>#i#</li>
+                                                    </cfloop>
+                                                    </ul>
+
                                                 </div>
 
-                                                <ul>
-                                                <cfloop index="i" list="#Description#" delimiters="`"  >
-                                                    <li>#i#</li>
-                                                </cfloop>
-                                                </ul>
 
                                             </div>
-
-
-                                        </div>
-                            </cfloop>
-                            </cfoutput>
+                                </cfloop>
+                                </cfoutput>
                             <cfelse>
                                 <cfoutput>
                                     <div class="no-product">
@@ -172,8 +203,8 @@
 
 <cftry>
 <cfif IsDefined("form.Image")>
-    <!--- <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/> --->
-    <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
+    <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/>
+    <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
     <cffile action="upload"
             filefield="Image"
             destination="#path#"
@@ -206,11 +237,6 @@
             <cfdump var="#productAdd#"> --->
 
 </cfif>
-<cfcatch>
-    <cfdump var="#cfcatch#" />
-</cfcatch>
-</cftry>
-
 <cfcatch>
     <cfdump var="#cfcatch#" />
 </cfcatch>

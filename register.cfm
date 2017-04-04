@@ -13,7 +13,7 @@
     <cfinclude template = "commons/header.cfm">
     <h1 align="center">Register With Us</h1>
       <div id="signup-content">
-        <form action="" method="post" id="signup_form"  autocomplete="off">
+        <form action="actions/signup_action.cfm" method="post" id="signup_form"  autocomplete="off">
 
           <div class="form-group">
             <label for="" class="required" >First Name:</label>
@@ -61,44 +61,6 @@
 
 <!--- Server side check for signup --->
 <!--- move into cfc  IMPLEMENT USING CFC--->
-
-<cfif StructKeyexists(Form, "signup")>
-
-  <cfif isValid('string', form.FirstName)>
-    <cfif isValid('email', form.Email)>
-
-        <!---
-        <cfset user_id = form.FirstName />
-        <cfset password = form.Password />
-        <cfset crypto = createObject('component', 'Crypto') />
-        <cfset salt = crypto.genSalt() />
-        <cfset passwordHash = crypto.computeHash(password,salt) />
-        --->
-
-       	   <cfquery name="signup" >
-       		   INSERT INTO [User]
-             (FirstName, LastName, Email,	PhoneNo, 	Password, Role)
-       		    VALUES
-            ( <cfqueryparam value = "#Form.FirstName#" cfsqltype="varchar">,
-              <cfqueryparam value = "#form.LastName#">,
-              <cfqueryparam value = "#form.Email#" cfsqltype="varchar">,
-              <cfqueryparam value = "#form.PhoneNo#" cfsqltype="varchar">,
-              <cfqueryparam value = "#form.Password#" cfsqltype="varchar">,
-              'user'
-            )
-            </cfquery>
-            <cfoutput>
-              <h3>Account Created Successfully</h3>
-              <a href="index.cfm">click here to go to homepage</a>
-            </cfoutput>
-        <cfelse>
-          <h3>Invalid email</h3>
-        </cfif>
-      <cfelse>
-        <h3>Invalid FirstName</h3>
-      </cfif>
-    <cfelse>
-    </cfif>
 
 <cfinclude template = "commons/footer.cfm">
 </body>

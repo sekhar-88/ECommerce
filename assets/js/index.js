@@ -1,24 +1,6 @@
+//signature: filterDisplayRemove(display/remove,  subcategory_class, Brand_class, Price_class)
+
 $(document).ready(function(){
-    // $("li.subcategory_list_li a").click(function(e){
-    //
-    //     e.preventDefault();
-    //     var queryStr = this.href.substring(this.href.indexOf("?")+1);
-    //
-    //     $.ajax({
-    //         method: "GET",
-    //         url: "components/products.cfc?method=productList",
-    //         // data: queryStr,
-    //         success: function(data){
-    //             // $("#content").html("<p><cf   output>#url.cat#, #url.scat#</cfoutput></p>")
-    //             alert(queryStr);
-    //             $("#content").html(data);
-    //         },
-    //         error: function(){
-    //             $("#content").html("<p>error</p>");
-    //             alert(url);
-    //         }
-    //     });
-    // });
 
     $(".product_price").hide();
     $(".product_discounted_price").hide();
@@ -32,25 +14,27 @@ $(document).ready(function(){
             $(this).prev(".product_price").show().prepend("₹");
         }
     });
+
+
     $(".product").click(function(){
         window.location = $(this).find("a").attr("href");
         return false;
     });
+
+
     $("#category-checkbox :checkbox").change(function(){
         if(this.checked){
             $(".product").css("display", "none");
-            $.each( $("#category-checkbox :checkbox"), function(i, item){
-                if(this.checked)
-                $(".product.scat_"+this.value).css("display","block");
-            });
 
+            $.each( $("#category-checkbox :checkbox"), function(i, item){
+                if(this.checked)    filterDisplayRemove("display",  ".product.scat_"+this.value , "", "");   //signature: filterDisplayRemove(display/remove,  subcategory_class, Brand_class, Price_class)
+            });
             // console.log(this.value);
         }
         else{
             if($("#category-checkbox :checkbox:checked").length == 0)
-                $(".product").css("display", "block");   //  show all
-            else $(".product.scat_"+this.value).css("display","none");  //hide that (sub)category
-            // console.log(this.value);
+                $(".product").css("display", "block");    // show all
+            else filterDisplayRemove("remove", ".product.scat_"+this.value, "", "")
         }
     });
 });
@@ -58,3 +42,21 @@ $(document).ready(function(){
 function showProduct(string){
 
 }
+
+
+function filterDisplayRemove(displayremoveaction, subcategoryclass, brandclass, priceclass ){
+    if(subcategoryclass != "")
+        if(displayremoveaction == "display")        $(subcategoryclass).css("display","block");   //show those filters
+        else if(displayremoveaction == "remove")    $(subcategoryclass).css("display","none");  //hide that (sub)category
+
+    // if(brandclass != "")
+    //
+    //     else
+}
+
+
+onload = function () {
+                   var e = document.getElementById("refreshed");
+                   if (e.value == "no") e.value = "yes";
+                   else { e.value = "no"; location.reload(); }
+               }
