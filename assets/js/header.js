@@ -53,7 +53,7 @@ $(document).ready(function(){
                 dataType: "json",
                 success: function(response){
                     if(response.status == true){
-                        alert("user successfully validated");
+                        // alert("user successfully validated");
                         $("#login-form").submit();
                     }
                     else{

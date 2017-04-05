@@ -1,4 +1,6 @@
-<cfcomponent>
+<cfcomponent extends="product" >
+    <cfset VARIABLES.userDB = CreateObject("db.user_db")/>
+
     <cffunction name="isUserLogggedin" returntype="boolean" returnFormat="json" access="remote" >
         <cfif session.loggedin>
             <cfreturn true/>
@@ -10,8 +12,10 @@
     <cffunction output="false" name="getLoggedUser" returnType="string"  returnFormat="json" access="remote">
         <!--- Returns If a user is logged in or not. IF loggedin then his userid --->
         <cfif session.loggedin>
-            <cfset user = {"userid" = "#session.User.UserId#",
-                            "loggedin" = "true"} />
+            <cfset user = {
+                "userid" = "#session.User.UserId#",
+                "loggedin" = "true"
+                } />
         <cfelse>
             <cfset user = { "loggedin" = "false" } />
         </cfif>
@@ -29,37 +33,30 @@
                     "errortype" = ""
                 }/>
 
-                <cfquery name="findUser">
-                    <!--- dont query password, query for password salt --->
-                    SELECT UserId,Password
-                    FROM [User]
-                    WHERE Email = <cfqueryparam value = "#arguments.email#" CFSQLType="cf_sql_varchar" >
-                </cfquery>
+                <cfinvoke method="getUserPassword" component="#VARIABLES.userDB#"
+                    returnvariable="REQUEST.findUser" argumentcollection="#ARGUMENTS#"  />
 
-                <cfif findUser.recordcount>
+                <cfif REQUEST.findUser.recordcount>
 
-                    <cfif findUser.Password EQ ARGUMENTS.password>   <!--- login success --->
+                    <cfif REQUEST.findUser.Password EQ ARGUMENTS.password>   <!--- login success --->
 
-                        <cfquery name="result" result="userQuery">
-                            select UserId,FirstName,LastName,Email,PhoneNo,Role from [User]
-                            Where Email=<cfqueryparam value="#arguments.email#" CFSQLType="cf_sql_varchar">
-                                AND Password=<cfqueryparam value="#arguments.password#" CFSQLType="cf_sql_varchar">
-                        </cfquery>
+                        <cfinvoke method="getUserDetails" component="#VARIABLES.userDB#"
+                            returnvariable="REQUEST.result" argumentcollection="#ARGUMENTS#"  />
 
                         <cfset session.User = {
-                            UserId = "#result.UserId#",
-                            UserName = "#result.FirstName#" & " " & "#result.LastName#",
-                            UserEmail = "#result.Email#",
-                            UserPhoneNo = "#result.PhoneNo#",
-                            Role = "#result.Role#"
+                            UserId = "#REQUEST.result.UserId#",
+                            UserName = "#REQUEST.result.FirstName#" & " " & "#REQUEST.result.LastName#",
+                            UserEmail = "#REQUEST.result.Email#",
+                            UserPhoneNo = "#REQUEST.result.PhoneNo#",
+                            Role = "#REQUEST.result.Role#"
                             } />
-                            <cfset session.loggedin="true" />
-                            <cfset session.User.checkout = { step = 0 }/>  <!--user has not checked out items --->
+
+                            <cfset SESSION.loggedin="true" />
+                            <cfset SESSION.User.checkout = { step = 0 }/>  <!--user has not checked out items --->
 
                             <!--- add session items to user cart --->
-                            <cfset productCFC = createObject("product")/>
-                            <cfloop index="pid" array="#session.cart#" >
-                                <cfset added_to_cart = productCFC.addToCart(pid)/>
+                            <cfloop index="i" item = "pid" array="#SESSION.cart#" >
+                                <cfset SUPER.addToCart(#pid#)/>
                             </cfloop>
 
                             <cfset response.status = "true" />

@@ -53,8 +53,8 @@
                 <div id="pdi-buttons">
                     <!--- check for if already in cart  --->
                     <cfif session.loggedin>
-                        <cfset incart = productController.isProductInCart(#pid#)/>
-                        <cfif incart.recordCount>
+                        <cfset incart = productController.isProductInCart(#URL.pid#)/>
+                        <cfif incart>
                             <span id="gotocart_btn">    <!--- Show Go To Cart button --->
                             <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-sm btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>
                             </span>

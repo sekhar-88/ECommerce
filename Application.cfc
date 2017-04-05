@@ -55,7 +55,7 @@
             type = "string"
             required = "true"
             />
-        <cfdump var="#REQUEST#" />
+        <!--- <cfdump var="#REQUEST#" /> --->
 
         <cfreturn true />
     </cffunction>
@@ -71,7 +71,7 @@
             type = "string"
             required = "true"
             />
-        <cfdump var="#REQUEST#" />
+        <!--- <cfdump var="#REQUEST#" /> --->
 
         <cfinclude template = "#ARGUMENTS.targetpage#" />
         <cfreturn />

@@ -1,4 +1,6 @@
-<cfcomponent>
+<cfcomponent extends="product" >
+    <cfset VARIABLES.checkoutDB = CreateObject("db.checkout_db") />
+
     <cffunction name="refreshSessionCheckoutList" returntype="boolean" returnformat="json" access="remote">
         <cfargument name="arrayindex" required="true" type="numeric" />
         <cfset ArrayDeleteAt(session.User.checkout.itemsInfo, arguments.arrayindex)/>
@@ -6,17 +8,11 @@
 
 
     <cffunction name="getAddressesOfUser" output="false" returntype="query" access="remote" >
-        <cftry >
-            <cfquery name="addresses">
-                SELECT *
-                FROM [Address]
-                WHERE UserId = #session.user.userid#
-            </cfquery>
-            <cfreturn #addresses# />
-        <cfcatch>
-            <cfreturn #cfcatch# />
-        </cfcatch>
-        </cftry>
+        <cfinvoke method="getAddressForUser" component="#VARIABLES.checkoutDB#"
+            returnvariable="REQUEST.addresses"  />
+
+        <cfreturn #REQUEST.addresses# />
+
     </cffunction>
 
     <cffunction name="getCheckOutStep" access="remote" returntype="numeric" returnFormat="json" >
@@ -91,15 +87,10 @@
 
         <cftry>
         <!--- Query for Items in Cart & their price for showing in Step 1 of (CHECKOUT PAGE)--->
-                <cfquery name="itemsQuery">
-                    SELECT c.CartId, c.ProductId, c.Qty , p.Name, p.ListPrice , p.DiscountedPrice, p.Description, p.Image
-                    from [Cart] c
-                    inner join [Product] p
-                    ON c.ProductId = p.ProductId
-                    Where c.UserId = #session.User.UserId#
-                </cfquery>
+                <cfinvoke method="queryOrderSummary" component="#VARIABLES.checkoutDB#"
+                    returnvariable="REQUEST.itemsQuery" />
 
-                <cfloop query="itemsQuery">
+                <cfloop query="REQUEST.itemsQuery">
 
                     <cfif IsNull(#DiscountedPrice#)>
                         <cfset dscnt = false />
@@ -139,17 +130,9 @@
     <cffunction name="getAvailableQuantity" returnType="Numeric" returnFormat="json" access="remote">
         <cfargument name="itemid" required="true" type="numeric" />
 
-        <cftry>
-            <cfquery name="quantity">
-                SELECT Qty
-                FROM [Product]
-                WHERE ProductId = #arguments.itemid#
-            </cfquery>
-            <cfreturn #quantity.Qty#>
-            <cfcatch>
-                <cfdump var="#cfcatch#" />
-            </cfcatch>
-        </cftry>
+        <cfset LOCAL.Qty = super.getavailableProductQuantity( pid = #ARGUMENTS.itemid# ) />
+
+        <cfreturn #LOCAL.Qty# />
     </cffunction>
 
 
@@ -159,75 +142,59 @@
         <cfargument name="LandMark"    type="string" required="true" >
         <cfargument name="PhoneNo"     type="string" required="true" >
         <cfargument name="PostalCode"  type="string" required="true" >
-        <cftry >
-            <cfquery >
-                INSERT INTO [Address]
-                (UserId,AddressLine,Name,LandMark,PhoneNo,PostalCode,Country,AddressType)
-                VALUES
-                (   #session.User.UserId#,
-                    <cfqueryparam value="#arguments.AddressLine#" />,
-                    <cfqueryparam value="#arguments.Name#"       cfsqltype="cf_sql_nvarchar">    ,
-                    <cfqueryparam value="#arguments.LandMark#"   cfsqltype="cf_sql_nvarchar">    ,
-                    <cfqueryparam value="#arguments.PhoneNo#"    cfsqltype="cf_sql_nvarchar">,
-                    <cfqueryparam value="#arguments.PostalCode#" cfsqltype="cf_sql_nvarchar">,
-                    'India',
-                    0
-                )
-            </cfquery>
-                <cfreturn true/>
-            <cfcatch >
-                <cfdump var="#cfcatch#" />
-                <cfreturn false/>
-            </cfcatch>
-        </cftry>
+
+        <cfinvoke method="insertNewAddress" component = "#VARIABLES.checkoutDB#"
+            returnvariable="REQUEST.success" argumentcollection="#ARGUMENTS#" />
+
+        <cfif REQUEST.success>
+            <cfreturn true/>
+            <cfelse>
+            <cfreturn false/>
+        </cfif>
     </cffunction>
 
     <cffunction name="deleteAddress" access="remote" output="true" returntype="any" returnFormat="json">
         <cfargument name="addressid" required="true" type="numeric" />
+
         <cftry>
-            <cfquery name="deleteAddress">
-                DELETE FROM [Address]
-                WHERE AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="CF_SQL_BIGINT"  />
-            </cfquery>
-            <cfreturn true/>
+            <cfinvoke method="deleteAddress" component="#VARIABLES.checkoutDB#"
+                returnvariable="REQUEST.deleteAddressSuccess" argumentcollection="#ARGUMENTS#"  />
+            <cfreturn #REQUEST.deleteAddressSuccess# />
         <cfcatch>
             <cfdump var="#cfcatch#" />
             <cfreturn false/>
         </cfcatch>
         </cftry>
+
     </cffunction>
 
-    <cffunction name="updateShippingAddress" access="remote" output="false" returntype="string" returnformat="json">
+    <cffunction name="URLstringToObj" returntype="struct" access= "public" >
+        <cfargument name="formdata" type="string" required = "true" />
+
+        <cfset formStruct = {}/>
+
+        <cfloop list="#ARGUMENTS.formdata#" index="i" delimiters="&" >
+            <cfset key= ListFirst(i , "=")/>
+            <cfset value = urlDecode(ListLast(i , "="))/>
+            <cfset StructInsert(formStruct, #key#, #value#)/>
+        </cfloop>
+
+        <cfreturn #formStruct# />
+    </cffunction>
+
+    <cffunction name="updateShippingAddress" access="remote" output="true" returntype="string" returnformat="json">
         <cfargument name="addressid" required="true" type="numeric" />
         <cfargument name="formdata" required="true" type="string" />
 
-            <cfset formJSON = {}/>     <!--- store form data as JSON file in this thing --->
+        <cfset LOCAL.addressObj = URLstringToObj(ARGUMENTS.formdata) />     <!--- store form data as JSON file in this thing --->
+            <cfset StructInsert(LOCAL.addressObj, "Country", "India")/>
 
-            <cfloop list="#arguments.formdata#" index="i" delimiters="&" >
-                <cfset key= ListFirst(i , "=")/>
-                <cfset value = urlDecode(ListLast(i , "="))/>
-                <cfset StructInsert(formJSON, #key#, #value#)/>
-            </cfloop>
-                <cfset StructInsert(formJSON, "Country", "India")/>
+            <cfinvoke method="updateAddress" component="#VARIABLES.checkoutDB#"
+                returnvariable="REQUEST.success"
+                addressStruct = #LOCAL.addressObj#
+                addressid = #ARGUMENTS.addressid# />
 
-            <cftry>
-            <cfquery name = "updateAddress">                    <!--- start updaing the address of the corresponding User --->
-                <cfloop collection="#formJSON#" item="item" >
-                    update [Address]
-                    set #item# = <cfqueryparam value="#formJSON[item]#" cfsqltype="cf_sql_nvarchar" />
-                    where AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="cf_sql_bigint" />
-                </cfloop>
-                    update [Address]
-                    set UserId = #session.User.UserId#,
-                        AddressType = 0
-                    where AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="cf_sql_bigint" />
-            </cfquery>
-            <cfreturn true/>
-            <cfcatch >
-                <cfdump var="#cfcatch#" />
-                <cfreturn false/>
-            </cfcatch>
-            </cftry>
+            <cfreturn #REQUEST.success# />
 
     </cffunction>
 
@@ -261,12 +228,12 @@
             <!--- INSERT INTO ORDERDETAILS TABLE USING cart QUERY--->
 
             <cfquery name="updateOrderDetails">
-            <cfloop query="cart" >
-                INSERT INTO [OrderDetails]
-                (OrderId, ProductId, OrderQty, UnitPrice, ShipToAddressId, SupplierId)
-                VALUES
-                (#variables.OrderId#, #cart.ProductId#, #cart.OrderQty#, #cart.UnitPrice#, #session.User.checkout.AddressId#, #cart.SupplierId# )
-            </cfloop>
+                <cfloop query="cart" >
+                    INSERT INTO [OrderDetails]
+                    (OrderId, ProductId, OrderQty, UnitPrice, ShipToAddressId, SupplierId)
+                    VALUES
+                    (#variables.OrderId#, #cart.ProductId#, #cart.OrderQty#, #cart.UnitPrice#, #session.User.checkout.AddressId#, #cart.SupplierId# )
+                </cfloop>
             </cfquery>
 
             <cfset cartCleared = clearCart()/>
@@ -290,19 +257,17 @@
         <cfargument name="pid" required="true" type="numeric"  />
         <cfargument name="qty" required="true" type="numeric" />
 
-        <cfset price = getPriceOfProduct(#arguments.pid#)/>
-        <cfset totalPrice = price * #arguments.qty# />
+        <cfset price = getPriceOfProduct(ARGUMENTS.pid)/>
+        <cfset LOCAL.totalPrice = price * #ARGUMENTS.qty# />
 
         <cftry>
-            <cfquery>
-                UPDATE [Cart]
-                SET Qty = <cfqueryparam value="#arguments.qty#" cfsqltype="cf_sql_int" />,
-                    TotalPrice = <cfqueryparam value="#totalPrice#" cfsqltype="cf_sql_bigint" />
-                WHERE CartId = <cfqueryparam value="#arguments.cartid#" cfsqltype="cf_sql_bigint" />
-            </cfquery>
+            <cfinvoke method="updateCartAndTotalPrice" component="#VARIABLES.checkoutDB#"
+                returnvariable = "REQUEST.success"
+                argumentcollection="#ARGUMENTS#"
+                totalPrice = #LOCAL.totalPrice# />
 
-            <cfset totalCartPrice = getCartTotal()/>
-            <cfreturn #totalCartPrice#/>
+            <cfset LOCAL.totalCartPrice = getCartTotal()/>
+            <cfreturn #LOCAL.totalCartPrice#/>
 
             <cfcatch>
                 <cfdump var="#cfcatch#" />
@@ -312,55 +277,43 @@
     </cffunction>
 
 
-
-    <cffunction name="getCartTotal" returntype="Numeric" access="remote" output="true">
-        <cfset sumTotal = 0/>
+    <cffunction name="getCartTotal" returntype="Numeric" access="remote" output="true" >
 
         <cftry>
-            <cfquery name="cartPrices">
-                SELECT TotalPrice
-                from [Cart]
-                Where UserId = #session.User.UserId#
-            </cfquery>
-
-                <cfloop query="cartPrices" >
-                <cfset sumTotal += #TotalPrice# />
-                </cfloop>
+            <cfinvoke method="getCartTotal" component="#VARIABLES.checkoutDB#"
+                returnvariable="REQUEST.total" />
 
             <cfcatch>
             <cfdump var="#cfcatch#" />
             </cfcatch>
         </cftry>
 
-        <cfreturn #sumTotal#/>
+        <cfreturn #REQUEST.total# />
     </cffunction>
 
 
  <!--- DELETE CART ITEMS AFTER INSERTING INTO ORDER DETAILS SECTIOIN --->
     <cffunction name="clearCart" returntype="boolean" access="remote">
         <cftry>
-            <cfquery name="clearCart">
-                DELETE FROM [Cart]
-                WHERE UserId = #session.User.UserId#
-            </cfquery>
-            <cfreturn true/>
+            <cfinvoke method="clearCart" component="#VARIABLES.checkoutDB#"
+                returnvariable="REQUEST.success" />
+
+                <cfreturn #REQUEST.success# />
 
             <cfcatch >
                 <cfreturn false/>
                 <cfdump var="#cfcatch#" />
             </cfcatch>
         </cftry>
+
     </cffunction>
 
     <cffunction name="getPriceOfProduct" access="remote" returntype="boolean" output="true">
         <cfargument name="pid" required="true" type="numeric"/>
 
-        <cfquery name="ProductPrice">
-            SELECT ListPrice
-            FROM [Product]
-            WHERE ProductId = <cfqueryparam value="#arguments.pid#" cfsqltype="cf_sql_bigint" />
-        </cfquery>
-        <cfreturn #ProductPrice.ListPrice#/>
+        <cfset LOCAL.productPrice = super.getPriceOfProduct(pid = ARGUMENTS.pid)/>
+        <cfreturn #LOCAL.productPrice# />
+
     </cffunction>
 
 </cfcomponent>

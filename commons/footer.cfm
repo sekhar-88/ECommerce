@@ -8,8 +8,6 @@
 	<!--- <meta name="viewport" content="width=device-width, initial-scale=1"> --->
 	<!--- <meta name="keywords" content="footer, address, phone, icons" /> --->
 
-	<title>Footer With Address And Phones</title>
-
 	<!--- <link rel="stylesheet" href="css/demo.css"> --->
 	<link rel="stylesheet" href="assets/css/footer-distributed-with-address-and-phones.css">
 

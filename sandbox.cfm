@@ -1,4 +1,4 @@
-<cfoutput>
+<!--- <cfoutput>
     <h3>this file logs in the main user Automatically.<h3>
         User caution!
 </cfoutput>
@@ -21,4 +21,12 @@
         <cfset session.cart = arrayNew(1) />
         <cfdump var="#session#" />
         <!--- <cfdump var="#cookie#" /> --->
-</cfif>
+</cfif> --->
+
+
+<!---
+<cfset myArray = ["John", "Paul", "George", "Ringo"] >
+<cfloop array="#myArray#" item="Beatles" index="name">
+   <cfoutput>#name# : #Beatles#  </cfoutput>
+</cfloop>
+ --->

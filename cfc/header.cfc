@@ -1,41 +1,40 @@
 <cfcomponent>
+    <cfset VARIABLES.headerDB = CreateObject("db.header_db") />
+
+    <!--- for populating the header section --->
     <cffunction name="getCategories" returntype="Query" access="remote" output="false" >
-        <cfquery name="categories">
-            Select *
-            From [ProductCategory]
-        </cfquery>
-        <cfreturn #categories# />
+        <cfinvoke method="getCategories" component="#VARIABLES.headerDB#"
+            returnvariable="LOCAL.categories" argumentcollection = "#ARGUMENTS#" />
+
+        <cfreturn #LOCAL.categories# />
     </cffunction>
 
+
+    <!--- for populating the header section --->
     <cffunction name="getSubCategories" returntype="Query" output="false" >
         <cfargument name="CategoryId" type="numeric" required="true"  />
-        <cfquery name="subcategories">
-            Select SubCategoryId, SubCategoryName
-            from [ProductSubCategory]
-            WHERE CategoryId = #arguments.CategoryId#
-        </cfquery>
-        <cfreturn #subcategories# />
+
+        <cfinvoke method="getSubCategories" component="#VARIABLES.headerDB#"
+            returnvariable = "LOCAL.subcategories" argumentcollection="#ARGUMENTS#" />
+
+        <cfreturn #LOCAL.subcategories# />
     </cffunction>
 
+
+    <!--- for setting the filter categories --->
     <cffunction name="getSubCategoriesJSObject" returnType="any" returnFormat="json" access="remote" output="true">
         <cfargument name="categoryname" required="true" type="string"/>
-        <cftry>
-        <cfquery name="subcategories">
-            SELECT psc.*
-            from [ProductSubCategory] psc
-            INNER JOIN [ProductCategory] pc
-            ON psc.CategoryId = pc.CategoryId
-            Where pc.CategoryName = <cfqueryparam value="#arguments.categoryname#" cfsqltype="cf_sql_char">
-        </cfquery>
-        <cfset subcategoryObject = {}/>
-        <cfloop query="subcategories" >
-            <cfset StructInsert(subcategoryObject, #SubCategoryId#, #subcategories.SubCategoryName#)/>
-        </cfloop>
-        <cfcatch>
-            <cfdump var="#cfcatch#" />
-        </cfcatch>
-        </cftry>
 
-        <cfreturn #subcategoryObject#/>
+        <!--- get subcategories from db layer --->
+        <cfinvoke method="getSubCategoriesFromCategoryName" component="#VARIABLES.headerDB#"
+            returnvariable="LOCAL.querySubcategories" argumentcollection="#ARGUMENTS#"  />
+
+            <cfset LOCAL.subCategoryObject = {} />
+
+            <cfloop query="LOCAL.querySubcategories" >
+                <cfset StructInsert(subCategoryObject, #SubCategoryId#, #SubCategoryName#)/>
+            </cfloop>
+
+        <cfreturn #LOCAL.subCategoryObject# />
     </cffunction>
 </cfcomponent>
