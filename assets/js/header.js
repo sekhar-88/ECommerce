@@ -7,8 +7,8 @@ $(document).ready(function(){
     updateCartCount();
     $("#product-search-form").submit(function(e){
         if($("#product_searchbox").val().trim() != "" ){
-            var q = $("#product_searchbox").val().trim();
-            $("#product_searchbox").val(q);
+            var query_cleaned = $("#product_searchbox").val().trim();
+            $("#product_searchbox").val(query_cleaned);
             // fillBrands(q);
         }
         else{
@@ -25,41 +25,53 @@ $(document).ready(function(){
     $(document.body).on("mouseleave", ".category", function(event) {
         $(this).children('.subcat_list_div').hide();
     });
+
     $(document.body).on('click', '.category', function(e){
         e.stopPropagation();
     });
+
     $(document.body).on('keypress', '#login-form input', function(e){
         if(e.which == 13){
             submitform($("#login-form")[0]);
         }
     });
 
-    function submitform(form){
-        oform = form.elements;
-        mail = oform.email.value;
-        pswd = oform.password.value;
-        console.log(oform);
+    function submitform(oform){
+        form = oform.elements;
+        mail = form.email.value;
+        pswd = form.password.value;
         console.log(mail + " "+ pswd);
-        if(mail.trim() == "" || pswd.trim() == ""){
-            $("#login-form").submit();
-        }
-        else{
+
+        if( $("#login-form").valid() ) {
+
             $.ajax({
                 url: "cfc/user.cfc?method=validate",
                 data: {
-                    email: form.email.value,
-                    password: form.password.value
+                    email: mail,
+                    password: pswd
                 },
                 dataType: "json",
                 success: function(response){
-                    if(response == true){
-                        // alert('login success.. will now submit the form');
+                    if(response.status == true){
+                        alert("user successfully validated");
                         $("#login-form").submit();
                     }
                     else{
-                        login_validator.showErrors({
-                            password : "invalid username/password"
-                        });
+                        var error = response.errortype;
+                            switch (response.errortype) {
+                                case "email":
+                                    login_validator.showErrors({
+                                        email : "User does not exist"
+                                    });
+                                    break;
+                                case "password":
+                                    login_validator.showErrors({
+                                        password : "wrong password"
+                                    });
+                                    break;
+                                default:
+                                    alert("unknown error occured while logging in");
+                            }
                     }
                 },
                 error: function(error){
@@ -67,8 +79,8 @@ $(document).ready(function(){
                     console.log(error);
                 }
             });
-
         }
+
     }
 
 //update cart count pageonload bind

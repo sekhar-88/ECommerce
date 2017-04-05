@@ -20,17 +20,32 @@
         <cfreturn #userS#/>
     </cffunction>
 
-    <cffunction name="validate" access="remote" output="false" returntype="boolean" returnFormat="json">
-            <cfargument name="email" type="string" required="true">
-            <cfargument name="password" type="string" required="true">
+    <cffunction name="validate" access="remote" output="false" returntype="struct" returnFormat="json">
+        <cfargument name="email" type="string" required="true">
+        <cfargument name="password" type="string" required="true">
 
-                <cfquery name="result" result="userQuery">
-                    select UserId,FirstName,LastName,Email,PhoneNo,Role from [User]
-                    Where Email=<cfqueryparam value="#arguments.email#" CFSQLType="cf_sql_varchar">
-                        AND Password=<cfqueryparam value="#arguments.password#" CFSQLType="cf_sql_varchar">
+            <cfset response = {
+                    "status" = "true",
+                    "errortype" = ""
+                }/>
+
+                <cfquery name="findUser">
+                    <!--- dont query password, query for password salt --->
+                    SELECT UserId,Password
+                    FROM [User]
+                    WHERE Email = <cfqueryparam value = "#arguments.email#" CFSQLType="cf_sql_varchar" >
                 </cfquery>
 
-                    <cfif result.recordcount GT 0>
+                <cfif findUser.recordcount>
+
+                    <cfif findUser.Password EQ ARGUMENTS.password>   <!--- login success --->
+
+                        <cfquery name="result" result="userQuery">
+                            select UserId,FirstName,LastName,Email,PhoneNo,Role from [User]
+                            Where Email=<cfqueryparam value="#arguments.email#" CFSQLType="cf_sql_varchar">
+                                AND Password=<cfqueryparam value="#arguments.password#" CFSQLType="cf_sql_varchar">
+                        </cfquery>
+
                         <cfset session.User = {
                             UserId = "#result.UserId#",
                             UserName = "#result.FirstName#" & " " & "#result.LastName#",
@@ -38,20 +53,28 @@
                             UserPhoneNo = "#result.PhoneNo#",
                             Role = "#result.Role#"
                             } />
-                        <cfset session.loggedin="true" />
-                        <cfset session.User.checkout = { step = 0 }/>
+                            <cfset session.loggedin="true" />
+                            <cfset session.User.checkout = { step = 0 }/>  <!--user has not checked out items --->
 
-                        <!--- add session items to user cart --->
-                        <cfset productCFC = createObject("product")/>
-                        <cfloop index="pid" array="#session.cart#" >
-                            <cfset added_to_cart = productCFC.addToCart(pid)/>
-                        </cfloop>
+                            <!--- add session items to user cart --->
+                            <cfset productCFC = createObject("product")/>
+                            <cfloop index="pid" array="#session.cart#" >
+                                <cfset added_to_cart = productCFC.addToCart(pid)/>
+                            </cfloop>
 
+                            <cfset response.status = "true" />
 
-                        <cfreturn true />
                     <cfelse>
-                        <cfset session.loggedin="false" />
-                        <cfreturn false />
+                        <cfset response.status = "false" />
+                        <cfset response.errortype = "password" />
                     </cfif>
+
+                <cfelse>
+                    <cfset response.status = "false">
+                    <cfset response.errortype = "email" >
+                </cfif>
+
+                <cfreturn #response# />
     </cffunction>
+
 </cfcomponent>

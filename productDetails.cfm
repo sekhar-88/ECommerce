@@ -13,7 +13,7 @@
 
 <div id="header"><cfinclude template = "commons/header.cfm" /></div>
 
-<!---   [tobe designed] / [WORKED UPON]
+<!---   [to be designed] / [WORKED UPON]
 .product_details_pd_container
     pd_image
         pd_image-thumbnails
@@ -35,6 +35,7 @@
     <div class="container-fluid">
     <cfif StructKeyExists(URL, "pid")>
         <cfset productCFC = createObject("cfc.product")/>
+        <cfset productController = CreateObject("controller.productController")/>
         <cfset pd = productDetails = productCFC.fetchProductDetails(url.pid)/>
 
         <cfif productdetails.recordCount> <!--- Product Exists --->
@@ -52,10 +53,7 @@
                 <div id="pdi-buttons">
                     <!--- check for if already in cart  --->
                     <cfif session.loggedin>
-                        <cfquery name="incart">
-                            SELECT * from [Cart]
-                            Where UserId = #session.user.userid# AND ProductId = #pid#
-                        </cfquery>
+                        <cfset incart = productController.isProductInCart(#pid#)/>
                         <cfif incart.recordCount>
                             <span id="gotocart_btn">    <!--- Show Go To Cart button --->
                             <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-sm btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>

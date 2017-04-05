@@ -15,11 +15,11 @@
        		   INSERT INTO [User]
              (FirstName, LastName, Email,	PhoneNo, 	Password, Role)
        		    VALUES
-            ( <cfqueryparam value = "#Form.FirstName#" cfsqltype="varchar">,
-              <cfqueryparam value = "#form.LastName#">,
-              <cfqueryparam value = "#form.Email#" cfsqltype="varchar">,
-              <cfqueryparam value = "#form.PhoneNo#" cfsqltype="varchar">,
-              <cfqueryparam value = "#form.Password#" cfsqltype="varchar">,
+            ( <cfqueryparam value = "#Form.FirstName#" cfsqltype="varchar" > ,
+              <cfqueryparam value = "#form.LastName#" >,
+              <cfqueryparam value = "#form.Email#" cfsqltype="varchar" >,
+              <cfqueryparam value = "#form.PhoneNo#" cfsqltype="varchar" >,
+              <cfqueryparam value = "#form.Password#" cfsqltype="varchar" >,
               'user'
             )
             </cfquery>

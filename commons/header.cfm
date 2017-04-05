@@ -113,6 +113,9 @@
 										<input type="password" name="password" autocomplete="off" required> <br/>
 									</div>
                                     <div class="form-group">
+                                        <input type="hidden" name="errorfield" value="">
+                                    </div>
+                                    <div class="form-group">
 									     <button type="button" class="btn btn-primary" onclick="submitform(this.form);">Login</button>
 									     <input type="reset" class="btn btn-default" value="Clear" />
                                     </div>

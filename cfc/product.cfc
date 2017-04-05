@@ -1,36 +1,34 @@
 <cfcomponent>
+    <cfset VARIABLES.dbLayer = CreateObject("db.product")/>
+
     <cffunction name="user_checkout" returntype="boolean" returnformat="json" output="true" access="remote">
         <cfargument name="pid" type="numeric" required="true" />
           <cfset addedToCart = addToCart(arguments.pid)/>
-          <cfif addedToCart>
-              <!--- <cfdump var="#addedToCart#" /> --->
-          </cfif>
-          <cfreturn #addedToCart#/>
+          <cfreturn #addedToCart# />
     </cffunction>
+
+
+
+<!--- HINT : this method is called while adding to cart by clicking "addtocart" or directy clicking on "buynow" button --->
 
     <cffunction name = "addToCart" returnType = "boolean" returnFormat="json" access = "remote" output="false">
         <cfargument name="pid" type="numeric" required="true" />
 
             <cfif session.loggedin>
                 <cfset userid = #session.User.UserId# />
-                <!--- is product already in cart --->
-                <cfquery name="cart">
-                    select *
-                    from [Cart]
-                    Where ProductId= #arguments.pid# AND UserId = #userid#
-                </cfquery>
 
-                <cfif cart.recordCount>  <!--- in cart --->
-                    <cfreturn true/>  <!--- THIS RETURN TRUE IS FOR sending (buynow) button that it is already in cart --->
-                <cfelse>                      <!--- not in cart --->
+                <!--- QUERY FOR ALREADY EXISTING PRODUCT --->
+                <cfinvoke method="isProductInCart" component="#VARIABLES.dbLayer#"
+                    returnvariable="isInCart" pid = #ARGUMENTS.pid# />
 
-                    <cfset price = getPriceOfProduct(arguments.pid)/>
-                    <cfquery name="insetToCart">
-                        INSERT INTO [Cart]
-                        (ProductId,Qty,UserId, TotalPrice)
-                        VALUES
-                        (<cfqueryparam value="#arguments.pid#" cfsqltype="cf_sql_integer">, 1, #userid#, #price#)
-                    </cfquery>
+                <cfif #isInCart#>           <!--- in cart --->
+                    <cfreturn true/>        <!--- THIS RETURN TRUE IS FOR sending (buynow) button that it is already in cart --->
+
+                <cfelse>                    <!--- not in cart --->
+                    <cfset LOCAL.price = getPriceOfProduct(arguments.pid)/>
+                    <cfinvoke method="insertIntoCart" component="#VARIABLES.dbLayer#"
+                        returnvariable = "cart" pid = #ARGUMENTS.pid# price="#LOCAL.price#" />
+
                     <!--- cart data changed --->
                     <cfset session.cartDataChanged = true/>;
                     <cfreturn true />
@@ -47,42 +45,44 @@
             </cfif>
     </cffunction>
 
-    <cffunction name="getProductsForSubCat" access="remote" returntype="Query" output = "false" >
-        <cfargument name="scat" required="true" type="numeric" output="false" />
-        <cfquery name="products" >
-            SELECT *
-            FROM [Product]
-            WHERE SubCategoryId = <cfqueryparam value = "#arguments.scat#" CFSQLType = "[cf_sql_integer]">
-        </cfquery>
-        <cfreturn #products#/>
+    <cffunction name = "getProductsForSubCat" access = "remote" returntype = "Query" output = "false" >
+        <cfargument name = "scat" required = "true" type = "numeric" output = "false" />
+
+        <cfinvoke method = "queryProductsForSubCategory" component = "#VARIABLES.dbLayer#"
+            returnvariable = "LOCAL.products" argumentcollection = "#ARGUMENTS#"  />
+
+        <cfreturn #LOCAL.products#/>
     </cffunction>
 
-    <cffunction name="getPriceOfProduct" access="remote" returntype="boolean" output="true">
-        <cfargument name="pid" required="true" type="numeric"/>
 
-        <cfquery name="ProductPrice">
-            SELECT ListPrice
-            FROM [Product]
-            WHERE ProductId = <cfqueryparam value="#arguments.pid#" cfsqltype="cf_sql_bigint" />
-        </cfquery>
-        <cfreturn #ProductPrice.ListPrice#/>
+
+    <cffunction name = "getPriceOfProduct" access = "remote" returntype = "boolean" output = "true">
+        <cfargument name = "pid" required = "true" type = "numeric"/>
+        <cfset LOCAL.ListPrice = 0 />
+
+        <cfinvoke method="getProductPrice" component = "#dbLayer#"
+            returnvariable="LOCAL.ListPrice" argumentcollection="#ARGUMENTS#" />
+
+        <cfreturn #LOCAL.ListPrice#/>
     </cffunction>
 
-    <cffunction name = "fetchProductDetails" access="remote" returntype="query" output="true">
+
+    <cffunction name = "fetchProductDetails" access = "remote" returntype="query" output="true">
         <cfargument name="pid" required="true" type="numeric" />
-        <cftry>
-            <cfquery name="productDetails">
-                SELECT p.* , b.BrandName
-                FROM [Product] p
-                INNER JOIN [Brand] b
-                ON p.BrandId = b.BrandId
-                WHERE p.ProductId = <cfqueryparam value = "#pid#" CFSQLType = "[cf_sql_integer]">
-            </cfquery>
-            <cfreturn #productDetails#/>
-        <cfcatch>
-            <cfdump var="#cfcatch#" />
-            <cfreturn false/>
-        </cfcatch>
-        </cftry>
+
+        <cfinvoke method="queryProductDetails" component="#VARIABLES.dbLayer#"
+            returnvariable="LOCAL.productDetails" pid = "#ARGUMENTS.pid#" />
+
+        <cfreturn #LOCAL.productDetails#/>
+    </cffunction>
+
+    <cffunction name="isProductInCart" returntype="boolean" access = "public" >
+        <cfargument name = "pid" type = "numeric" required = "true" />
+
+        <!--- Access DB LAYER --->
+        <cfinvoke method="isProductInCart" component="#VARIABLES.dbLayer#"
+            returnvariable="LOCAL.isInCart" pid = #ARGUMENTS.pid# />
+
+        <cfreturn #LOCAL.isInCart#/>
     </cffunction>
 </cfcomponent>
