@@ -24,9 +24,23 @@
 </cfif> --->
 
 
+
+
+<!--- looping over array --->
+
+
+
+<!--- this works in coldfusion 2016 --->
 <!---
 <cfset myArray = ["John", "Paul", "George", "Ringo"] >
-<cfloop array="#myArray#" item="Beatles" index="name">
+<cfloop array="#myArray#" index="name" item="Beatles">
    <cfoutput>#name# : #Beatles#  </cfoutput>
 </cfloop>
  --->
+
+
+<!--- this works in coldfusion 10 --->
+<cfset myArray = ["John", "Paul", "George", "Ringo"] >
+<cfloop array="#myArray#" index="name">
+   <cfoutput> #name#  </cfoutput>
+</cfloop>

@@ -55,7 +55,7 @@
                             <cfset SESSION.User.checkout = { step = 0 }/>  <!--user has not checked out items --->
 
                             <!--- add session items to user cart --->
-                            <cfloop index="i" item = "pid" array="#SESSION.cart#" >
+                            <cfloop array="#SESSION.cart#"  index="pid">
                                 <cfset SUPER.addToCart(#pid#)/>
                             </cfloop>
 
