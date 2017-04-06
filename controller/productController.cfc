@@ -8,7 +8,6 @@
             returnvariable="LOCAL.response" argumentcollection="#ARGUMENTS#" />
 
         <cfreturn #LOCAL.response#/>
-
     </cffunction>
 
 </cfcomponent>

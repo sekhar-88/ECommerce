@@ -1,180 +1,150 @@
-<cfcomponent>
-    <cffunction name="getBrands" access="remote" returnType="any" returnFormat="json" >
-        <cfquery name="brands">
-            SELECT BrandId, BrandName
-            FROM [Brand]
-        </cfquery>
+<cfcomponent extends = "header" >
+    <cfset VARIABLES.adminDB = CreateObject("db.admin_db") />
 
-        <cfset brandlist = {}/>
-        <cfloop query="brands" >
-            <cfset StructInsert(brandlist, #BrandId#, #BrandName#) />
+    <cffunction name = "getBrands" access = "remote" returnType = "any" returnFormat = "json" >
+        <cfset LOCAL.brandlist = {}/>
+
+        <cfinvoke method = "queryBrands" component = "#VARIABLES.adminDB#"
+            returnvariable = "REQUEST.brands" />
+
+        <cfloop query = "REQUEST.brands" >
+            <cfset StructInsert(LOCAL.brandlist, #BrandId#, #BrandName#) />
         </cfloop>
-        <cfreturn #brandlist#/>
+
+        <cfreturn #LOCAL.brandlist#/>
     </cffunction>
 
-    <cffunction name="getSuppliers" access="remote" returnType="any" returnFormat="json">
-        <cfquery name="suppliers">
-            SELECT *
-            FROM [Supplier]
-        </cfquery>
 
+    <cffunction name = "getSuppliers" access = "remote" returnType = "any" returnFormat = "json">
         <cfset supplierlist = {}/>
-        <cfloop query="suppliers" >
+
+        <cfinvoke method = "querySuppliers" component = "#VARIABLES.adminDB#"
+            returnvariable = "REQUEST.suppliers" />
+
+        <cfloop query = "REQUEST.suppliers" >
             <cfset StructInsert(supplierlist, #SupplierId#, #CompanyName#) />
         </cfloop>
+
         <cfreturn #supplierlist#/>
     </cffunction>
 
-    <cffunction name="addNewProduct" access="remote" returnType="any" returnFormat="json">
-        <cfargument name="formdata" type="any" required="true" />
-        <cftry>
 
-            <cfreturn #arguments.formdata#/>
-            <cfcatch >
-                <cfdump var="#cfcatch#" />
-            </cfcatch>
-        </cftry>
-    </cffunction>
+    <cffunction name = "getProducts" access = "remote" returntype = "Any" returnformat = "json"  >
+        <cfargument name = "scatid" type = "numeric" required = "true"  />
+        <cfset LOCAL.productsObj = []/>
 
-    <cffunction name="getProducts" access="remote" returntype="Any" returnformat="json"  >
-        <cfargument name="scatid" type="numeric" required="true"  />
-        <cftry>
-            <cfquery name="products">
-                SELECT * from [Product]
-                WHERE SubCategoryId = <cfqueryparam value="#arguments.scatid#" cfsqltype="cf_sql_smallint">
-            </cfquery>
+            <cfinvoke method = "queryProductsForSubCategory" component = "#VARIABLES.adminDB#"
+                returnvariable = "REQUEST.products" argumentcollection = "#ARGUMENTS#"  />
 
-            <cfset productsObj = []/>
-
-            <cfloop query="products" >
+            <cfloop query = "REQUEST.products" >
                 <cfset ArrayAppend(productsObj, {
-                                        "ProductId" = "#ProductId#",
-                                        "BrandId" = "#BrandId#",
-                                        "Description" = "#Description#" ,
-                                        "ListPrice" = "#ListPrice#" ,
-                                        "Name" = "#Name#" ,
-                                        "Qty" = "#Qty#" ,
-                                        "SupplierId" = "#SupplierId#",
-                                        "SubCategoryId" = "#SubCategoryId#"
-                                        })/>
+                        "ProductId" = "#ProductId#",
+                        "BrandId" = "#BrandId#",
+                        "Description" = "#Description#" ,
+                        "ListPrice" = "#ListPrice#" ,
+                        "Name" = "#Name#" ,
+                        "Qty" = "#Qty#" ,
+                        "SupplierId" = "#SupplierId#",
+                        "SubCategoryId" = "#SubCategoryId#"
+                    })/>
             </cfloop>
 
-            <cfreturn #productsObj# />
-            <cfcatch >
-                <cfdump var="#cfcatch#" />
-            </cfcatch>
-        </cftry>
-
+        <cfreturn #productsObj# />
     </cffunction>
 
-    <cffunction name="getSubCategoriesJSON" returntype="Array" returnformat="JSON" output="false" access="remote">
-        <cfargument name="categoryid" type="numeric" required="true"  />
-        <cfset result = []/>
-        <cfquery name="subcategories">
-            Select SubCategoryId, SubCategoryName
-            from [ProductSubCategory]
-            WHERE CategoryId = #arguments.categoryid#
-        </cfquery>
 
-        <cfloop query="subcategories" >
-            <cfset ArrayAppend(result, #SubCategoryName#)/>
+    <cffunction name = "getSubCategoriesJSON" returntype = "Array" returnformat = "JSON" output = "false" access = "remote">
+        <cfargument name = "categoryid" type = "numeric" required = "true"  />
+        <cfset LOCAL.result = []/>
+
+        <cfset LOCAL.subCategoriesQuery = super.getSubCategories( CategoryId = #ARGUMENTS.categoryid# ) />
+
+        <cfloop query = "LOCAL.subCategoriesQuery" >
+            <cfset ArrayAppend( LOCAL.result, #SubCategoryName# ) />
         </cfloop>
-        <cfreturn #result# />
+        <cfreturn #LOCAL.result# />
     </cffunction>
 
 
-
-
-    <cffunction name="addSubCategory" access="remote" returntype="any" returnformat="JSON" output="true" >
-        <cfargument name="categoryid" type="numeric" required="true" />
-        <cfargument name="subcategoryname" type="string" required="true" />
+    <cffunction name = "addSubCategory" access = "remote" returntype = "any" returnformat = "JSON" output = "true" >
+        <cfargument name = "categoryid" type = "numeric" required = "true" />
+        <cfargument name = "subcategoryname" type = "string" required = "true" />
 
         <cftry>
             <cfset exists = searchDuplicates(subcategoryname = arguments.subcategoryname, query = "subcategoryname")/>
+
             <cfif not #exists#>
-                <cfquery name="insertNewSubcategory">
-                    INSERT INTO [ProductSubCategory]
-                    (SubCategoryName, CategoryId)
-                    VALUES
-                    (
-                    <cfqueryparam value="#arguments.subcategoryname#" cfsqltype="cf_sql_nvarchar" />,
-                    <cfqueryparam value="#arguments.categoryid#" cfsqltype="cf_sql_int" />
-                    )
-                </cfquery>
+
+                <cfinvoke method = "insertSubCategory" component = "#VARIABLES.adminDB#"
+                    argumentcollection = "#ARGUMENTS#" />
                 <cfreturn true>
             <cfelse>
                 <cfreturn false/>
             </cfif>
 
             <cfcatch>
-                <cfdump var="#cfcatch#" />
+                <cfdump var = "#cfcatch#" />
                 <cfreturn false/>
             </cfcatch>
         </cftry>
     </cffunction>
 
 
-    <cffunction name="addBrand" access="remote" returntype="any" returnformat="JSON" output="true">
-        <cfargument name="brand" required="true" type="string"/>
+    <cffunction name = "addBrand" access = "remote" returntype = "any" returnformat = "JSON" output = "true">
+        <cfargument name = "brand" required = "true" type = "string"/>
         <cftry>
-            <cfset exists = searchDuplicates(brand = arguments.brand, query="brandname")/>
+            <cfset exists = searchDuplicates(brand = arguments.brand, query = "brandname")/>
             <cfif not #exists#>
-                <cfquery name="insertBrand">
-                    INSERT INTO [Brand]
-                    (BrandName)
-                    VALUES
-                    (<cfqueryparam value="#arguments.brand#" cfsqltype="cf_sql_nvarchar" />)
-                </cfquery>
+
+                <cfinvoke method = "insertBrand" component = "#VARIABLES.adminDB#"
+                    brand = #ARGUMENTS.brand# />
+
                 <cfreturn true/>
             <cfelse>
                 <cfreturn false/>
             </cfif>
         <cfcatch>
-            <cfdump var="#cfcatch#" />
+            <cfdump var = "#cfcatch#" />
             <cfreturn "error"/>
         </cfcatch>
         </cftry>
-
     </cffunction>
 
 
-    <cffunction name="addCategory" output="true" returntype="Any" returnformat="JSON" access="remote" >
-        <cfargument name="categoryname" required="true" type="string" />
-        <cftry >
+    <cffunction name = "addCategory" output = "true" returntype = "Any" returnformat = "JSON" access = "remote" >
+        <cfargument name = "categoryname" required = "true" type = "string" />
 
-        <cfset exists = searchDuplicates(categoryname = arguments.categoryname, query="categoryname")/>
-        <cfif not #exists#>
-            <cfquery name="insertCategory">
-                INSERT INTO [ProductCategory]
-                (CategoryName)
-                VALUES
-                (<cfqueryparam value="#arguments.categoryname#" cfsqltype="cf_sql_nvarchar" />)
-            </cfquery>
-            <cfreturn true>
-        <cfelse>
-            <cfreturn false/>
-        </cfif>
-        <cfcatch>
-            <cfdump var="#cfcatch#" />
-            <cfreturn "error"/>
-        </cfcatch>
+        <cftry>
+            <cfset exists = searchDuplicates(categoryname = arguments.categoryname, query = "categoryname")/>
+            <cfif not #exists#>
+
+                <cfinvoke method = "insertCategory" component = "#VARIABLES.adminDB#"
+                    categoryname = #ARGUMENTS.categoryname# />
+
+                <cfreturn true>
+            <cfelse>
+                <cfreturn false/>
+            </cfif>
+            <cfcatch>
+                <cfdump var = "#cfcatch#" />
+                <cfreturn "error"/>
+            </cfcatch>
         </cftry>
-
     </cffunction>
 
 
-    <cffunction name="searchDuplicates" output="true" returntype="boolean" access="remote">
-        <cfargument name="query" required="true" type="string"/>
+    <cffunction name = "searchDuplicates" output = "true" returntype = "boolean" access = "remote">
+        <cfargument name = "query" required = "true" type = "string"/>
         <cftry>
 
-            <cfswitch expression="#arguments.query#" >
+            <cfswitch expression = "#ARGUMENTS.query#" >
 
-                <cfcase value="categoryname" >
 
-                    <cfquery name="searchResult">
-                        SELECT * FROM [ProductCategory] WHERE CategoryName = <cfqueryparam value="#arguments.categoryname#" cfsqltype="cf_sql_nvarchar" />
-                    </cfquery>
-                    <cfif searchResult.recordCount>
+                <cfcase value = "categoryname" >
+                    <cfinvoke method = "queryForCategory" component = "#VARIABLES.adminDB#"
+                        returnvariable = "REQUEST.categoryQuery" argumentcollection = "#ARGUMENTS#"  />
+
+                    <cfif REQUEST.categoryQuery.recordCount>
                         <cfreturn true/>
                         <cfelse>
                         <cfreturn false/>
@@ -183,14 +153,11 @@
                 </cfcase>
 
 
+                <cfcase value = "subcategoryname" >
+                    <cfinvoke method = "queryForSubCategory" component = "#VARIABLES.adminDB#"
+                        returnvariable = "REQUEST.subCategoryQuery" argumentcollection = "#ARGUMENTS#" />
 
-
-                <cfcase value="subcategoryname" >
-
-                    <cfquery name="searchResult">
-                        SELECT * FROM [ProductSubCategory] WHERE SubCategoryName = <cfqueryparam value="#arguments.subcategoryname#" cfsqltype="cf_sql_nvarchar" />
-                    </cfquery>
-                    <cfif searchResult.recordCount>
+                    <cfif REQUEST.subCategoryQuery.recordCount>
                         <cfreturn true/>
                         <cfelse>
                         <cfreturn false/>
@@ -199,16 +166,11 @@
                 </cfcase>
 
 
+                <cfcase value = "brandname" >
+                    <cfinvoke method = "queryForBrand" component = "#VARIABLES.adminDB#"
+                        returnvariable = "REQUEST.brandQuery" argumentcollection = "#ARGUMENTS#" />
 
-
-                <cfcase value="brandname" >
-
-                    <cfquery name="searchBrands">
-                        SELECT *
-                        FROM [Brand]
-                        WHERE BrandName = <cfqueryparam value="#arguments.brand#" cfsqltype="cf_sql_nvarchar" />
-                    </cfquery>
-                    <cfif searchBrands.recordCount>
+                    <cfif REQUEST.brandQuery.recordCount>
                         <cfreturn true/>
                     <cfelse>
                         <cfreturn false/>
@@ -219,29 +181,43 @@
 
 
             <cfcatch>
-                <cfdump var="#cfcatch#" />
+                <cfdump var = "#cfcatch#" />
             </cfcatch>
         </cftry>
     </cffunction>
 
-    <cffunction name="addProduct" output="true" access="remote" returntype="boolean" >
-        <cfdump var="#arguments#" />
-        <!--- <cfquery name="insertProduct">
+
+
+
+    <cffunction name = "addProduct" output = "true" access = "remote" returntype = "boolean" >
+        <cfdump var = "#arguments#" />
+        <!--- <cfquery name = "insertProduct">
             INSERT INTO [Product]
             (Name, BrandId, SubCategoryId, SupplierId, ListPrice, Qty, Description, Image)
             VALUES
             (
-                <cfqueryparam value="#form.Name#" cfsqltype="cf_sql_char" >,
-                <cfqueryparam value="#form.BrandId#" cfsqltype="cf_sql_int" >,
-                <cfqueryparam value="#form.SubCategoryId#" CFSQLType = "cf_sql_int" >,
-                <cfqueryparam value="#form.SupplierId#" cfsqltype="cf_sql_int" >,
-                <cfqueryparam value="#form.ListPrice#" cfsqltype="cf_sql_bigint" >,
-                <cfqueryparam value="#form.Qty#" cfsqltype="cf_sql_int" >,
-                <cfqueryparam value="#form.Description#" cfsqltype="CF_SQL_NVARCHAR" >,
-                <cfqueryparam value="#image#" cfsqltype="cf_sql_nvarchar">
+                <cfqueryparam value = "#form.Name#" cfsqltype = "cf_sql_char" >,
+                <cfqueryparam value = "#form.BrandId#" cfsqltype = "cf_sql_int" >,
+                <cfqueryparam value = "#form.SubCategoryId#" CFSQLType = "cf_sql_int" >,
+                <cfqueryparam value = "#form.SupplierId#" cfsqltype = "cf_sql_int" >,
+                <cfqueryparam value = "#form.ListPrice#" cfsqltype = "cf_sql_bigint" >,
+                <cfqueryparam value = "#form.Qty#" cfsqltype = "cf_sql_int" >,
+                <cfqueryparam value = "#form.Description#" cfsqltype = "CF_SQL_NVARCHAR" >,
+                <cfqueryparam value = "#image#" cfsqltype = "cf_sql_nvarchar">
             )
         </cfquery> --->
+    </cffunction>
 
+
+    <cffunction name = "addNewProduct" access = "remote" returnType = "any" returnFormat = "json">
+        <cfargument name = "formdata" type = "any" required = "true" />
+        <cftry>
+
+            <cfreturn #ARGUMENTS.formdata#/>
+            <cfcatch >
+                <cfdump var = "#cfcatch#" />
+            </cfcatch>
+        </cftry>
     </cffunction>
 
 </cfcomponent>

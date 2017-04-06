@@ -200,41 +200,25 @@
 
     <cffunction name="orderPlacedByCOD" output="false" returntype="Struct" returnformat="JSON" access="remote">
         <cfset response = {}/>
-        <cfset subTotal = getCartTotal()/>
+        <!--- <cfset subTotal = getCartTotal()/> --->
 
         <cftry>
             <!--- INSERT INTO ORDER TABLE --->
-            <cfquery name="insertToOrderTable" result="insertedOrder">
-                INSERT INTO [Order]
-                (UserId, SubTotal, OrderDate, PaymentMethod, Status)
-                VALUES
-                (#session.User.UserId#, #subTotal#, GETDATE(), 'COD', 'Processing')
-            </cfquery>
+
+            <cfinvoke method="insertToOrderTable" component="#VARIABLES.checkoutDB#"
+                returnvariable="REQUEST.insertedOrder" />
 
             <!--- GET GENERATED ORDER_ID OF ORDERS TABLE --->
-            <cfset variables.OrderId = #insertedOrder.GENERATEDKEY#/>
+            <cfset LOCAL.OrderId = #REQUEST.insertedOrder.GENERATEDKEY#/>
 
             <!--- GET REQUIRED ITEMS FOR INSERTING INTO ORDERDETAILS TABLE --->
-            <cfquery name="cart"> <!--- \/ & OrderId, ShipToAddressId --->
-                SELECT c.ProductId, p.ListPrice AS UnitPrice, c.Qty AS OrderQty, p.SupplierId
-                FROM [Cart] c
+            <cfinvoke method="getProductsDetailFromCart" component="#VARIABLES.checkoutDB#"
+                returnvariable="REQUEST.cartItemDetails" />
 
-                inner join [Product] p
-                on c.ProductId = p.ProductId
-
-                WHERE c.UserId = #session.User.UserId#
-            </cfquery>
 
             <!--- INSERT INTO ORDERDETAILS TABLE USING cart QUERY--->
-
-            <cfquery name="updateOrderDetails">
-                <cfloop query="cart" >
-                    INSERT INTO [OrderDetails]
-                    (OrderId, ProductId, OrderQty, UnitPrice, ShipToAddressId, SupplierId)
-                    VALUES
-                    (#variables.OrderId#, #cart.ProductId#, #cart.OrderQty#, #cart.UnitPrice#, #session.User.checkout.AddressId#, #cart.SupplierId# )
-                </cfloop>
-            </cfquery>
+            <cfinvoke method="insertToOrderDetails" component="#VARIABLES.checkoutDB#"
+                cartItemDetails = #REQUEST.cartItemDetails# orderId = #LOCAL.OrderId# />
 
             <cfset cartCleared = clearCart()/>
             <cfif cartCleared>

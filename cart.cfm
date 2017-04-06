@@ -1,3 +1,5 @@
+<cfset cartCFC = createObject("cfc.cart") />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,9 +7,8 @@
     <link rel="stylesheet" href="assets/css/cart.css">
     <script src="assets/js/cart.js"></script>
 </head>
-<body onload="fetchCartItems();">
+<body onload="fetchCartItems()">
     <cfinclude template = "commons/header.cfm">
-    <cfset cartCFC = createObject("cfc.cart")/>
     <div class="container-fluid">
 
         <div id="items_pane">
@@ -18,18 +19,17 @@
                         .item_actions
                 #checkout_pane
 --->
-            </div>
+        </div>
 
             <div id="checkout_pane">
-                <cfset isCartEmpty = cartCfC.isCartEmpty()/>
-                <cfif isCartEmpty>
+                <cfset VARIABLES.isCartEmpty = cartCfC.isCartEmpty()/>
+                <cfif VARIABLES.isCartEmpty>
                     <button type="button" class="disabled btn btn-success btn-lg" onclick="alert('Add some products first..')">Checkout</button>
                 <cfelse>
                     <button type="button" class="btn btn-success btn-lg" onclick="checkout();">Checkout</button>
                 </cfif>
             </div>
-
-        </div>
+    </div>
 
         <cfinclude template="commons/footer.cfm" />
     </body>

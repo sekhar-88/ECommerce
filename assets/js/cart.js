@@ -12,7 +12,7 @@ function checkout(){
                 window.location.href="checkout.cfm";
             }
             else{
-                alert('please login to checkout');
+                notify("Please Login to continue Checkout", "info", "fa fa-check")
             }
         }
     });
@@ -89,14 +89,14 @@ function fetchCartItems(){
 
             $.each(response, function(i, item){
                     console.log(item);
-                    var itemStr = '<div id="item_'+item.ProductId+'" class="item">'
-                                    +   '<div class="item_info">'
-                                    +       item.ProductId + ' ' + item.Name
-                                    +   '</div>'
-                                    +   '<div class="item_actions">'
-                                    +       '<button type="button" class="btn btn-warning" data-name="'+item.Name+'" onclick="'+fnOpen+item.ProductId+fnClose+'">Remove</button>'
-                                    +   '</div>'
-                                + '</div> '
+                    var itemStr = '<div id="item_'+item.ProductId+'" class="item">' +
+                                    '<div class="item_info">' +
+                                        item.ProductId + ' ' + item.Name +
+                                    '</div>' +
+                                    '<div class="item_actions">' +
+                                        '<button type="button" class="btn btn-warning" data-name="'+item.Name+'" onclick="'+fnOpen+item.ProductId+fnClose+'">Remove</button>' +   // onclick="removeItemFromCart('+ item.ProductId +')">Remove</button>' +   // try this
+                                    '</div>'+
+                                  '</div> '
                     $("#items_pane").append(itemStr);
             });
 

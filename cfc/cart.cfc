@@ -1,40 +1,32 @@
 <cfcomponent>
+    <cfset VARIABLES.cartDB = CreateObject("db.cart_db") />
 
     <cffunction  name="isCartEmpty" output="false" returntype="boolean"  returnFormat="json" access="remote">
         <cfif session.loggedin>
-            <cfquery name="items">
-                SELECT CartId
-                FROM [Cart]
-                WHERE UserId = #session.User.UserId#
-            </cfquery>
-            <cfif items.recordcount>
-                <cfset result = "false"/>
-                <cfelse>
-                <cfset result = "true" />
+            <cfset LOCAL.result = "false" />
+            <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
+                returnvariable="REQUEST.items" />
+            <cfif NOT REQUEST.items.recordcount >   <cfset LOCAL.result = "true" />
             </cfif>
         <cfelse>
-            <cfset result = ArrayIsEmpty(session.cart)/>
+            <cfset LOCAL.result = ArrayIsEmpty(session.cart) />
         </cfif>
 
-        <cfreturn #result#/>
+        <cfreturn #LOCAL.result#/>
     </cffunction>
+
 
     <cffunction name="removeFromUserCart" output="true" returntype="boolean" returnformat="json" access="remote">
         <cfargument name="pid" type="numeric" required="true" />
-        <cfset uid = #session.user.userid#/>
-            <cftry>
-                <cfquery name="removeItem">
-                    DELETE
-                    FROM [Cart]
-                    WHERE ProductId = #arguments.pid# AND UserId = #uid#
-                </cfquery>
-                <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
-                <cfreturn true/>
-            <cfcatch>
-                <cfreturn false/>
-            </cfcatch>
-            </cftry>
+
+            <cfinvoke method="removeItemFromUserCart" component="#VARIABLES.cartDB#"
+                argumentcollection="#ARGUMENTS#" />
+
+            <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
+
+            <cfreturn true/>
     </cffunction>
+
 
     <cffunction name="removeFromSessionCart" output="false" returnType="boolean" returnFormat="json" access="remote" >
         <cfargument name="pid" type="numeric" required="true"/>
@@ -42,13 +34,16 @@
                 <cfreturn arrayDelete(session.cart, #arguments.pid#)/>
     </cffunction>
 
+
+
     <cffunction name="getCartCount" output="true" returnType="numeric" returnFormat="json" access="remote" >
         <cfif session.loggedin>
-            <cfquery name="cartcount">
-                SELECT COUNT(*) AS count from [Cart]
-                Where UserId = #Session.User.UserId#
-            </cfquery>
-            <cfreturn #cartcount.count#/>
+
+            <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
+                returnvariable="REQUEST.items" />
+
+            <cfreturn #REQUEST.items.recordCount#/>
+
         <cfelse>
             <cfif StructKeyExists(session, "cart")>
                 <cfreturn #ArrayLen(session.cart)#/>
@@ -58,67 +53,59 @@
         </cfif>
     </cffunction>
 
+
     <cffunction name="getCartItems" returnformat="JSON" returntype="Array" access="remote" output="true">
-        <cfset pList = []/> 
-        <cfif session.loggedin>
-            <cfset userid= #SESSION.User.UserId# />
-            <cftry>
-                <cfquery name="products">
-                    SELECT c.*,p.Name
-                    from [Cart] c
-                    INNER JOIN [Product] p
-                    ON c.ProductId = p.ProductId
-                    WHERE c.UserId = #userid#
-                </cfquery>
-            <cfcatch>
-                <cfoutput>
-                    #cfcatch#
-                </cfoutput>
-            </cfcatch>
-            </cftry>
+        <cfset LOCAL.pList = []/>
 
-            <!--- PRODUCT IN LOGGED USER'S CART --->
-            <cfloop query="products">
-                <cfset ArrayAppend(pList, {
-                    "CartId" = "#products.CartId#",
-                    "ProductId" = "#products.ProductId#",
-                    "Name" = "#products.Name#",
-                    "Qty" = "#products.Qty#",
-                    "UserId" = "#products.UserId#",
-                    "DiscountAmount" = "#products.DiscountAmount#",
-                    "DiscountedPrice" = "#products.DiscountedPrice#"
-                })/>
-            </cfloop>
+        <cfif session.loggedin>     <cfset LOCAL.pList = getUserCartItems() />
 
-            <cfreturn pList/>
-        <cfelse>  <!---NOT LOGGEDIN  --->
-            <cftry>
-                <cfif NOT ArrayIsEmpty(session.cart)>
-                    <cfset cart_list = ArrayToList(session.cart)/>
-                    <cfquery name="products">
-                        SELECT p.ProductId, p.Name
-                        FROM [Product] p
-                        WHERE ProductId IN (   <cfqueryparam
-                                                value = '#cart_list#'
-                                                cfsqltype="cf_sql_integer"
-                                                list = 'yes' >
-                                           )
-                    </cfquery>
-                    <cfloop query="products">
-                        <cfset ArrayAppend(pList, {
-                                "ProductId" = #products.ProductId#,
-                                "Name" = #products.Name#
-                            })/>
-                    </cfloop>
-                    <cfreturn #pList#/>
-                <cfelse>
-                    <cfreturn #pList#/>
-                </cfif>
-            <cfcatch>
-                <cfdump var="#cfcatch#" />
-            </cfcatch>
-            </cftry>
+            <cfelse>  <!---NOT LOGGEDIN  --->
+            <cfset LOCAL.pList = getSessionCartItems() />
         </cfif>
+
+        <cfreturn #LOCAL.pList#/>
     </cffunction>
 
+
+    <!--- PRODUCT IN LOGGED USERS CART --->
+    <cffunction name="getUserCartItems" returntype="Array" access = "private" >
+        <cfset LOCAL.pList = [] />
+
+        <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
+            returnvariable="REQUEST.products" />
+
+        <cfloop query="REQUEST.products">
+            <cfset ArrayAppend(LOCAL.pList, {
+                "CartId"      = "#CartId#",
+                "ProductId"   = "#ProductId#",
+                "Name"        = "#Name#",
+                "Qty"         = "#Qty#",
+                "UserId"      = "#UserId#",
+                "DiscountAmount"  = "#DiscountAmount#",
+                "DiscountedPrice" = "#DiscountedPrice#"
+            })/>
+        </cfloop>
+
+        <cfreturn #LOCAL.pList# />
+    </cffunction>
+
+
+    <!--- PRODUCT IN SESSION CART --->
+    <cffunction name="getSessionCartItems" returntype="Array" access = "private" >
+        <cfset LOCAL.pList = [] />
+        <cfif NOT ArrayIsEmpty(session.cart)>
+
+            <cfinvoke method="queryProductsFromSessionCart" component="#VARIABLES.cartDB#"
+                returnvariable="REQUEST.products" />
+
+            <cfloop query="REQUEST.products">
+                <cfset ArrayAppend(LOCAL.pList, {
+                        "ProductId" = #ProductId#,
+                        "Name" = #Name#
+                    })/>
+            </cfloop>
+        </cfif>
+
+        <cfreturn #LOCAL.pList# />
+    </cffunction>
 </cfcomponent>

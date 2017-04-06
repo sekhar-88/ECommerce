@@ -1,7 +1,7 @@
 #items_pane{
     float:left;
     width: 78%;
-    padding: 20px;
+    padding: 20px 1px;
     background-color: #fefdf1;
     min-height: 200px;
 }

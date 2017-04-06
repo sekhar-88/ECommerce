@@ -15,9 +15,9 @@
         <cfargument name="CategoryId" type="numeric" required="true"  />
 
         <cfinvoke method="getSubCategories" component="#VARIABLES.headerDB#"
-            returnvariable = "LOCAL.subcategories" argumentcollection="#ARGUMENTS#" />
+            returnvariable = "REQUEST.subcategories" argumentcollection="#ARGUMENTS#" />
 
-        <cfreturn #LOCAL.subcategories# />
+        <cfreturn #REQUEST.subcategories# />
     </cffunction>
 
 

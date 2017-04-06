@@ -122,6 +122,68 @@
         </cfquery>
 
         <cfreturn true/>
+    </cffunction>
+
+
+    <cffunction name="insertToOrderTable" returntype="struct" access = "public">
+
+        <cfset LOCAL.subTotal = getCartTotal()/>
+
+        <cfquery name="REQUEST.insertToOrderTable" result="REQUEST.insertedOrder">
+            INSERT INTO [Order]
+            (UserId, SubTotal, OrderDate, PaymentMethod, Status)
+            VALUES
+            (#SESSION.User.UserId#, #LOCAL.subTotal#, GETDATE(), 'COD', 'Processing')
+        </cfquery>
+
+        <cfreturn #REQUEST.insertedOrder# />
+    </cffunction>
+
+
+
+    <cffunction name="getProductsDetailFromCart" returntype="query" access = "public" >
+
+        <cfquery name="REQUEST.cartItemDetails"> <!--- \/ & OrderId, ShipToAddressId --->
+            SELECT c.ProductId, p.ListPrice AS UnitPrice, c.Qty AS OrderQty, p.SupplierId
+            FROM [Cart] c
+
+            inner join [Product] p
+            on c.ProductId = p.ProductId
+
+            WHERE c.UserId = #SESSION.User.UserId#
+        </cfquery>
+
+        <cfreturn #REQUEST.cartItemDetails# />
+    </cffunction>
+
+
+
+<!--- its first argument value getProductsDetailFromCart()
+        which is a query containing the necessary items for inserting into the orderDetails table
+
+        second argument depends on insertToOrderTable()
+        which gets the order ID from the result struct from the inesrting query to Order table.
+--->
+    <cffunction name="insertToOrderDetails" returntype="void" access="public"  >
+        <cfargument name="cartItemDetails" type="query" required = "true" />
+        <cfargument name="orderId" type="numeric" required = "true" />
+
+        <cfquery>
+            <cfloop query="REQUEST.cartItemDetails" >
+                INSERT INTO [OrderDetails]
+                (OrderId, ProductId, OrderQty, UnitPrice, ShipToAddressId, SupplierId)
+                VALUES
+                (
+                    #ARGUMENTS.OrderId#,
+                    #REQUEST.cartItemDetails.ProductId#,
+                    #REQUEST.cartItemDetails.OrderQty#,
+                    #REQUEST.cartItemDetails.UnitPrice#,
+                    #SESSION.User.checkout.AddressId#,
+                    #REQUEST.cartItemDetails.SupplierId#
+                )
+            </cfloop>
+        </cfquery>
 
     </cffunction>
+
 </cfcomponent>
