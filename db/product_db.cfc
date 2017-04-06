@@ -76,4 +76,76 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfreturn #REQUEST.productDetails# />
     </cffunction>
 
+
+    <cffunction name="getSubCategoryFilters" returntype = "Query" access="public"  >
+        <cfargument name="q" type = "string" required = "true" />
+
+        <cftry>
+            <cfquery name="REQUEST.subCategoryFilters">
+                SELECT DISTINCT psc.SubCategoryName, psc.SubCategoryId
+                FROM [ProductSubCategory] psc
+                INNER JOIN [Product] p
+                ON psc.SubCategoryId = p.SubCategoryId
+                WHERE p.Name LIKE <cfqueryparam value = "%#URL.q#%" cfsqltype="CF_SQL_CHAR">
+            </cfquery>
+
+            <cfcatch>
+                <cfdump var="#cfcatch#" />
+                <cfabort />
+            </cfcatch>
+
+        </cftry>
+        <cfreturn REQUEST.subCategoryFilters />
+    </cffunction>
+
+
+    <cffunction name="getBrandsFilter" returntype = "Query" access = "public" >
+        <cfargument name="scat" type = "string" required = "true" />
+
+        <cfquery name="REQUEST.brandsFilter">
+            SELECT DISTINCT b.BrandName , b.BrandId
+            FROM [Brand] b
+            INNER JOIN [Product] p
+            ON b.BrandId = p.BrandId
+            WHERE p.SubCategoryId = <cfqueryparam value="#ARGUMENTS.scat#" cfsqltype="cf_sql_int" />
+        </cfquery>
+
+        <cfreturn REQUEST.brandsFilter />
+    </cffunction>
+
+
+    <cffunction name="queryProducts" returntype = "query" access = "public" >
+        <cfargument name="q" required="true" type = "string"  />
+
+        <cfquery name = "REQUEST.productsQuery">
+            select *
+              from [Product]
+             where Name LIKE <cfqueryparam value="%#ARGUMENTS.q#%" cfsqltype="cf_sql_char" >
+        </cfquery>
+
+        <cfreturn REQUEST.productsQuery />
+    </cffunction>
+
+    <cffunction name="addNewProductToDB" returntype="boolean" access = "public" >
+        <cfargument name="form" type="struct" required = "true"         />
+        <cfargument name="imageName" type = "string" required = "true"  />
+
+        <cfquery name="insertProduct">
+            INSERT INTO [Product]
+            (Name, BrandId, SubCategoryId, SupplierId, ListPrice, Qty, Description, Image)
+            VALUES
+            (
+                <cfqueryparam value="#ARGUMENTS.form.Name#" cfsqltype="cf_sql_char" >,
+                <cfqueryparam value="#ARGUMENTS.form.BrandId#" cfsqltype="cf_sql_int" >,
+                <cfqueryparam value="#ARGUMENTS.form.SubCategoryId#" CFSQLType = "cf_sql_int" >,
+                <cfqueryparam value="#ARGUMENTS.form.SupplierId#" cfsqltype="cf_sql_int" >,
+                <cfqueryparam value="#ARGUMENTS.form.ListPrice#" cfsqltype="cf_sql_bigint" >,
+                <cfqueryparam value="#ARGUMENTS.form.Qty#" cfsqltype="cf_sql_int" >,
+                <cfqueryparam value="#ARGUMENTS.form.Description#" cfsqltype="CF_SQL_NVARCHAR" >,
+                <cfqueryparam value="#ARGUMENTS.imageName#" cfsqltype="cf_sql_nvarchar">
+            )
+        </cfquery>
+
+        <cfreturn true />
+    </cffunction>
 </cfcomponent>

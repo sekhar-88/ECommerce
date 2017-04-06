@@ -95,6 +95,7 @@
         <cfreturn #LOCAL.inCart#/>
     </cffunction>
 
+
     <cffunction name="getavailableProductQuantity" returntype = "numeric" access="public"  >
         <cfargument name="pid" type="numeric" required="true" />
 
@@ -102,5 +103,46 @@
             returnvariable="REQUEST.product" argumentcollection="#ARGUMENTS#"  />
 
         <cfreturn #REQUEST.product.Qty# />
+    </cffunction>
+
+
+    <cffunction name="filterSubCategories" returntype="Query" access="remote"   >
+        <cfargument name="q" type = "string" required="true"  />
+
+        <cfset LOCAL.q = #Trim(ARGUMENTS.q)# />
+        <cfset REReplace(LOCAL.q, "[^\w ]", "", "ALL") />
+
+        <cfinvoke method="getSubCategoryFilters" component="#VARIABLES.productDB#"
+            returnvariable = "REQUEST.subcategoryFilters" q = #LOCAL.q#  />
+        <cfreturn REQUEST.subCategoryFilters />
+    </cffunction>
+
+    <cffunction name="filterBrands" returntype="Query" access = "remote"  >
+        <cfargument name="scat" type = "numeric" required = "true" />
+
+        <cfinvoke method="getBrandsFilter" component="#VARIABLES.productDB#"
+            returnvariable="REQUEST.brandsFilter" scat = "#ARGUMENTS.scat#" />
+
+        <cfreturn REQUEST.brandsFilter />
+    </cffunction>
+
+    <cffunction name="hasProducts" returntype = "Query" access= "remote" >
+        <cfargument name="q" type = "string" required = "true" />
+        <cfset LOCAL.q = #Trim(ARGUMENTS.q)# />
+
+        <cfinvoke method="queryProducts" component="#VARIABLES.productDB#"
+            returnvariable="REQUEST.products" q = #LOCAL.q# />
+
+        <cfreturn REQUEST.products />
+    </cffunction>
+
+    <cffunction name="addNewProduct" returntype="boolean" access = "remote"  >
+        <cfargument name="form" type="struct" required = "true" />
+        <cfargument name="imageName" type = "string" required = "true"  />
+
+        <cfinvoke method="addNewProductToDB" component="#VARIABLES.productDB#"
+            returnvariable="REQUEST.success" argumentcollection="#ARGUMENTS#"  />
+
+        <cfreturn REQUEST.success />
     </cffunction>
 </cfcomponent>

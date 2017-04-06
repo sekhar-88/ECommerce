@@ -1,3 +1,5 @@
+<cfset productCFC = CreateObject("cfc.product") />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,86 +19,78 @@
 
 <div class="container-fluid-parent">
     <cfif StructKeyExists(URL, "q")>
-        <cfquery name = "searchResult">
-            select *
-              from [Product]
-             where Name LIKE '%#URL.q#%'
-        </cfquery>
+        <cfset VARIABLES.products = productCFC.hasProducts(URL.q) />
         <cfoutput>
-            <p id="product-count-show"> #searchResult.recordCount# Results for '#URL.q#'</p>
+            <p id="product-count-show"> #VARIABLES.products.recordCount# Results for '#URL.q#'</p>
             <br />
 
             <div class="container-fluid">
 
             <cftry>
 
-            <cfif searchResult.recordCount>
-                <div class="filters">
-                    <div class="filter filter-Category">
-                        <div class="filter-header">Category</div>
+                <cfif VARIABLES.products.recordCount >
+                    <div class="filters">
+                        <div class="filter filter-Category">
+                            <div class="filter-header">Category</div>
 
-                        <form id="category-checkbox">
-                        <cfquery name="subcats">
-                            SELECT DISTINCT psc.SubCategoryName, psc.SubCategoryId
-                            FROM [ProductSubCategory] psc
-                            INNER JOIN [Product] p
-                            ON psc.SubCategoryId = p.SubCategoryId
-                            WHERE p.Name LIKE '%#URL.q#%'
-                        </cfquery>
+                            <form id="category-checkbox">
+                                <cfset VARIABLES.subCategoryFilters = productCFC.filterSubCategories(URL.q) />
 
-                        <cfoutput>
-                        <cfloop query="subcats">
-                            <div class="checkbox" style="padding-left: 10px;padding-top: 2px;">
-                                <label><input type="checkbox" name="checkbox" value="#subcats.SubCategoryId#" > #subcats.SubCategoryName#</label>
-                            </div>
-                        </cfloop>
-                        </cfoutput>
-
-                        </form>
-                    </div>
-
-                    <div class="filter filter-price">
-                        <div class="filter-header">Price</div>
-                        <form id="filter-price">
-
-                        </form>
-
-                    </div>
-                    <div class="filter filter-other">
-                        <div class="filter-header"></div>
-                    </div>
-                </div>
-
-                <div class="products">
-                        <cfloop query="searchResult">
-                            <div class="product scat_#SubCategoryId#">
-                                <a href="productDetails.cfm?pid=#ProductId#"></a>
-                                <div class="product_image">
-                                    <img class="" src="assets/images/products/medium/#Image#">
-                                </div>
-                                <div class="product_content">
-                                    <div class="product_name"> #Name# </div>
-                                    <div class="product_pricing">
-                                        <div class="product_price">#ListPrice#</div>
-                                        <div class="product_discounted_price">#DiscountPercent#</div>
+                            <cfoutput>
+                                <cfloop query="VARIABLES.subCategoryFilters">
+                                    <div class="checkbox" style="padding-left: 10px;padding-top: 2px;">
+                                        <label><input type="checkbox" name="checkbox" value="#SubCategoryId#" > #SubCategoryName#</label>
                                     </div>
-                                    <ul>
-                                        <!--- <cfloop index="i" list="#Description#" delimiters="`"  >
-                                            <li>#i#</li>
-                                        </cfloop> --->
-                                    </ul>
+                                </cfloop>
+                            </cfoutput>
+
+                            </form>
+                        </div>
+
+                        <div class="filter filter-price">
+                            <div class="filter-header">Price</div>
+                            <form id="filter-price">
+
+                            </form>
+
+                        </div>
+                        <div class="filter filter-other">
+                            <div class="filter-header"></div>
+                        </div>
+                    </div>
+
+                    <div class="products">
+                            <cfloop query="VARIABLES.products">
+                                <div class="product scat_#SubCategoryId#">
+                                    <a href="productDetails.cfm?pid=#ProductId#"></a>
+                                    <div class="product_image">
+                                        <img class="" src="assets/images/products/medium/#Image#">
+                                    </div>
+                                    <div class="product_content">
+                                        <div class="product_name"> #Name# </div>
+                                        <div class="product_pricing">
+                                            <div class="product_price">#ListPrice#</div>
+                                            <div class="product_discounted_price">#DiscountPercent#</div>
+                                        </div>
+                                        <ul>
+                                            <!--- <cfloop index="i" list="#Description#" delimiters="`"  >
+                                                <li>#i#</li>
+                                            </cfloop> --->
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </cfloop>
-                </div>
-            <cfelse>
-                <div class="no-products">
-                    no products
-                </div>
-        </cfif>
-        <cfcatch>
-        <cfdump var="#cfcatch#" />
-        </cfcatch>
+                            </cfloop>
+                    </div>
+                <cfelse>
+                    <div class="no-products">
+                        no products
+                    </div>
+            </cfif>
+
+            <cfcatch>
+            <cfdump var="#cfcatch#" />
+            </cfcatch>
+
         </cftry>
         </cfoutput>
 

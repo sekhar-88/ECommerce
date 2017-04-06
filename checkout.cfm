@@ -1,3 +1,6 @@
+<cfset checkoutCFC = createObject("cfc.checkout") />
+<cfset cartCFC = createObject("cfc.cart")/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +16,6 @@
 <body>
 
 <cfinclude template="commons/header.cfm" />
-<cfset checkoutCFC = createObject("cfc.checkout") />
 
 
 <!--- add Address modal --->
@@ -75,18 +77,18 @@
         <p></p>
 </div>
     <div class="container-fluid checkout_section">
-        <cfset cartCFC = createObject("cfc.cart")/>
         <cfset cartIsEmpty = cartCFC.isCartEmpty()/>
 
     <cfif NOT session.loggedin>
         <h4 class="jumbotron well">Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To complete Checkout Process</h4>
     <cfelseif cartIsEmpty>
         <cfset val =( #cgi.HTTP_REFERER# EQ '' )/>
+
         <cfif val EQ "YES">
             <cfoutput>
                 <cflocation url="index.cfm" addtoken="false" />
             </cfoutput>
-        <cfelse>
+            <cfelse>
             <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
         </cfif>
     <cfelse>

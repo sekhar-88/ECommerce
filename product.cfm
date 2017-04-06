@@ -1,3 +1,5 @@
+<cfset productCFC = CreateObject("cfc.product") />
+
 <!DOCTYPE html>
 <head>
     <cfinclude template = "assets/libraries/libraries.cfm">
@@ -99,37 +101,32 @@
     <div class="container-fluid">
 
                 <div class="filters">
+
                     <div class="filter filter-brand">
                         <div class="filter-header">Brands</div>
-                        <cftry>
-                        <cfquery name="brands">
-                            SELECT DISTINCT b.BrandName , b.BrandId
-                            FROM [Brand] b
-                            INNER JOIN [Product] p
-                            ON b.BrandId = p.BrandId
-                            WHERE p.SubCategoryId = <cfqueryparam value="#URL.scat#" cfsqltype="cf_sql_int" />
-                        </cfquery>
+
+                        <cfset VARIABLES.brandFilter = productCFC.filterBrands(URL.scat) />
                         <cfoutput>
+
                             <form id="brands-filter">
-                            <cfloop query="#brands#" >
-                                <div class="checkbox" style="padding-left: 10px;padding-top: 2px;">
-                                    <label><input type="checkbox" name="brand" value="#BrandId#"> #BrandName#</label>
-                                </div>
-                            </cfloop>
+                                <cfloop query="VARIABLES.brandFilter" >
+                                    <div class="checkbox" style="padding-left: 10px;padding-top: 2px;">
+                                        <label><input type="checkbox" name="brand" value="#BrandId#"> #BrandName#</label>
+                                    </div>
+                                </cfloop>
                             </form>
+
                         </cfoutput>
                     </div>
+
                     <div class="filter filter-price">
                         <div class="filter-header">Price</div>
                     </div>
+
                     <div class="filter filter-other">
                         <div class="filter-header"></div>
                     </div>
 
-                    <cfcatch>
-                        <cfdump var="#cfcatch#" />
-                    </cfcatch>
-                    </cftry>
                 </div>
 
                 <div class="products">
@@ -202,9 +199,10 @@
 </html>
 
 <cftry>
+
 <cfif IsDefined("form.Image")>
-    <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/>
-    <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
+    <!--- <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/> --->
+    <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
     <cffile action="upload"
             filefield="Image"
             destination="#path#"
@@ -212,23 +210,10 @@
             accept="image/jpeg,image/jpg,image/png"
             result="uploadresult" />
             <!--- <cfdump var="#uploadresult#" /> --->
-            <cfset image = "#uploadresult.SERVERFILE#" />
+            <cfset VARIABLES.image = "#uploadresult.SERVERFILE#" />
 
-            <cfquery name="insertProduct">
-                INSERT INTO [Product]
-                (Name, BrandId, SubCategoryId, SupplierId, ListPrice, Qty, Description, Image)
-                VALUES
-                (
-                    <cfqueryparam value="#form.Name#" cfsqltype="cf_sql_char" >,
-                    <cfqueryparam value="#form.BrandId#" cfsqltype="cf_sql_int" >,
-                    <cfqueryparam value="#form.SubCategoryId#" CFSQLType = "cf_sql_int" >,
-                    <cfqueryparam value="#form.SupplierId#" cfsqltype="cf_sql_int" >,
-                    <cfqueryparam value="#form.ListPrice#" cfsqltype="cf_sql_bigint" >,
-                    <cfqueryparam value="#form.Qty#" cfsqltype="cf_sql_int" >,
-                    <cfqueryparam value="#form.Description#" cfsqltype="CF_SQL_NVARCHAR" >,
-                    <cfqueryparam value="#image#" cfsqltype="cf_sql_nvarchar">
-                )
-            </cfquery>
+            <cfset newProduct = productCFC.addNewProduct(form = FORM, imageName = VARIABLES.image ) />
+
             <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
 
 
