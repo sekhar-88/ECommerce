@@ -66,7 +66,7 @@ $(document).ready(function(){
                                     break;
                                 case "password":
                                     login_validator.showErrors({
-                                        password : "wrong password"
+                                        password : "invalid password"
                                     });
                                     break;
                                 default:

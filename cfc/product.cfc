@@ -62,9 +62,9 @@
         <cfset LOCAL.ListPrice = 0 />
 
         <cfinvoke method="getProduct" component = "#VARIABLES.productDB#"
-            returnvariable="LOCAL.product" argumentcollection="#ARGUMENTS#" />
+            returnvariable="REQUEST.product" argumentcollection="#ARGUMENTS#" />
 
-        <cfreturn #LOCAL.product.ListPrice#/>
+        <cfreturn #REQUEST.product.ListPrice#/>
     </cffunction>
 
 
@@ -73,9 +73,9 @@
         <cfargument name="pid" required="true" type="numeric" />
 
         <cfinvoke method="queryProductDetailsAndBrand" component="#VARIABLES.productDB#"
-            returnvariable="LOCAL.productDetails" pid = "#ARGUMENTS.pid#" />
+            returnvariable="REQUEST.productDetails" pid = "#ARGUMENTS.pid#" />
 
-        <cfreturn #LOCAL.productDetails#/>
+        <cfreturn #REQUEST.productDetails#/>
     </cffunction>
 
 

@@ -31,8 +31,24 @@ $(document).ready(function(){
             else $(".product.brand_"+this.value).css("display","none");  //hide that Brand
             // console.log(this.value);
         }
-    })
+    });
+
+    $("form#product_add_form").submit(function(e){
+        var desc = "";
+        // going to submit form
+        $.each( $(".product-desc-fields > input "), function(i, item){
+            desc += $(item).val() + " " ;
+            if( (i+1)%2 == 0 )
+                { desc +=  "`"}
+            else{
+                desc += " : ";
+            }
+        });
+        $("textarea#prdt-desc").val(desc);
+    });
+
 });
+
 
 
 onload = function () {

@@ -3,7 +3,7 @@
 <head>
   <title>Register</title>
   <cfinclude template = "assets/libraries/libraries.cfm">
-  <link rel="stylesheet" href="assets/css/register.css">
+      <link rel="stylesheet" href="assets/css/register.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
   <script src="assets/js/register.js"></script>
 
@@ -11,9 +11,9 @@
 
   <body>
     <cfinclude template = "commons/header.cfm">
-    <h1 align="center">Register With Us</h1>
+    <h1 class="signup-header" align="center">Register With Us</h1>
       <div id="signup-content">
-        <form action="" method="post" id="signup_form"  autocomplete="off">
+        <form action="actions/signup_action.cfm" method="post" id="signup_form"  autocomplete="off">
 
           <div class="form-group">
             <label for="" class="required" >First Name:</label>
@@ -30,8 +30,9 @@
             <input id="uemail" type="email"  class="form-control" name="Email" required/>
           </div>
 
-          <div class="form-group">
-            <label for="">Phone Number:</label>
+          <label for="">Phone Number:</label>
+          <div class="input-group">
+            <span class="input-group-addon">+91</span>
             <input id="uphoneno"  class="form-control" type="number" name="PhoneNo" maxlength="13" />
           </div>
 

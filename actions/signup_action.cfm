@@ -1,3 +1,5 @@
+<cftry>
+
 <cfif StructKeyexists(Form, "signup")>
 
   <cfif isValid('string', form.FirstName)>
@@ -19,7 +21,7 @@
               <cfqueryparam value = "#form.LastName#" >,
               <cfqueryparam value = "#form.Email#" cfsqltype="varchar" >,
               <cfqueryparam value = "#form.PhoneNo#" cfsqltype="varchar" >,
-              <cfqueryparam value = "#form.Password#" cfsqltype="varchar" >,
+              hash(<cfqueryparam value = "#form.Password#" cfsqltype="varchar" >),
               'user'
             )
             </cfquery>
@@ -36,3 +38,7 @@
       </cfif>
     <cfelse>
     </cfif>
+<cfcatch type="any">
+    <cfdump var="#cfcatch#" />
+</cfcatch>
+</cftry>

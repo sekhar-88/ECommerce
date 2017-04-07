@@ -100,8 +100,7 @@ label.error{
 	border-left: 15px solid rgb(255, 240, 106);
 	border-radius: 0px;
 	box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.3);
-	font-family: 'Old Standard TT', serif;
-	letter-spacing: 1px;
+	font-family: Arial;
 }
 [data-notify="container"].alert-pastel-info {
 	border-left-color: rgb(255, 179, 40);

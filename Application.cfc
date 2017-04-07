@@ -38,7 +38,7 @@
         <cfset session.loggedin = false />
         <cfset session.cart = [] />
         <cfset session.cartDataChanged = false />
-        <cfset session.User = {} />
+        <cfset session.User = { role = "guest" } />
 
 
         <cfreturn />

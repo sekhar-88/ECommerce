@@ -4,6 +4,7 @@
 
 
     <cfset structClear(SESSION.User) />
+
     <!--- <cfset StructDelete(SESSION, "CFTOKEN")/>
     <cfset StructDelete(SESSION, "CFID" )/>
     <cfcookie name="CFID" expires="now" />

@@ -61,9 +61,15 @@ function addToCart(el){
 function changeto_gotocart(){
     var btn = $("#addtocart_btn");
     $(btn).children("button").remove();
-    $(btn).html('<button type="button" value="##" onclick="window.location.href=\'cart.cfm\';" class="btn btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>');
+    $(btn).html('<button type="button" value="##" onclick="window.location.href=\'cart.cfm\';" class="btn btn-lg btn-primary verdana btn-radius-1"><span class="glyphicon glyphicon"></span> Go To Cart</button>');
 }
 
 function showLoginMsg(){
-    $(".login-notify").fadeIn();
+    $(".login-notify").show(300);
 }
+
+onload = function () {
+                   var e = document.getElementById("refreshed");
+                   if (e.value == "no") e.value = "yes";
+                   else { e.value = "no"; location.reload(); }
+               }

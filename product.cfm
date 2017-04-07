@@ -23,9 +23,9 @@
 --->
     <body>
     <div id="header"><cfinclude template = "commons/header.cfm" /></div>
-
     <!--- page refresh logic --->
     <input type="hidden" id="refreshed" value="no"/>
+
 
     <div class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
       <div class="modal-dialog" role="document" style="width: 450px;">
@@ -71,10 +71,16 @@
                       <input type="number" min="0" name="ListPrice" required />
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group product-desc-fields">
                       <label>Description: </label>
-                      <textarea name="Description" placeholder="Product Description Goes Here..." cols="22" value="Description"></textarea>
+                      <div></div>
+                      <input type="text" class="" placeholder="property"> <input type="text" name="" placeholder="desc">
+                      <input type="text" class="" placeholder="property"> <input type="text" name="" placeholder="desc">
+                      <input type="text" class="" placeholder="property"> <input type="text" name="" placeholder="desc">
                   </div>
+
+                  <button onclick='$(this).prev().append("<input type="+"text"+" class="+"x"+" placeholder="+"property"+"> <input type="+"text"+" placeholder="+"desc"+">")'>add new field</button>
+                  <textarea name="Description" id="prdt-desc" placeholder="Product Description Goes Here..." cols="22" value="Description" class="hidden"></textarea>
 
                   <div class="form-group">
                       <label>Images File: </label>
@@ -200,9 +206,10 @@
 
 <cftry>
 
-<cfif IsDefined("form.Image")>
-    <!--- <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/> --->
-    <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
+<cfif IsDefined("FORM.Image") AND IsDefined("FORM.submit")>
+    <cfset path = "D:\ShoppingSite\assets\images\products\medium"/>
+    <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
+
     <cffile action="upload"
             filefield="Image"
             destination="#path#"
@@ -222,7 +229,7 @@
             <cfdump var="#productAdd#"> --->
 
 </cfif>
-<cfcatch>
+<cfcatch type="any">
     <cfdump var="#cfcatch#" />
 </cfcatch>
 </cftry>

@@ -76,6 +76,14 @@ function removeFromSessionCart(el, pid){
     });
 }
 
+
+onload = function () {
+                   fetchCartItems();
+                   var e = document.getElementById("refreshed");
+                   if (e.value == "no") e.value = "yes";
+                   else { e.value = "no"; location.reload(); }
+               }
+
 function fetchCartItems(){
     $.ajax({
         url: "cfc/cart.cfc?method=getCartItems",

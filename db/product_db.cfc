@@ -69,7 +69,8 @@ like adding to cart removing from cart, editing updating product details etc. --
                 FROM [Product] p
                 INNER JOIN [Brand] b
                 ON p.BrandId = b.BrandId
-                WHERE p.ProductId = <cfqueryparam value = "#pid#" CFSQLType = "[cf_sql_integer]">
+                WHERE p.ProductId = #ARGUMENTS.pid#
+                <!--- <cfqueryparam value = "#ARGUMENTS.pid#" CFSQLType = "[cf_sql_integer]"> --->
             </cfquery>
 
 

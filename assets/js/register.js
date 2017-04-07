@@ -49,19 +49,20 @@ $().ready(function(){// password meter codes
 });
 
 function submitRegistrationForm(oform){
-    var form = oform.elements;
-    if( $("#signup_form").valid() ) {
-        $.ajax({
-            url: "",
-            data: {
-
-            }
-        }).done(function(response){
-
-        }).fail(function(error){
-            alert("registration request couldn't be processed. check log");
-            console.log("error")
-        });
-    }
+    $(oform).submit();
+    // var form = oform.elements;
+    // if( $("#signup_form").valid() ) {
+    //     $.ajax({
+    //         url: "",
+    //         data: {
+    //
+    //         }
+    //     }).done(function(response){
+    //
+    //     }).fail(function(error){
+    //         alert("registration request couldn't be processed. check log");
+    //         console.log("error")
+    //     });
+    // }
     // $("#signup_form").validate();
 }

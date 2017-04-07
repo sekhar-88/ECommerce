@@ -16,6 +16,8 @@
 <body>
 
 <cfinclude template="commons/header.cfm" />
+<!--- pagerefreshlogic --->
+<input type="hidden" id="refreshed" value="no"/>
 
 
 <!--- add Address modal --->
@@ -82,21 +84,21 @@
     <cfif NOT session.loggedin>
         <h4 class="jumbotron well">Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To complete Checkout Process</h4>
     <cfelseif cartIsEmpty>
+
         <cfset val =( #cgi.HTTP_REFERER# EQ '' )/>
 
         <cfif val EQ "YES">
             <cfoutput>
                 <cflocation url="index.cfm" addtoken="false" />
             </cfoutput>
-            <cfelse>
-            <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
+        <cfelse>
+            <cflocation url="cart.cfm" addtoken="false" />
         </cfif>
+
     <cfelse>
         <!--- loggedin >>  show address  --->
         <cfif NOT StructKeyExists(session.User, "checkout")>
-            <cfset session.User.checkout = {
-                step = 0
-                } />
+            <cfset session.User.checkout = { step = 0 } />
         </cfif>
 
         <div id="address_section" class="section">

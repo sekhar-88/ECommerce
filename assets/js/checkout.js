@@ -452,12 +452,9 @@ function validateItemQuantity(){
     if(!productCountvalid) notify("Invalid product quantity", "info", "fa fa-exclamation-circle");
     return result;
 }
-// function myfun(){
-//     console.log('thisss');
-//     //DELETE Payment details from Session from here == Checkout Step 2
-//
-// }
-// window.onunload = function(){
-//   myfun();
-//   return 'Are you sure you want to leave?';
-// };
+
+onload = function () {
+                   var e = document.getElementById("refreshed");
+                   if (e.value == "no") e.value = "yes";
+                   else { e.value = "no"; location.reload(); }
+               }

@@ -7,8 +7,12 @@
     <link rel="stylesheet" href="assets/css/cart.css">
     <script src="assets/js/cart.js"></script>
 </head>
-<body onload="fetchCartItems()">
+<body>
     <cfinclude template = "commons/header.cfm">
+    <!--- page refresh logic --->
+    <input type="hidden" id="refreshed" value="no"/>
+
+
     <div class="container-fluid">
 
         <div id="items_pane">

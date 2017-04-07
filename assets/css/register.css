@@ -4,7 +4,7 @@
   margin: auto;
   padding: 10px;
 }
-  #signup_form{
+#signup_form{
     width: 350px;
     margin: auto;
     /*for debugging */
@@ -13,41 +13,42 @@
     box-shadow: 1px 1px 10px;
     padding: 10px ;
     background-color: white;
-  }
-  .form-group > label{
-      color:red;
-  }
-  .form-group > label:first-child{
+}
+
+.form-group > label{
+    color:red;
+}
+.form-group > label:first-child{
     color: dodgerblue;
-  }
-  h1{
-  }
-    color: white;
-    font-family: "verdana";
-    margin-bottom: 10px;
-    background-color:#8196CB;
-    text-transform: capitalize;
-    padding: 5px;
-    width: 95%;
-    margin: 1% auto 4px;
-    font-weight: bold;
-    border-radius: 5px;
-  }
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
+}
+
+ h1.signup-header {
+  color: white;
+  font-family: "verdana";
+  margin-bottom: 10px;
+  background-color: #8196CB;
+  text-transform: capitalize;
+  padding: 5px;
+  width: 95%;
+  margin: 1% auto 4px;
+  font-weight: bold;
+  border-radius: 5px;
+ }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     margin: 0;
-  }
-  error-msg{
-      color: red;
-  }
-  .required::after {
-      content: '*';
-      color: red;
-  }
-
+}
+error-msg{
+    color: red;
+}
+.required::after {
+    content: '*';
+    color: red;
+}
 
 /*------------------------------------------------------------------*/
  /*PASSWORD STRENGTH METER STYLING */
