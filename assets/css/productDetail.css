@@ -19,3 +19,6 @@
     width: auto;
     height: 600px;
 }
+.btn {
+    border-radius: 0px;
+}

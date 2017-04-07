@@ -12,7 +12,8 @@ function checkout(){
                 window.location.href="checkout.cfm";
             }
             else{
-                notify("Please Login to continue Checkout", "info", "fa fa-check")
+                alert("error occured");
+                // notify("Please Login to continue Checkout", "info", "fa fa-exclamation-circle")
             }
         }
     });

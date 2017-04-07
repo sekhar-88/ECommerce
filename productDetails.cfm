@@ -1,3 +1,5 @@
+<cfset productCFC = createObject("cfc.product")/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,48 +36,38 @@
 
     <div class="container-fluid">
     <cfif StructKeyExists(URL, "pid")>
-        <cfset productCFC = createObject("cfc.product")/>
-        <cfset productController = CreateObject("controller.productController")/>
         <cfset pd = productDetails = productCFC.fetchProductDetails(url.pid)/>
 
         <cfif productdetails.recordCount> <!--- Product Exists --->
             <cfoutput>
                     <div class="pd-image-container">
-                        <img src="assets/images/products/medium/#pd.Image#" alt="">
+                        <img src="assets/images/products/medium/#productDetails.Image#" alt="">
                     </div>
 
 
             <div class="pd-info-container">
                 <div id="pdi-name">
-                    #pd.BrandName# - #pd.Name# #pd.ListPrice#
+                    #productDetails.BrandName# - #productDetails.Name# #productDetails.ListPrice#
                 </div>
 
                 <div id="pdi-buttons">
                     <!--- check for if already in cart  --->
-                    <cfif session.loggedin>
-                        <cfset incart = productController.isProductInCart(#URL.pid#)/>
+                        <cfset incart = productCFC.isProductInCart(#URL.pid#)/>
                         <cfif incart>
                             <span id="gotocart_btn">    <!--- Show Go To Cart button --->
-                            <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-sm btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>
+                            <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>
                             </span>
                         <cfelse>
                             <span id="addtocart_btn">  <!--- Show Add to cart  button --->
-                            <button type="button" value="#pid#" onclick="addToCart(this);changeto_gotocart();" class="btn btn-sm btn-primary verdana"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
+                            <button type="button" value="#pid#" onclick="addToCart(this);changeto_gotocart();" class="btn btn-primary verdana"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
                             </span>
                         </cfif>                         <!--- Show Buy Now Button --->
-                            <button type="button" value="#pid#" onclick="checkOut(this,#session.user.userid#);" class="btn btn-sm btn-success verdana"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
-                    <!---not logged in --->
+
+                    <cfif session.loggedin>
+                        <button type="button" value="#pid#" onclick="checkOut(this,#session.user.userid#);" class="btn btn-success verdana"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
                     <cfelse>
-                        <cfif ArrayContains(session.cart , #pid#)>
-                            <span id="gotocart_btn">
-                            <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-sm btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>
-                            </span>
-                        <cfelse>
-                            <span id="addtocart_btn">
-                            <button type="button" value="#pid#" onclick="addToCart(this);changeto_gotocart();" class="btn btn-sm btn-primary verdana"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
-                            </span>
-                        </cfif>
-                        <button type="button" value="#pid#" onclick="checkOut(this,undefined);" class="btn btn-sm btn-success verdana"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
+                        <button type="button" value="#pid#" onclick="notify('Login to Continue..');showLoginMsg();" class="btn btn-success verdana"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
+                        <span class="hidden well login-notify">Please <a href="##" data-toggle="dropdown" data-target = ".login_toggle">login</a> to continue.</span>
                     </cfif>
                 </div>
             </div>

@@ -85,12 +85,18 @@
         <cfset LOCAL.inCart = false/>
 
         <!--- get cart count for that product --->
-        <cfinvoke method="queryCartForProduct" component="#VARIABLES.productDB#"
-            returnvariable="REQUEST.cart" pid = #ARGUMENTS.pid# />
+        <cfif SESSION.loggedin >
+            <cfinvoke method="queryCartForProduct" component="#VARIABLES.productDB#"
+                returnvariable="REQUEST.cart" pid = #ARGUMENTS.pid# />
 
-            <cfif REQUEST.cart.recordCount>
-                <cfset LOCAL.inCart = true/>
-            </cfif>
+                <cfif REQUEST.cart.recordCount>
+                    <cfset LOCAL.inCart = true/>
+                </cfif>
+        <cfelse>
+                <cfif ArrayContains(session.cart , #pid#)>
+                    <cfset LOCAL.inCart = true />
+                </cfif>
+        </cfif>
 
         <cfreturn #LOCAL.inCart#/>
     </cffunction>

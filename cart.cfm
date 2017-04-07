@@ -23,9 +23,7 @@
 
             <div id="checkout_pane">
                 <cfset VARIABLES.isCartEmpty = cartCfC.isCartEmpty()/>
-                <cfif VARIABLES.isCartEmpty>
-                    <button type="button" class="disabled btn btn-success btn-lg" onclick="alert('Add some products first..')">Checkout</button>
-                <cfelse>
+                <cfif NOT VARIABLES.isCartEmpty>
                     <button type="button" class="btn btn-success btn-lg" onclick="checkout();">Checkout</button>
                 </cfif>
             </div>

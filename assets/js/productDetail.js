@@ -8,7 +8,8 @@ function checkOut(el,uid){
 }
 
 //clicked buyNow button
-function user_checkout(pid){
+function checkOut(el, uid){
+    var pid = $(el).val();
     $.ajax({
         url: "cfc/product.cfc?method=user_checkout",
         data: {
@@ -60,5 +61,9 @@ function addToCart(el){
 function changeto_gotocart(){
     var btn = $("#addtocart_btn");
     $(btn).children("button").remove();
-    $(btn).html('<button type="button" value="##" onclick="window.location.href=\'cart.cfm\';" class="btn btn-sm btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>');
+    $(btn).html('<button type="button" value="##" onclick="window.location.href=\'cart.cfm\';" class="btn btn-primary verdana"><span class="glyphicon glyphicon"></span> Go To Cart</button>');
+}
+
+function showLoginMsg(){
+    $(".login-notify").fadeIn();
 }
