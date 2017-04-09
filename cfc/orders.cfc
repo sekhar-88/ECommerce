@@ -24,7 +24,7 @@
                 ON o.OrderId = od.OrderId
                     INNER JOIN [Address] a
                     ON od.ShipToAddressId = a.AddressId
-            WHERE od.OrderId = #ARGUMENTS.OrderId#
+            WHERE od.OrderId = #ARGUMENTS.OrderId#  
         </cfquery>
 
         <cfreturn REQUEST.orderDetails />
