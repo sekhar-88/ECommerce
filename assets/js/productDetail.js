@@ -1,3 +1,22 @@
+$(document).ready(function(){
+    $("form#product-update-form").validate();
+    $("form#product-update-form").submit(function(){
+        var productDescription = "";
+        $.each($(".product-desc-fields > .y"), function(i, item){
+            productDescription += $(item).val() + "`";
+        });
+        $.each($(".product-desc-fields > .x"), function(i,item){
+            if(i % 2 == 0){
+                productDescription += $(item).val() + " ";
+            }
+            else{
+                productDescription += $(item).val() + "`";
+            }
+        });
+        $("#prdt-desc").val(productDescription);
+    });
+});
+
 function checkOut(el,uid){
     var pid = $(el).val();
     if(uid == undefined)    //buy now button on product detail page
@@ -66,6 +85,14 @@ function changeto_gotocart(){
 
 function showLoginMsg(){
     $(".login-notify").show(300);
+}
+
+function showUpdateModal(pid){
+    $("#update-product-modal").modal('show');
+}
+
+function updateProductDetails(){
+    $("form#product-update-form")[0].submit();
 }
 
 onload = function () {

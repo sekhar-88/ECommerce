@@ -5,6 +5,25 @@ like adding to cart removing from cart, editing updating product details etc. --
 
 <cfcomponent>
 
+<!--- updates the product details from editing the product in product details page --->
+    <cffunction name="updateProductDetails" >
+        <cfargument name="productUpdate" type="struct" required = "true"  />
+        <cfargument name="imagename" type="string" required = "true" />
+
+        <cfquery name="REQUEST.updateDetails">
+            UPDATE [Product]
+            SET Name        =  <cfqueryparam value="#ARGUMENTS.productUpdate.Name#" cfsqltype="CF_SQL_NVARCHAR" />,
+                Qty         =  <cfqueryparam value="#ARGUMENTS.productUpdate.Qty#" cfsqltype="cf_sql_int" />,
+                ListPrice   =  <cfqueryparam value="#ARGUMENTS.productUpdate.ListPrice#" cfsqltype="CF_SQL_BIGINT" />,
+                Description =  <cfqueryparam value="#ARGUMENTS.productUpdate.Description#" cfsqltype="CF_SQL_NVARCHAR" />,
+                Image = <cfqueryparam value="#imagename#" cfsqltype="CF_SQL_NVARCHAR" />
+            WHERE ProductId = #ARGUMENTS.productUpdate.ProductId#
+        </cfquery>
+
+        <cfreturn true />
+    </cffunction>
+
+
     <cffunction name = "insertIntoCart" access = "public" returntype = "void" >
 
         <cfargument name = "pid" type = "numeric" required = "true" />

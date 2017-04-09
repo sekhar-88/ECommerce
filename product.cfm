@@ -1,5 +1,15 @@
 <cfset productCFC = CreateObject("cfc.product") />
 
+<cfif IsNumeric(URL.cat) AND IsNumeric(URL.scat)>
+    <cfelse>
+        <!--- <script>$(document).ready(function(){$(html).empty();});</script> --->
+        <cfinclude template="commons/error404.cfm" />
+        <cfabort />
+    </cfif>
+
+
+
+
 <!DOCTYPE html>
 <head>
     <cfinclude template = "assets/libraries/libraries.cfm">
@@ -27,6 +37,7 @@
     <input type="hidden" id="refreshed" value="no"/>
 
 
+    <form class="" action="" enctype="multipart/form-data" method="post" id="product_add_form" name="product_add_form">
     <div class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
       <div class="modal-dialog" role="document" style="width: 450px;">
         <div class="modal-content" style="-webkit-border-radius: 0px !important;-moz-border-radius: 0px !important;border-radius: 0px !important;">
@@ -37,7 +48,6 @@
           </div>
 
           <div class="modal-body">
-              <form class="" action="" enctype="multipart/form-data" method="post" id="product_add_form" name="product_add_form">
                   <div id="form-header">add new product</div>
 
                   <div class="form-group">
@@ -84,19 +94,16 @@
 
                   <div class="form-group">
                       <label>Images File: </label>
-                      <input type="file" id="imageFile" name="Image" accept="image/jpeg" required>
+                      <input type="file" id="imageFile" name="Image" accept="image/jpeg" class="form-control" required>
                   </div>
 
-                  <div class="form-group">
-                      <button type="submit" name="submit">Add Product</button>
-                      <button type="reset" name="reset">Clear</button>
-                  </div>
               </form>
           </div>
 
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+            <button type="reset"  class="btn btn-default" name="reset">Clear</button>
           </div>
 
         </div><!-- /.modal-content -->
@@ -207,15 +214,16 @@
 <cftry>
 
 <cfif IsDefined("FORM.Image") AND IsDefined("FORM.submit")>
-    <cfset path = "D:\ShoppingSite\assets\images\products\medium"/>
+    <cfset path = "D:\ShoppingSite\assets\images\products\medium" />
     <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
 
     <cffile action="upload"
-            filefield="Image"
-            destination="#path#"
+            filefield   ="Image"
+            destination ="#path#"
             nameconflict="makeunique"
-            accept="image/jpeg,image/jpg,image/png"
-            result="uploadresult" />
+            accept      ="image/jpeg,image/jpg,image/png"
+            result      ="uploadresult"
+ />
             <!--- <cfdump var="#uploadresult#" /> --->
             <cfset VARIABLES.image = "#uploadresult.SERVERFILE#" />
 

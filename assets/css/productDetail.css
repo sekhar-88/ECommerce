@@ -39,7 +39,7 @@ div#buttons-container > * > * {
     margin-left: 10px;
     padding: 10px;
     width: auto;
-    height: 600px;
+    min-height: 450px;
 }
 
 .pd-name {
@@ -60,15 +60,39 @@ div#buttons-container > * > * {
 }
 
 .product-specification{
-    
+    border-radius: 4px;
+    border-top:1px solid lightgrey;
+    border-bottom:1px solid lightgrey;
 }
+
+.ps-header{
+    background-color: #e8e8e8;
+    font-size: 20px;
+    /*font-weight: bold;*/
+    padding: 5px;
+}
+.ps-content > ul {
+    list-style: none;
+    padding: 20px;
+    margin-left: 20px;
+}
+.ps-content > ul > li {
+    padding: 5px;
+    font-family: monospace;
+    color: #607D8B;
+}
+
 .pd-price::before{
     content: "₹";
 }
 
+.buttons-admin{
+    padding: 20px;
+}
 
-
-
+#product-update-form label {
+    width: 160px;
+}
 
 
 .btn-radius-1 {

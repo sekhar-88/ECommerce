@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>eShopping</title>
-  <cfinclude template = "assets/libraries/libraries.cfm" />
-  <link href="assets/css/index.css" rel="stylesheet">
-  <script src="assets/js/index.js"></script>
-  <style>
+    <title>eShopping</title>
+    <cfinclude template = "assets/libraries/libraries.cfm" />
+    <link href="assets/css/index.css" rel="stylesheet">
+    <script src="assets/js/index.js"></script>
+    <style>
 
-  </style>
+    </style>
 </head>
 <body>
 <div id="header"><cfinclude template = "commons/header.cfm"></div>
@@ -18,7 +18,8 @@
 <input type="hidden" id="refreshed" value="no"/>
 
 <div class="container-fluid-parent">
-    <cfif StructKeyExists(URL, "q")>
+    <cfif StructKeyExists(URL, "q") AND URL.q NEQ ''>
+
         <cfset VARIABLES.products = productCFC.hasProducts(URL.q) />
         <cfoutput>
             <p id="product-count-show"> #VARIABLES.products.recordCount# Results for '#URL.q#'</p>
@@ -93,7 +94,6 @@
 
         </cftry>
         </cfoutput>
-
 
 
     <cfelse>   <!--- home page section --->

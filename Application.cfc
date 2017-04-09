@@ -147,7 +147,21 @@
             <cfdump var="#ARGUMENTS.EventName#" />
             <!--- WriteLog(type="Error", file="shoppingbuzz.log", text="[#arguments.exception.type#] #arguments.exception.message#") --->
 
+
+            <cfif #ARGUMENTS.Exception.type# EQ "Expression">
+                <cflocation url="index.cfm" addtoken="false" />
+            <cfelse>
+                <cfinclude template="Commons/error404.cfm" />
+            </cfif>
+
         <cfreturn />
+    </cffunction>
+
+
+    <cffunction name="onMissingTemplate" returnType="boolean">
+        <cfargument type="string" name="targetPage" required=true/>
+            <cfinclude template="commons/error404.cfm" />
+        <cfreturn BooleanValue />
     </cffunction>
 
 
