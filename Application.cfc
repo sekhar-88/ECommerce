@@ -3,6 +3,7 @@
     output = "true"
     hint = "handle the shopping project" >
 
+
     <cfset this.Name = "Shopping" />
     <cfset this.sessionManagement = true />
     <!--- <cfset this.setClientCookies = false /> --->
@@ -161,7 +162,7 @@
     <cffunction name="onMissingTemplate" returnType="boolean">
         <cfargument type="string" name="targetPage" required=true/>
             <cfinclude template="commons/error404.cfm" />
-        <cfreturn BooleanValue />
+        <cfreturn false />
     </cffunction>
 
 

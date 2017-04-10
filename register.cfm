@@ -11,9 +11,11 @@
 
   <body>
     <cfinclude template = "commons/header.cfm">
+
+
     <h1 class="signup-header" align="center">Register With Us</h1>
       <div id="signup-content">
-        <form action="actions/signup_action.cfm" method="post" id="signup_form"  autocomplete="off">
+        <form action="" method="post" id="signup_form"  autocomplete="off">
 
           <div class="form-group">
             <label for="" class="required" >First Name:</label>
@@ -46,7 +48,7 @@
 
           <div class="form-group clearfix center" id="form-buttons">
             <label for=""></label>
-            <button type="button"  id="submit-button" onclick="submitRegistrationForm(this.form)" name="signup" class="btn btn-primary" > Sign UP </button>
+            <button type="submit"  id="submit-button" name="signup" class="btn btn-primary" > Sign UP </button>
 
             <label for=""></label>
             <input type="reset" name="Clear" class="btn btn-default" value="Clear" />
@@ -54,7 +56,6 @@
 
         </form>
       </div>
-<h2><a href="index.cfm">go to homepage</a></h2>
 
 
 

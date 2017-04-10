@@ -18,13 +18,13 @@
         <div class="admin-logo">Admin Panel</div>
         <nav>
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#section-product">Products</a></li>
-            <li><a data-toggle="tab" href="#section-categories">Categories &amp; Brands</a></li>
+            <li class="active"><a data-toggle="tab" href="#section-categories">Categories &amp; Brands</a></li>
+            <li><a data-toggle="tab" href="#section-product">Products</a></li>
             <li><a>list</a></li>
         </ul>
         </nav>
         <div class="tab-content">
-            <div id="section-product" class="tab-pane active fade in">
+            <div id="section-product" class="tab-pane fade">
                 <div role="navigation" class="nav nav-bar">
                     <ul class="nav nav-tabs">
                         <li><a>Category:
@@ -97,7 +97,8 @@
                     <div id="products-info" class="col-md-5 col-sm-6 col-xs-8"></div>
                 </div>
             </div>      <!--- end product view section --->
-            <div id="section-categories" class="tab-pane fade">
+
+            <div id="section-categories" class="tab-pane active fade in">
                 <div class="sections">
                     <div class="cnb-section">  <!---cnb for Category And Brand --->
                         <h2 align="center">Add Category</h2>

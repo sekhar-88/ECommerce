@@ -1,4 +1,7 @@
+var signup_validator;
 $().ready(function(){// password meter codes
+
+    signup_validator = $("#signup_form").validate();
     var strength = {
         0: "Worst",
         1: "Bad",
@@ -46,23 +49,71 @@ $().ready(function(){// password meter codes
             }
         }
     });
+
+    $("#signup_form").submit(function(e){
+
+        var formElements = $(this)[0].elements ;
+        var registrationForm = {
+            "FirstName" : formElements.FirstName.value,
+            "LastName" : formElements.LastName.value,
+            "Email" : formElements.Email.value,
+            "PhoneNo" : formElements.PhoneNo.value,
+            "Password" : formElements.Password.value
+        };
+        console.log(registrationForm);
+
+        if( $(this).valid() ){
+            $.ajax({
+                url: "cfc/user.cfc?method=newUser",
+                dataType: "json",
+                contentType: "json",
+                data: {
+                    formSerialized : JSON.stringify(registrationForm)
+                }
+            }).done(function(response){
+                console.log(response.STATUS);
+                if(response.STATUS == true ){
+                    notify("Account Created Successfully", "success", "fa fa-check-circle");
+                    $("#signup-content").empty();
+
+                    $("#signup-content").append("<div style='height: 500px;'><h1 align='center' style='color:blue;'>Account Created Successfully.</h1>\
+                                                 <h2><a href='index.cfm'>go to homepage</a></h2></div>");
+                }
+                else {
+                    console.log(response.ERROR);
+                    $.each( response.ERROR , function(key, value){
+                        signup_validator.showErrors({
+                            Email : value
+                        });
+
+                    })
+                }
+            }).fail(function(error){
+                console.log(error);
+            });
+        }
+
+        e.preventDefault();
+    });
+
+
 });
 
-function submitRegistrationForm(oform){
-    $(oform).submit();
-    // var form = oform.elements;
-    // if( $("#signup_form").valid() ) {
-    //     $.ajax({
-    //         url: "",
-    //         data: {
-    //
-    //         }
-    //     }).done(function(response){
-    //
-    //     }).fail(function(error){
-    //         alert("registration request couldn't be processed. check log");
-    //         console.log("error")
-    //     });
-    // }
-    // $("#signup_form").validate();
-}
+// function submitRegistrationForm(oform){
+//     $(oform).submit();
+//     // var form = oform.elements;
+//     // if( $("#signup_form").valid() ) {
+//     //     $.ajax({
+//     //         url: "",
+//     //         data: {
+//     //
+//     //         }
+//     //     }).done(function(response){
+//     //
+//     //     }).fail(function(error){
+//     //         alert("registration request couldn't be processed. check log");
+//     //         console.log("error")
+//     //     });
+//     // }
+//     // $("#signup_form").validate();
+// }
