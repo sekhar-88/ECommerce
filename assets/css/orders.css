@@ -1,0 +1,21 @@
+h2.order-page-header {
+    background-color: #2c4260;
+    padding: 9px;
+    color: #c2fbff;
+    font-family: monospace;
+}
+
+div.orders-container {
+    /*background-color: black;*/
+    padding: 5px;
+}
+
+.orders {
+    background-color: aliceblue;
+    padding: 10px;
+}
+
+.order {
+    background-color: white;
+    padding: 10px;
+}
