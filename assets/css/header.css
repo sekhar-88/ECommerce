@@ -26,7 +26,17 @@ label.error{
 }
 #login-form .form-group > label:first-child{
     width: 100%;
+    color: #9e9e9e;
+    text-align: right;
+    font-weight: 100;
     /*background-color: #baffba;*/
+}
+#login-form .form-group > input {
+    border: 0px;
+    width: 100%;
+    border: 1px solid #bbdefb;
+    border-radius: 4px;
+    padding: 3px;
 }
 
 .subcat_list_div {
@@ -130,6 +140,12 @@ label.error{
 
 
 /*GLOBAL*/
+.verdana{
+    font-family: verdana;
+}
+.georgia{
+    font-family: Georgia;
+}
 .color-blue{
     color: blue;
 }

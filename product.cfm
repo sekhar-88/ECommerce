@@ -26,9 +26,9 @@
     .filter
     .products
         .product
-            .product_image      /
-            .product_content    /  .product_info
-                .product_pricing    /
+            .product-image      /
+            .product-content    /  .product_info
+                .product-pricing    /
 
 --->
     <body>
@@ -44,11 +44,10 @@
 
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Modal title</h4>
+            <h4 class="modal-title">Add New Product</h4>
           </div>
 
           <div class="modal-body">
-                  <div id="form-header">add new product</div>
 
                   <div class="form-group">
                       <label>Product Name: </label>
@@ -81,29 +80,43 @@
                       <input type="number" min="0" name="ListPrice" required />
                   </div>
 
-                  <div class="form-group product-desc-fields">
+                  <div class="form-group">
                       <label>Description: </label>
                       <div></div>
-                      <input type="text" class="" placeholder="property"> <input type="text" name="" placeholder="desc">
-                      <input type="text" class="" placeholder="property"> <input type="text" name="" placeholder="desc">
-                      <input type="text" class="" placeholder="property"> <input type="text" name="" placeholder="desc">
+                  </div>
+                  <div class="form-group product-desc-fields">
+                      <div></div>
+                      <input type="text" class="" placeholder="property"><input type="text" name="" placeholder="desc">
+                      <input type="text" class="" placeholder="property"><input type="text" name="" placeholder="desc">
+                      <!--- <input type="text" class="" placeholder="property"> <input type="text" name="" placeholder="desc"> --->
                   </div>
 
-                  <button onclick='$(this).prev().append("<input type="+"text"+" class="+"x"+" placeholder="+"property"+"> <input type="+"text"+" placeholder="+"desc"+">")'>add new field</button>
+                  <button type="button" class="btn btn-sm btn-default" onclick='$(this).prev().append("<input type="+"text"+" class="+"x"+" placeholder="+"property"+"><input type="+"text"+" placeholder="+"desc"+">")' style="margin-bottom:5px; position: relative; left: 70%;">add new field</button>
                   <textarea name="Description" id="prdt-desc" placeholder="Product Description Goes Here..." cols="22" value="Description" class="hidden"></textarea>
 
-                  <div class="form-group">
-                      <label>Images File: </label>
-                      <input type="file" id="imageFile" name="Image" accept="image/jpeg" class="form-control" required>
+
+                  <div class="input-group">
+                      <label class="input-group-btn">
+                          <span class="btn btn-file">
+                              Browse&hellip; <input type="file" id="imageFile" name="Image" accept="image/jpeg" style="display: none;" multiple>
+                          </span>
+                      </label>
+                      <input type="text" class="form-control" readonly>
                   </div>
+<!---
+                      <label class="btn btn-default btn-file">
+                          Images File:
+                          <input type="file"  class="file" required>
+                      </label>
+ --->
 
               </form>
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Add Product</button>
-            <button type="reset"  class="btn btn-default" name="reset">Clear</button>
+              <button type="submit" class="btn btn-primary">Add Product</button>
+              <button type="reset"  class="btn btn-default" name="reset">Clear</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
 
         </div><!-- /.modal-content -->
@@ -111,9 +124,13 @@
     </div><!-- /.modal -->
 
 <!--- Body content --->
+
     <div class="container-fluid">
 
                 <div class="filters">
+                    <h3 class="filter-section-header">
+                        Filters
+                    </h3>
 
                     <div class="filter filter-brand">
                         <div class="filter-header">Brands</div>
@@ -142,67 +159,82 @@
 
                 </div>
 
+
+
                 <div class="products">
-                <cfif StructKeyExists(URL, "cat") AND StructKeyExists(URL, "scat")>
-                            <cfset productCFC = createObject("cfc.product") />
-                            <cfset productsQuery = productCFC.getProductsForSubCat(scat = #URL.scat#) />
 
-                            <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
-                            <cfoutput>
-                            <div class="productadd" data-scat="#URL.scat#" onclick="addNewProduct(this);">
+                    <cfif StructKeyExists(URL, "cat") AND StructKeyExists(URL, "scat")>
+                    <cfset subCategoryName = productCFC.getSubCategoryName(URL.scat) />
 
-                                <div class="product_image">
-                                    <img src="assets/images/products/commons/productaddnew.png" width="300px"/>
-                                </div>
-                                <div class="product_content" style="display: flex; align-items:center; justify-content:center; ">
-                                    <div class="product_name font-size-30 color-grey"> Add New Product In this Category/SubCategory </div>
-                                </div>
-                            </div>
-                            </cfoutput>
-                            </cfif>
+                                <h3 class="product-section-header">
+                                    <cfoutput>
+                                        in  #subCategoryName#
+                                    </cfoutput>
+                                </h3>
 
-                            <cfif productsQuery.recordCount>
+                                <cfset productCFC = createObject("cfc.product") />
+                                <cfset productsQuery = productCFC.getProductsForSubCat(scat = #URL.scat#) />
+                                <!---
+                                    productsQuery - contains these attributes
+                                        ProductId, Name, BrandId, SubCategoryid, ListPrice, SupplierId,
+                                        DiscontinuedDate, DiscountPercent, DiscountedPrice, Qty,
+                                        Description, Image
+                                --->
+                                <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
                                 <cfoutput>
-                                <cfloop query = "productsQuery">
+                                <div class="productadd" data-scat="#URL.scat#" onclick="addNewProduct(this);">
 
-                                        <div class="product brand_#BrandId# price_#ListPrice#">
+                                    <div class="product-image">
+                                        <img src="assets/images/products/commons/productaddnew.png" width="300px"/>
+                                    </div>
+                                    <div class="product-content" style="display: flex; align-items:center; justify-content:center; ">
+                                        <div class="product-name font-size-30 color-grey"> Add New Product In this Category/SubCategory </div>
+                                    </div>
+                                </div>
+                                </cfoutput>
+                                </cfif>
 
-                                                <a href="productDetails.cfm?pid=#ProductId#"></a>
-                                                <div class="product_image">
-                                                    <img class="" src="assets/images/products/medium/#Image#">
-                                                </div>
-                                                <div class="product_content">
+                                <cfif productsQuery.recordCount>
+                                    <cfoutput>
+                                    <cfloop query = "productsQuery">
 
-                                                    <div class="product_name"> #Name# </div>
-                                                    <div class="product_pricing">
-                                                        <div class="product_price"> #ListPrice#  </div>
-                                                        <div class="product_discounted_price">#DiscountPercent#</div>
+                                            <div class="product brand_#BrandId# price_#ListPrice#">
+
+                                                    <a href="productDetails.cfm?pid=#ProductId#"></a>
+                                                    <div class="product-image">
+                                                        <img class="" src="assets/images/products/medium/#Image#">
                                                     </div>
 
-                                                    <ul>
-                                                    <cfloop index="i" list="#Description#" delimiters="`"  >
-                                                        <li>#i#</li>
-                                                    </cfloop>
-                                                    </ul>
+                                                    <div class="product-content">
 
-                                                </div>
+                                                        <div class="product-name"> #Name# </div>
+                                                        <div class="product-pricing">
+                                                            <div class="product-price"> #ListPrice#  </div>
+                                                            <div class="product-discounted-price">#DiscountPercent#</div>
+                                                        </div>
 
+                                                        <ul>
+                                                        <cfloop index="i" list="#Description#" delimiters="`"  >
+                                                            <li>#i#</li>
+                                                        </cfloop>
+                                                        </ul>
 
+                                                    </div>
                                             </div>
-                                </cfloop>
-                                </cfoutput>
-                            <cfelse>
-                                <cfoutput>
-                                    <div class="no-product">
-                                        <div class="product_info">
-                                            <h1 class="">Currently No Products in this Category</h1>
+                                    </cfloop>
+                                    </cfoutput>
+                                <cfelse>
+                                    <cfoutput>
+                                        <div class="no-product">
+                                            <div class="product_info">
+                                                <h1 class="">Currently No Products in this Category</h1>
+                                            </div>
                                         </div>
-                                    </div>
-                                </cfoutput>
-                            </cfif>
-                <cfelse>
-                        <cflocation url="index.cfm" addToken="false">
-                </cfif>
+                                    </cfoutput>
+                                </cfif>
+                    <cfelse>
+                            <cflocation url="index.cfm" addToken="false">
+                    </cfif>
                 </div>
     </div>
 
@@ -237,6 +269,7 @@
             <cfdump var="#productAdd#"> --->
 
 </cfif>
+
 <cfcatch type="any">
     <cfdump var="#cfcatch#" />
 </cfcatch>

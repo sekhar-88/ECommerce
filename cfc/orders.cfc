@@ -1,6 +1,8 @@
 <cfcomponent>
 
+    <cfset VARIABLES.orderDB = CreateObject("db.order_db") />
     <!--- getst the Orders from the Order Table for the User --->
+
     <cffunction name="getOrders" access="remote" returntype="query" >
 
         <cfquery name="REQUEST.Orders">
@@ -14,18 +16,16 @@
         <cfreturn REQUEST.Orders />
     </cffunction>
 
+
+<!---
+    returns query containing the order details for showing in the order deatils page ..
+    returns to the "orderDetails" variable in the orders page.
+--->
     <cffunction name="getOrderDetails" access="remote" returntype="query" >
         <cfargument name="OrderId" type="numeric" required = "true" />
 
-        <cfquery name="REQUEST.orderDetails">
-            SELECT o.OrderId , o.SubTotal, o.OrderDate, o.PaymentMethod, o.Status, od.OrderQty, od.ProductId, od.SupplierId, od.ShipToAddressId, a.AddressLine, a.PhoneNo
-            from [Order] o
-                INNER JOIN [OrderDetails] od
-                ON o.OrderId = od.OrderId
-                    INNER JOIN [Address] a
-                    ON od.ShipToAddressId = a.AddressId
-            WHERE od.OrderId = #ARGUMENTS.OrderId#  
-        </cfquery>
+        <cfinvoke method="getOrderDetails" component="#VARIABLES.orderDB#"
+            returnvariable="REQUEST.orderDetails" OrderId = #ARGUMENTS.OrderId# />
 
         <cfreturn REQUEST.orderDetails />
     </cffunction>

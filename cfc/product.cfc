@@ -153,7 +153,7 @@
         <cfreturn REQUEST.brandsFilter />
     </cffunction>
 
-    <cffunction name = "hasProducts" returntype = "Query" access= "remote" >
+    <cffunction name = "hasProducts" returntype = "Query" access = "remote" >
         <cfargument name = "q" type = "string" required = "true" />
         <cfset LOCAL.q = #Trim(ARGUMENTS.q)# />
 
@@ -173,4 +173,14 @@
         <cfreturn REQUEST.success />
     </cffunction>
 
+
+<!--- simple function to fetch category name from the Subcategory ID --->
+    <cffunction name="getSubCategoryName" returntype = "String" access="remote" >
+        <cfargument name="scat" type="numeric" required = "true" />
+
+        <cfinvoke method="getSubCategoryName" component="#VARIABLES.productDB#"
+            returnvariable="REQUEST.subCategory" argumentcollection="#ARGUMENTS#" />
+
+        <cfreturn REQUEST.subCategory.SubCategoryName />
+    </cffunction>
 </cfcomponent>

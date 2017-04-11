@@ -124,6 +124,7 @@ return response
                 </cfif>
 
             <cfelse>
+                <!--- email type not valid detected by coldfusion --->
                 <cfset LOCAL.response.status = false />
                 <cfset structInsert(LOCAL.response.error, 'Email', "Enter a valid Email Address") />
 
@@ -131,6 +132,5 @@ return response
 
             <cfreturn LOCAL.response />
     </cffunction>
-
 
 </cfcomponent>

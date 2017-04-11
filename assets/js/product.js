@@ -1,14 +1,14 @@
 $(document).ready(function(){
-    $(".product_price").hide();
-    $(".product_discounted_price").hide();
+    $(".product-price").hide();
+    $(".product-discounted-price").hide();
 
-    $(".product_discounted_price").each(function(){
+    $(".product-discounted-price").each(function(){
         if($.trim($(this).text())  == "") {
-            $(this).prev(".product_price").show().prepend("₹");
+            $(this).prev(".product-price").show().prepend("₹");
         }
         else{
             $(this).addClass("strikethrough").show().prepend("₹");
-            $(this).prev(".product_price").show().prepend("₹");
+            $(this).prev(".product-price").show().prepend("₹");
         }
     });
 
@@ -33,7 +33,7 @@ $(document).ready(function(){
         }
     });
 
-    $("form#product_add_form").submit(function(e){
+    $("form#product-add-form").submit(function(e){
         var desc = "";
         // going to submit form
         $.each( $(".product-desc-fields > input "), function(i, item){
@@ -45,6 +45,33 @@ $(document).ready(function(){
             }
         });
         $("textarea#prdt-desc").val(desc);
+    });
+
+
+
+// file input bootstrap box in product add form - ( while in admin mode )
+
+    $(document).on('change', ':file', function() {
+        var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+    });
+
+// We can watch for our custom `fileselect` event like this
+    $(document).ready( function() {
+        $(':file').on('fileselect', function(event, numFiles, label) {
+
+           var input = $(this).parents('.input-group').find(':text'),
+               log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+           if( input.length ) {
+               input.val(log);
+           } else {
+               if( log ) alert(log);
+           }
+
+        });
     });
 
 });

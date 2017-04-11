@@ -1,7 +1,6 @@
 <!--- This database layer handles all the calls to Dabatase related actions which relates in anyway to the products management
 like adding to cart removing from cart, editing updating product details etc. --->
 
-<!--- all the functions have return type is either VOID or QUERY --->
 
 <cfcomponent>
 
@@ -58,7 +57,9 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfargument name = "scat" required = "true" type = "numeric" output = "false" />
 
         <cfquery name = "REQUEST.products" >
-            SELECT *
+            SELECT  ProductId, Name, BrandId, SubCategoryid, ListPrice, SupplierId,
+                    DiscontinuedDate, DiscountPercent, DiscountedPrice, Qty,
+                    Description, Image
             FROM [Product]
             WHERE SubCategoryId = <cfqueryparam value = "#ARGUMENTS.scat#" CFSQLType = "[cf_sql_integer]">
         </cfquery>
@@ -168,4 +169,19 @@ like adding to cart removing from cart, editing updating product details etc. --
 
         <cfreturn true />
     </cffunction>
+
+
+<!--- simple function to fetch category name from the Subcategory ID --->
+    <cffunction name="getSubCategoryName" returntype = "Query" access="public" >
+        <cfargument name="scat" type="numeric" required = "true" />
+
+        <cfquery name="REQUEST.subCategory">
+            SELECT SubCategoryName
+            FROM [ProductSubCategory]
+            WHERE SubCategoryId = <cfqueryparam value="#ARGUMENTS.scat#" cfsqltype="cf_sql_int">
+        </cfquery>
+
+        <cfreturn REQUEST.subCategory />
+    </cffunction>
+
 </cfcomponent>

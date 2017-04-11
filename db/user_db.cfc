@@ -29,6 +29,11 @@
     </cffunction>
 
 
+
+<!---
+    User Regestration with storing the details
+--->
+
     <cffunction name = "createUser" returntype = "Any" access = "public"  >
         <cfargument name = "form" type = "struct" required = "true" />
 
@@ -43,7 +48,7 @@
                         <cfqueryparam value = "#ARGUMENTS.form.Email#" cfsqltype     = "cf_sql_nvarchar" >,
                         <cfqueryparam value = "#ARGUMENTS.form.PhoneNo#" cfsqltype   = "cf_sql_bigint" >,
                         <cfqueryparam value = "#ARGUMENTS.form.Password#" cfsqltype  = "cf_sql_nvarchar">,
-                        HASHBYTES( 'SHA2_512', <cfqueryparam value = "#ARGUMENTS.form.Password#" cfsqltype = "cf_sql_nvarchar"> ),
+                        <cfqueryparam value = "#Hash(ARGUMENTS.form.Password)#" cfsqltype = "cf_sql_nvarchar">,
                         'user'
                     )
                 </cfquery>
@@ -57,6 +62,8 @@
 
         <cfreturn true />
     </cffunction>
+
+
 
 <!---
 this function return userId to validate function in controller for
