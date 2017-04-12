@@ -2,8 +2,8 @@
 <html>
 <head>
   <title>#session.user.username#</title>
-  <cfinclude template = "/include/libraries.cfm">
 </head>
+
 <body>
     <cfinclude template="/commons/header.cfm" />
     <cfif session.loggedin>

@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>eShopping</title>
-    <cfinclude template = "/include/libraries.cfm" />
+    <!--- <cfinclude template = "/include/libraries.cfm" /> --->
     <link href="../assets/css/index.css" rel="stylesheet">
     <script src="../assets/js/index.js"></script>
 

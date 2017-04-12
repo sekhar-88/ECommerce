@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Register</title>
-  <cfinclude template = "/include/libraries.cfm">
       <link rel="stylesheet" href="../assets/css/register.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
   <script src="../assets/js/register.js"></script>

@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <cfinclude template="/include/libraries.cfm" />
     <link href="../assets/css/orders.css" rel="stylesheet">
 </head>
 <body>

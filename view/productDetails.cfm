@@ -3,12 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <cfinclude template = "/include/libraries.cfm">
       <link href="../assets/css/productDetail.css" rel="stylesheet">
-
-
-     <script>
-    </script>
 </head>
 <body>
 

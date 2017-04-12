@@ -44,3 +44,10 @@
 <cfloop array="#myArray#" index="name">
    <cfoutput> #name#  </cfoutput>
 </cfloop>
+
+calculating password hash
+
+<cfquery name="CalculateHashForAllUsers">
+    SELECT Password
+    FROM [User]
+</cfquery>

@@ -12,7 +12,6 @@
 
 <!DOCTYPE html>
 <head>
-    <cfinclude template = "/include/libraries.cfm">
     <link href="../assets/css/product.css" rel="stylesheet">
     <script src="../assets/js/product.js"></script>
 

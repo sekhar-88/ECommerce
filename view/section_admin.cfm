@@ -3,7 +3,6 @@
 <html>
 <head>
   <title>Admin&#8226;eShopping</title>
-  <cfinclude template = "/include/libraries.cfm" />
 
   <link href="../assets/css/adminpage.css" rel="stylesheet" />
   <script src="../assets/js/adminpage.js"></script>

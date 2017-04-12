@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <cfinclude template = "/include/libraries.cfm">
     <link rel="stylesheet" href="../assets/css/cart.css">
     <script src="../assets/js/cart.js"></script>
 </head>

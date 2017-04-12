@@ -5,7 +5,6 @@
 <html>
 <head>
     <title>Checkout</title>
-    <cfinclude template="/include/libraries.cfm" />
     <link href = "../assets/css/checkout.css" rel="stylesheet">
     <script src="../assets/js/checkout.js"></script>
     <style>

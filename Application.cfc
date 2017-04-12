@@ -82,7 +82,9 @@
             />
         <!--- <cfdump var="#REQUEST#" /> --->
 
+        <cfinclude template = "/include/libraries.cfm" />
         <cfinclude template = "#ARGUMENTS.targetpage#" />
+
         <cfreturn />
     </cffunction>
 
@@ -160,7 +162,7 @@
             <cfif #ARGUMENTS.Exception.type# EQ "Expression">
                 <cflocation url="index.cfm" addtoken="false" />
             <cfelse>
-                <cfinclude template="Commons/error404.cfm" />
+                <cfinclude template="/commons/error404.cfm" />
             </cfif>
 
         <cfreturn />
@@ -169,7 +171,7 @@
 
     <cffunction name="onMissingTemplate" returnType="boolean">
         <cfargument type="string" name="targetPage" required=true/>
-            <cfinclude template="commons/error404.cfm" />
+            <cfinclude template="/commons/error404.cfm" />
         <cfreturn false />
     </cffunction>
 

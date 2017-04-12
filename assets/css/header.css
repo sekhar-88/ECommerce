@@ -11,6 +11,7 @@
     padding: 1px;
     width: 190px;
 }
+
 .navbar-brand >img{
     height: 100%;
     width: 100%;
@@ -80,12 +81,21 @@ label.error{
     background-color: rgba(255,255,255,0);
     border: none;
 }
+
 .btn-search{
     /*background-color: #ff9e93;*/
     /*background-color: #ffe100;*/
     background-color: #ffc054;
     color: white;
 }
+.btn-search > button {
+    border: 0px;
+    background-color: rgba(0,0,0,0);
+}
+.btn-search > button:focus {
+    outline: none;
+}
+
 #product_searchbox{
     outline: 0px;
     border: 0px;

@@ -72,8 +72,10 @@
 				<form action="index.cfm" class="navbar-form navbar-left" role="search" method="get" id="product-search-form">
 					<div class="input-group">
 						<input type="text" id="product_searchbox" name="q" class="form-control" placeholder="Search Products..">
-						<span class="input-group-btn">
-                            <button type="submit" class="btn btn-search"><span class="glyphicon glyphicon-search"></span></butotn>
+						<span class="input-group-btn btn btn-search">
+                            <button type="submit">
+                                <span class="glyphicon glyphicon-search" style="font-size: 12px;"></span>
+                            </butotn>
                         </span>
 					</div>
 				</form>
