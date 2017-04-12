@@ -1,26 +1,27 @@
 <cfcomponent>
 
     <cffunction name="getAddressForUser" returntype="query" access="public" >
-        <cfquery name="REQUEST.addresses">
+        <cfquery name="LOCAL.addresses">
             SELECT *
             FROM [Address]
             WHERE UserId = #session.user.userid#
         </cfquery>
 
-        <cfreturn #REQUEST.addresses# />
+        <cfreturn #LOCAL.addresses# />
     </cffunction>
 
 
     <cffunction name="queryOrderSummary" returntype="query" access = "public" >
-        <cfquery name="REQUEST.itemsQuery">
+
+        <cfquery name="LOCAL.itemsQuery">
             SELECT c.CartId, c.ProductId, c.Qty , p.Name, p.ListPrice , p.DiscountedPrice, p.Description, p.Image
             from [Cart] c
             inner join [Product] p
             ON c.ProductId = p.ProductId
-            Where c.UserId = #session.User.UserId#
+            Where c.UserId = #SESSION.User.UserId#
         </cfquery>
 
-        <cfreturn #REQUEST.itemsQuery# />
+        <cfreturn #LOCAL.itemsQuery# />
     </cffunction>
 
 
@@ -80,16 +81,24 @@
         <cfreturn true />
     </cffunction>
 
+
+<!--- returns TOTAL COST of products in USER / Session Cart --->
     <cffunction name="getCartTotal" returntype="numeric" access="public"   >
         <cfset LOCAL.sumTotal = 0>
 
-        <cfquery name="REQUEST.cartPrices">
-            SELECT TotalPrice
-            from [Cart]
-            Where UserId = #session.User.UserId#
-        </cfquery>
+        <cfif SESSION.loggedin>
 
-            <cfloop query="REQUEST.cartPrices" >
+            <cfquery name="LOCAL.cartPrices">
+                SELECT TotalPrice
+                from [Cart]
+                Where UserId = #session.User.UserId#
+            </cfquery>
+        <cfelse>
+
+            <cfreturn -1 />
+        </cfif>
+
+            <cfloop query="LOCAL.cartPrices" >
                 <cfset sumTotal += #TotalPrice# />
             </cfloop>
 
@@ -105,7 +114,6 @@
             WHERE UserId = #session.User.UserId#
         </cfquery>
         <cfreturn true/>
-
     </cffunction>
 
     <cffunction name="updateCartAndTotalPrice" returntype="boolean" access = "public"  >
@@ -129,21 +137,21 @@
 
         <cfset LOCAL.subTotal = getCartTotal()/>
 
-        <cfquery name="REQUEST.insertToOrderTable" result="REQUEST.insertedOrder">
+        <cfquery name="LOCAL.insertToOrderTable" result="LOCAL.insertedOrder">
             INSERT INTO [Order]
             (UserId, SubTotal, OrderDate, PaymentMethod, Status)
             VALUES
             (#SESSION.User.UserId#, #LOCAL.subTotal#, GETDATE(), 'COD', 'Processing')
         </cfquery>
 
-        <cfreturn #REQUEST.insertedOrder# />
+        <cfreturn #LOCAL.insertedOrder# />
     </cffunction>
 
 
 
     <cffunction name="getProductsDetailFromCart" returntype="query" access = "public" >
 
-        <cfquery name="REQUEST.cartItemDetails"> <!--- \/ & OrderId, ShipToAddressId --->
+        <cfquery name="LOCAL.cartItemDetails"> <!--- \/ & OrderId, ShipToAddressId --->
             SELECT c.ProductId, p.ListPrice AS UnitPrice, c.Qty AS OrderQty, p.SupplierId
             FROM [Cart] c
 
@@ -153,7 +161,7 @@
             WHERE c.UserId = #SESSION.User.UserId#
         </cfquery>
 
-        <cfreturn #REQUEST.cartItemDetails# />
+        <cfreturn #LOCAL.cartItemDetails# />
     </cffunction>
 
 
@@ -169,17 +177,17 @@
         <cfargument name="orderId" type="numeric" required = "true" />
 
         <cfquery>
-            <cfloop query="REQUEST.cartItemDetails" >
+            <cfloop query="LOCAL.cartItemDetails" >
                 INSERT INTO [OrderDetails]
                 (OrderId, ProductId, OrderQty, UnitPrice, ShipToAddressId, SupplierId)
                 VALUES
                 (
                     #ARGUMENTS.OrderId#,
-                    #REQUEST.cartItemDetails.ProductId#,
-                    #REQUEST.cartItemDetails.OrderQty#,
-                    #REQUEST.cartItemDetails.UnitPrice#,
+                    #LOCAL.cartItemDetails.ProductId#,
+                    #LOCAL.cartItemDetails.OrderQty#,
+                    #LOCAL.cartItemDetails.UnitPrice#,
                     #SESSION.User.checkout.AddressId#,
-                    #REQUEST.cartItemDetails.SupplierId#
+                    #LOCAL.cartItemDetails.SupplierId#
                 )
             </cfloop>
         </cfquery>

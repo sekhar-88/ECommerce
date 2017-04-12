@@ -2,21 +2,21 @@
 
     <!--- returns cart item details with their respective product names --->
     <cffunction name="queryProductsFromUserCart" returntype="query" access="public"   >
-        <cfquery name="REQUEST.items">
+        <cfquery name="LOCAL.items">
                 SELECT c.*,p.Name
                 FROM [Cart] c
                 INNER JOIN [Product] p
                 ON c.ProductId = p.ProductId
                 WHERE c.UserId = #SESSION.User.UserId#
         </cfquery>
-        <cfreturn #REQUEST.items# />
+        <cfreturn #LOCAL.items# />
     </cffunction>
 
 
     <cffunction name="queryProductsFromSessionCart" returntype="query" access="public"   >
         <cfset LOCAL.cart_list = ArrayToList(SESSION.cart) />
 
-        <cfquery name="REQUEST.products">
+        <cfquery name="LOCAL.products">
             SELECT p.ProductId, p.Name
             FROM [Product] p
             WHERE p.ProductId IN (   <cfqueryparam
@@ -26,7 +26,7 @@
                                )
         </cfquery>
 
-        <cfreturn #REQUEST.products# />
+        <cfreturn #LOCAL.products# />
     </cffunction>
 
 

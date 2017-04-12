@@ -9,10 +9,9 @@
 
     <cffunction name="getAddressesOfUser" output="false" returntype="query" access="remote" >
         <cfinvoke method="getAddressForUser" component="#VARIABLES.checkoutDB#"
-            returnvariable="REQUEST.addresses"  />
+            returnvariable="LOCAL.addresses"  />
 
-        <cfreturn #REQUEST.addresses# />
-
+        <cfreturn #LOCAL.addresses# />
     </cffunction>
 
     <cffunction name="getCheckOutStep" access="remote" returntype="numeric" returnFormat="json" >
@@ -80,47 +79,64 @@
     </cffunction>
 
 
-    <cffunction name="getOrderSummary" access="remote" returntype="Struct" returnformat="json" output="false">
+<!---
+this function returns cart items details &  price & image for showing in cart section & checkout section
+    it requries an argument .. called from which returns query if called from a page & returns JS array
+    if it was calledfrom ajax
+--->
+    <cffunction name="getOrderSummary" access="remote" returntype="Any" returnformat="json" output="false">
+        <cfargument name="calledFrom" type="string" required = "true" />
 
         <cfset totalPrice = 0 />
         <cfset itemsArray = [] />
 
         <cftry>
         <!--- Query for Items in Cart & their price for showing in Step 1 of (CHECKOUT PAGE)--->
-                <cfinvoke method="queryOrderSummary" component="#VARIABLES.checkoutDB#"
-                    returnvariable="REQUEST.itemsQuery" />
+            <cfset LOCAL.itemsQuery = VARIABLES.checkoutDB.queryOrderSummary() />
+            <!--- <cfinvoke method="queryOrderSummary" component="#VARIABLES.checkoutDB#"
+            returnvariable="LOCAL.itemsQuery" /> --->
 
-                <cfloop query="REQUEST.itemsQuery">
+            <cfif ARGUMENTS.calledFrom EQ 'ajax' >
 
-                    <cfif IsNull(#DiscountedPrice#)>
-                        <cfset dscnt = false />
-                        <cfelse>
-                        <cfset dscnt = true />
-                    </cfif>
+                    <cfloop query="LOCAL.itemsQuery">
 
-                    <cfset ArrayAppend(itemsArray, {
-                           "cartId"= #CartId#,
-                           "id"    = #ProductId#,
-                           "name"  = "#Name#",
-                           "qty"   = #Qty#,
-                           "price" = #ListPrice#,
-                           "discount"  = #dscnt#,
-                           "discountedPrice"   = #DiscountedPrice#,
-                           "description" = #Description#,
-                           "image" = #Image#
-                           }) />
-                </cfloop>
-                <!--- SET the step 1 checkout variables inside session --->
-                <cfset session.User.checkout.totalPrice = #totalPrice# />
-                <cfset session.User.checkout.itemsInfo = #itemsArray#/>
-                <cfset totalPrice = getCartTotal() />
-                <cfset itemsInfo= {
-                    "totalPrice" = #totalPrice#,
-                    "itemsArray" = #itemsArray#
-                } />
-        <cfcatch>
-                <cfdump var="#cfcatch#" />
-        </cfcatch>
+                        <cfif IsNull(#DiscountedPrice#) >
+                            <cfset dscnt = false />
+                            <cfelse>
+                            <cfset dscnt = true />
+                        </cfif>
+
+                        <cfset ArrayAppend(itemsArray, {
+                               "cartId"= #CartId#,
+                               "id"    = #ProductId#,
+                               "name"  = "#Name#",
+                               "qty"   = #Qty#,
+                               "price" = #ListPrice#,
+                               "discount"  = #dscnt#,
+                               "discountedPrice"   = #DiscountedPrice#,
+                               "description" = #Description#,
+                               "image" = #Image#
+                               }) />
+                    </cfloop>
+                    <!--- SET the step 1 checkout variables inside session --->
+                    <cfset session.User.checkout.totalPrice = #totalPrice# />
+                    <cfset session.User.checkout.itemsInfo = #itemsArray#/>
+                    <cfset totalPrice = getCartTotal() />
+
+                    <cfset itemsInfo= {
+                        "totalPrice" = #totalPrice#,
+                        "itemsArray" = #itemsArray#
+                    } />
+
+            <cfelse>
+                <cfreturn LOCAL.itemsQuery />
+
+            </cfif>
+
+            <cfcatch>
+                    <cfdump var="#cfcatch#" />
+            </cfcatch>
+
         </cftry>
 
         <cfreturn #itemsInfo#/>
@@ -144,9 +160,9 @@
         <cfargument name="PostalCode"  type="string" required="true" >
 
         <cfinvoke method="insertNewAddress" component = "#VARIABLES.checkoutDB#"
-            returnvariable="REQUEST.success" argumentcollection="#ARGUMENTS#" />
+            returnvariable="LOCAL.success" argumentcollection="#ARGUMENTS#" />
 
-        <cfif REQUEST.success>
+        <cfif LOCAL.success>
             <cfreturn true/>
             <cfelse>
             <cfreturn false/>
@@ -158,14 +174,13 @@
 
         <cftry>
             <cfinvoke method="deleteAddress" component="#VARIABLES.checkoutDB#"
-                returnvariable="REQUEST.deleteAddressSuccess" argumentcollection="#ARGUMENTS#"  />
-            <cfreturn #REQUEST.deleteAddressSuccess# />
+                returnvariable="LOCAL.deleteAddressSuccess" argumentcollection="#ARGUMENTS#"  />
+            <cfreturn #LOCAL.deleteAddressSuccess# />
         <cfcatch>
             <cfdump var="#cfcatch#" />
             <cfreturn false/>
         </cfcatch>
         </cftry>
-
     </cffunction>
 
     <cffunction name="URLstringToObj" returntype="struct" access= "public" >
@@ -190,11 +205,11 @@
             <cfset StructInsert(LOCAL.addressObj, "Country", "India")/>
 
             <cfinvoke method="updateAddress" component="#VARIABLES.checkoutDB#"
-                returnvariable="REQUEST.success"
+                returnvariable="LOCAL.success"
                 addressStruct = #LOCAL.addressObj#
                 addressid = #ARGUMENTS.addressid# />
 
-            <cfreturn #REQUEST.success# />
+            <cfreturn #LOCAL.success# />
 
     </cffunction>
 
@@ -206,19 +221,19 @@
             <!--- INSERT INTO ORDER TABLE --->
 
             <cfinvoke method="insertToOrderTable" component="#VARIABLES.checkoutDB#"
-                returnvariable="REQUEST.insertedOrder" />
+                returnvariable="LOCAL.insertedOrder" />
 
             <!--- GET GENERATED ORDER_ID OF ORDERS TABLE --->
-            <cfset LOCAL.OrderId = #REQUEST.insertedOrder.GENERATEDKEY#/>
+            <cfset LOCAL.OrderId = #LOCAL.insertedOrder.GENERATEDKEY#/>
 
             <!--- GET REQUIRED ITEMS FOR INSERTING INTO ORDERDETAILS TABLE --->
             <cfinvoke method="getProductsDetailFromCart" component="#VARIABLES.checkoutDB#"
-                returnvariable="REQUEST.cartItemDetails" />
+                returnvariable="LOCAL.cartItemDetails" />
 
 
             <!--- INSERT INTO ORDERDETAILS TABLE USING cart QUERY--->
             <cfinvoke method="insertToOrderDetails" component="#VARIABLES.checkoutDB#"
-                cartItemDetails = #REQUEST.cartItemDetails# orderId = #LOCAL.OrderId# />
+                cartItemDetails = #LOCAL.cartItemDetails# orderId = #LOCAL.OrderId# />
 
             <cfset cartCleared = clearCart()/>
             <cfif cartCleared>
@@ -241,14 +256,15 @@
         <cfargument name="pid" required="true" type="numeric"  />
         <cfargument name="qty" required="true" type="numeric" />
 
-        <cfset price = getPriceOfProduct(ARGUMENTS.pid)/>
-        <cfset LOCAL.totalPrice = price * #ARGUMENTS.qty# />
+        <cfset LOCAL.price = getPriceOfProduct(ARGUMENTS.pid)/>
+        <cfset LOCAL.totalPrice = LOCAL.price * #ARGUMENTS.qty# />
 
         <cftry>
-            <cfinvoke method="updateCartAndTotalPrice" component="#VARIABLES.checkoutDB#"
-                returnvariable = "REQUEST.success"
+            <cfset LOCAL.success = VARIABLES.checkoutDB.updateCartAndTotalPrice(argumentcollection = "#ARGUMENTS#", totalPrice = #LOCAL.totalPrice#) />
+            <!--- <cfinvoke method="updateCartAndTotalPrice" component="#VARIABLES.checkoutDB#"
+                returnvariable = "LOCAL.success"
                 argumentcollection="#ARGUMENTS#"
-                totalPrice = #LOCAL.totalPrice# />
+                totalPrice = #LOCAL.totalPrice# /> --->
 
             <cfset LOCAL.totalCartPrice = getCartTotal()/>
             <cfreturn #LOCAL.totalCartPrice#/>
@@ -261,18 +277,25 @@
     </cffunction>
 
 
-    <cffunction name="getCartTotal" returntype="Numeric" access="remote" output="true" >
+    <cffunction name="getCartTotal" returntype="Numeric" returnFormat="JSON" access="remote" output="true" >
 
         <cftry>
-            <cfinvoke method="getCartTotal" component="#VARIABLES.checkoutDB#"
-                returnvariable="REQUEST.total" />
+                <cfset LOCAL.total = VARIABLES.checkoutDB.getCartTotal() />
+                <!--- <cfinvoke method="getCartTotal" component="#VARIABLES.checkoutDB#"
+                    returnvariable="LOCAL.total" /> --->
+
+                <cfif LOCAL.total EQ -1 >
+                    <!--- user not loggedin --->
+                    <cfreturn 0 />
+                </cfif>
 
             <cfcatch>
-            <cfdump var="#cfcatch#" />
+                <cfdump var="#cfcatch#" />
             </cfcatch>
+
         </cftry>
 
-        <cfreturn #REQUEST.total# />
+        <cfreturn #LOCAL.total# />
     </cffunction>
 
 
@@ -280,16 +303,15 @@
     <cffunction name="clearCart" returntype="boolean" access="remote">
         <cftry>
             <cfinvoke method="clearCart" component="#VARIABLES.checkoutDB#"
-                returnvariable="REQUEST.success" />
+                returnvariable="LOCAL.success" />
 
-                <cfreturn #REQUEST.success# />
+                <cfreturn #LOCAL.success# />
 
             <cfcatch >
                 <cfreturn false/>
                 <cfdump var="#cfcatch#" />
             </cfcatch>
         </cftry>
-
     </cffunction>
 
     <cffunction name="getPriceOfProduct" access="remote" returntype="boolean" output="true">
@@ -297,7 +319,6 @@
 
         <cfset LOCAL.productPrice = super.getPriceOfProduct(pid = ARGUMENTS.pid)/>
         <cfreturn #LOCAL.productPrice# />
-
     </cffunction>
 
 </cfcomponent>

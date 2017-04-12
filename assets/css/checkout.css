@@ -1,3 +1,6 @@
+
+/*ADDRESS MODAL FOR DISPLAYING ADDRESSES & TO BE DELIVERED*/
+
 #newaddress-form {
     width: 400px;
     margin: auto;
@@ -11,7 +14,11 @@
     background-color: #ececec;
 }
 
-/*ORDER SUMMARY SECTION*/
+
+
+
+/*ORDER SUMMARY SECTION ------------------------ */
+
 #order_summary .subsection{
     display:flex;
     flex-flow: column nowrap;
@@ -40,6 +47,7 @@
     display: flex;
     flex-flow: column nowrap;
 }
+
 /*.items > .item*/
 .item{
         height: 180px;
@@ -274,6 +282,8 @@
 
 
 /*-----------------------------------------*/
+
+
 
 
 /*GLOBAL*/

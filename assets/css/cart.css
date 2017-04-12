@@ -2,7 +2,7 @@
     float:left;
     width: 78%;
     padding: 20px 1px;
-    background-color: #fefdf1;
+    background-color: #90A4AE;
     min-height: 200px;
 }
 /*sub items_pane element*/
@@ -34,3 +34,132 @@
 .btn{
     border-radius: 2px;
 }
+
+
+/*   ORDERS SUMMARY SECTION   */
+
+#order_summary .subsection{
+    display:flex;
+    flex-flow: column nowrap;
+}
+.summary_subsection_header{
+    display:flex;
+    flex-flow: row nowrap;
+}
+.summary_subsection_header > * {
+    text-align: center;
+    border: 1px solid lightgrey;
+}
+.summary_subsection_header > :nth-child(1){
+    width: 50%;
+}
+.summary_subsection_header > :nth-child(2){
+    width: 20%;
+}
+.summary_subsection_header > :nth-child(3){
+    width: 20%;
+}
+.summary_subsection_header > :nth-child(4){
+    width: 10%;
+}
+#order_summary .subsection .items {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+/*.items > .item*/
+.item{
+        height: 180px;
+        display: flex;
+        flex-flow: row nowrap;
+        border-bottom: 1px solid lightgrey;
+}
+.item > * {
+    padding: 10px;
+    margin: 1px;
+    /*border: 1px solid blue;*/
+    /*background-color: white;*/
+}
+
+
+.item > :nth-child(1){
+    width: 50%;
+}
+
+
+.item > :nth-child(2){
+    width: 20%;
+}
+.item > :nth-child(2) > span {
+    display: block;
+    position: relative;
+    top: 34%;
+    margin: auto;
+}
+.item > :nth-child(2) > span > input {
+    width: 70%;
+}
+
+
+.item > :nth-child(3){
+    width: 20%;
+}
+.item > :nth-child(3) > div{
+    position: relative;
+    top: 36%;
+    text-align: center;
+    color: #FF9800;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.item > :nth-child(4){
+    width: 9%;
+    position: relative;
+}
+.item > :nth-child(4) > span{
+    position: absolute;
+    top: 34%;
+    left: 25%;
+    /*border: 1px solid black;*/
+    padding: 15%;
+    cursor: pointer;
+}
+.cart_product_image{
+    float: left;
+    width: 170px;
+    height: 130px;
+    overflow: hidden;
+}
+.cart_thumbnail{
+    width: inherit;
+    /*height: inherit;*/
+    /*width: 170px;*/
+    /*height: 130px;*/
+}
+.checkoutPrice{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 5px black;
+}
+.inputItemsQuantity{
+    border: 0px;
+    border-bottom: 1px solid #CDDC39;
+    /*text-align: center;*/
+    font-weight: bold;
+    color: #505050;
+}
+.inputItemsQuantity:focus{
+    outline: 0;
+}
+.inputItemsQuantityleft{
+    padding: 3px;
+    border-bottom: 1px solid #CDDC39;
+}
+/*.item{
+    background-color: green;
+    margin: 2px;
+}*/
+/*-----------------------------*/

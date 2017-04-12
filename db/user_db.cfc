@@ -9,13 +9,13 @@
         <cfset LOCAL.response = false />
 
         <cftry>
-            <cfquery name="REQUEST.emailExists" >
+            <cfquery name="LOCAL.emailExists" >
                  SELECT UserId
                  FROM [User]
                  WHERE Email = <cfqueryparam value = "#ARGUMENTS.Email#" cfsqltype="cf_sql_nvarchar" />
             </cfquery>
 
-            <cfif REQUEST.emailExists.recordCount >
+            <cfif LOCAL.emailExists.recordCount >
                 <cfset LOCAL.response = true />
             </cfif>
 
@@ -74,14 +74,14 @@ matching == not existing accounts (email)
         <cfargument name = "email" type = "string" required = "true">
         <cfargument name = "password" type = "string" required = "true">
 
-        <cfquery name = "REQUEST.findUser">
+        <cfquery name = "LOCAL.findUser">
             <!--- dont query password, query for password salt --->
             SELECT UserId,Password
             FROM [User]
             WHERE Email = <cfqueryparam value = "#ARGUMENTS.email#" CFSQLType = "cf_sql_varchar" >
         </cfquery>
 
-        <cfreturn #REQUEST.findUser#/>
+        <cfreturn #LOCAL.findUser#/>
     </cffunction>
 
 
@@ -89,13 +89,13 @@ matching == not existing accounts (email)
         <cfargument name = "email" type = "string" required = "true">
         <cfargument name = "password" type = "string" required = "true">
 
-        <cfquery name = "REQUEST.result" result = "userQuery">
+        <cfquery name = "LOCAL.result" result = "userQuery">
             SELECT UserId,FirstName,LastName,Email,PhoneNo,Role from [User]
             WHERE Email=<cfqueryparam value = "#ARGUMENTS.email#" CFSQLType = "cf_sql_varchar">
                 AND Password=<cfqueryparam value = "#ARGUMENTS.password#" CFSQLType = "cf_sql_varchar">
         </cfquery>
 
-        <cfreturn REQUEST.result />
+        <cfreturn LOCAL.result />
     </cffunction>
 
 

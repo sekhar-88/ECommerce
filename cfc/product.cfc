@@ -9,9 +9,9 @@
         <cfargument name="imagename" type="string" required = "true" />
 
         <cfinvoke method="updateProductDetails" component="#VARIABLES.productDB#"
-            returnvariable="REQUEST.success" argumentcollection="#ARGUMENTS#"  />
+            returnvariable="LOCAL.success" argumentcollection="#ARGUMENTS#"  />
 
-        <cfreturn REQUEST.success />
+        <cfreturn LOCAL.success />
     </cffunction>
 
 
@@ -31,9 +31,9 @@
 
                 <!--- QUERY FOR ALREADY EXISTING PRODUCT --->
                 <cfinvoke method = "queryCartForProduct" component = "#VARIABLES.productDB#"
-                    returnvariable = "REQUEST.cart" pid = #ARGUMENTS.pid# />
+                    returnvariable = "LOCAL.cart" pid = #ARGUMENTS.pid# />
 
-                <cfif REQUEST.cart.recordCount >    <!--- in cart --->
+                <cfif LOCAL.cart.recordCount >    <!--- in cart --->
                     <cfreturn true/>                <!--- THIS RETURN TRUE IS FOR sending (buynow) button that it is already in cart --->
 
                 <cfelse>           <!--- not in cart --->
@@ -75,9 +75,9 @@
         <cfset LOCAL.ListPrice = 0 />
 
         <cfinvoke method = "getProduct" component = "#VARIABLES.productDB#"
-            returnvariable = "REQUEST.product" argumentcollection = "#ARGUMENTS#" />
+            returnvariable = "LOCAL.product" argumentcollection = "#ARGUMENTS#" />
 
-        <cfreturn #REQUEST.product.ListPrice#/>
+        <cfreturn #LOCAL.product.ListPrice#/>
     </cffunction>
 
 
@@ -86,9 +86,9 @@
         <cfargument name = "pid" required = "true" type = "numeric" />
 
         <cfinvoke method = "queryProductDetailsAndBrand" component = "#VARIABLES.productDB#"
-            returnvariable = "REQUEST.productDetails" pid = "#ARGUMENTS.pid#" />
+            returnvariable = "LOCAL.productDetails" pid = "#ARGUMENTS.pid#" />
 
-        <cfreturn #REQUEST.productDetails#/>
+        <cfreturn #LOCAL.productDetails#/>
     </cffunction>
 
 
@@ -100,9 +100,9 @@
         <!--- get cart count for that product --->
         <cfif SESSION.loggedin >
             <cfinvoke method = "queryCartForProduct" component = "#VARIABLES.productDB#"
-                returnvariable = "REQUEST.cart" pid = #ARGUMENTS.pid# />
+                returnvariable = "LOCAL.cart" pid = #ARGUMENTS.pid# />
 
-                <cfif REQUEST.cart.recordCount>
+                <cfif LOCAL.cart.recordCount>
                     <cfset LOCAL.inCart = true/>
                 </cfif>
         <cfelse>
@@ -119,9 +119,9 @@
         <cfargument name = "pid" type = "numeric" required = "true" />
 
         <cfinvoke method = "getProduct" component = "#VARIABLES.productDB#"
-            returnvariable = "REQUEST.product" argumentcollection = "#ARGUMENTS#"  />
+            returnvariable = "LOCAL.product" argumentcollection = "#ARGUMENTS#"  />
 
-        <cfreturn #REQUEST.product.Qty# />
+        <cfreturn #LOCAL.product.Qty# />
     </cffunction>
 
 
@@ -132,8 +132,8 @@
         <cfset REReplace(LOCAL.q, "[^\w ]", "", "ALL") />
 
         <cfinvoke method = "getSubCategoryFilters" component = "#VARIABLES.productDB#"
-            returnvariable = "REQUEST.subcategoryFilters" q = #LOCAL.q#  />
-        <cfreturn REQUEST.subCategoryFilters />
+            returnvariable = "LOCAL.subcategoryFilters" q = #LOCAL.q#  />
+        <cfreturn LOCAL.subCategoryFilters />
     </cffunction>
 
 
@@ -142,7 +142,7 @@
         <cftry>
 
             <cfinvoke method = "getBrandsFilter" component = "#VARIABLES.productDB#"
-                returnvariable = "REQUEST.brandsFilter" scat = "#ARGUMENTS.scat#" />
+                returnvariable = "LOCAL.brandsFilter" scat = "#ARGUMENTS.scat#" />
         <cfcatch>
             <cfoutput>
                 soryy an error type  = "#cfcatch.type#" occured
@@ -150,7 +150,7 @@
         </cfcatch>
         </cftry>
 
-        <cfreturn REQUEST.brandsFilter />
+        <cfreturn LOCAL.brandsFilter />
     </cffunction>
 
     <cffunction name = "hasProducts" returntype = "Query" access = "remote" >
@@ -158,9 +158,9 @@
         <cfset LOCAL.q = #Trim(ARGUMENTS.q)# />
 
         <cfinvoke method = "queryProducts" component = "#VARIABLES.productDB#"
-            returnvariable = "REQUEST.products" q = #LOCAL.q# />
+            returnvariable = "LOCAL.products" q = #LOCAL.q# />
 
-        <cfreturn REQUEST.products />
+        <cfreturn LOCAL.products />
     </cffunction>
 
     <cffunction name = "addNewProduct" returntype = "boolean" access = "remote"  >
@@ -168,9 +168,9 @@
         <cfargument name = "imageName" type = "string" required = "true"  />
 
         <cfinvoke method = "addNewProductToDB" component = "#VARIABLES.productDB#"
-            returnvariable = "REQUEST.success" argumentcollection = "#ARGUMENTS#"  />
+            returnvariable = "LOCAL.success" argumentcollection = "#ARGUMENTS#"  />
 
-        <cfreturn REQUEST.success />
+        <cfreturn LOCAL.success />
     </cffunction>
 
 
@@ -179,8 +179,8 @@
         <cfargument name="scat" type="numeric" required = "true" />
 
         <cfinvoke method="getSubCategoryName" component="#VARIABLES.productDB#"
-            returnvariable="REQUEST.subCategory" argumentcollection="#ARGUMENTS#" />
+            returnvariable="LOCAL.subCategory" argumentcollection="#ARGUMENTS#" />
 
-        <cfreturn REQUEST.subCategory.SubCategoryName />
+        <cfreturn LOCAL.subCategory.SubCategoryName />
     </cffunction>
 </cfcomponent>

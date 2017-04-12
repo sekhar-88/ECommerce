@@ -97,7 +97,7 @@
                   <div class="input-group">
                       <label class="input-group-btn">
                           <span class="btn btn-file">
-                              Browse&hellip; <input type="file" id="imageFile" name="Image" accept="image/jpeg" style="display: none;" multiple>
+                              Browse... <input type="file" id="imageFile" name="Image" accept="image/jpeg" style="display: none;" required>
                           </span>
                       </label>
                       <input type="text" class="form-control" readonly>

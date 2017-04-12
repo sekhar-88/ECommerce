@@ -5,6 +5,7 @@ var amountPayble = 0;
 $(document).ready(function(){
     $(".show_when_collapsed").hide();
     gotoCheckOutStep();
+
     $("#newaddress-form").validate({
         rules:{
             Name: "required",
@@ -90,6 +91,9 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
         async: false,
         url: "../cfc/checkout.cfc?method=getOrderSummary",
         dataType: "json",
+        data: {
+            calledFrom : "ajax"
+        },
         success: function(response){
             console.log(response);       // response.itemsArray   // response.totalPrice
             $("#order_summary .items").empty();  //empty the previously populated items in ORDER SUMMARY
@@ -101,7 +105,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
 
                     var itemDescContent = "<div>"
                                             + "<div class='cart_product_image'>"
-                                            + "<img class='cart_thumbnail' src='assets/images/products/medium/"+ item.image +"' />"
+                                            + "<img class='cart_thumbnail' src='../assets/images/products/medium/"+ item.image +"' />"
                                             + "</div>"
                                             + "<h4>" + name + "</h4>"
                                             + desc
@@ -130,7 +134,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                             console.log("Available Products: " + maxQty);
 
                             //store (Product Id, prev_item_count)    in custom (Data-* attributes)  & inputItemsQuantity class is required to validate item quantity count while placing order
-                            var itemQtyContent = "<span><span class='inputItemsQuantityleft'>Qty:</span><input type='number' data-toggle='tooltip' title='Max Quantity Exceeded' data-card_id='"+item.cartId+"' data-item_id="+ item.id +" + data-item_price='"+item.price+"' name='itemQty' value='"+item.qty+"' min='1' max='"+maxQty+"' class='inputItemsQuantity' onkeyup='validateItemCount(this, this.value, this.max, "+item.cartId+");' onmouseup='validateItemCount(this, this.value, this.max, "+item.cartId+")'></span>";
+                            var itemQtyContent = "<span><span class='inputItemsQuantityleft'>Qty:</span><input type='number' data-toggle='tooltip' title='Max Quantity Exceeded' data-card_id='"+item.cartId+"' data-item_id="+ item.id +" + data-item_price='"+item.price+"' name='itemQty' value='"+item.qty+"' min='1' max='"+maxQty+"' class='inputItemsQuantity' onkeyup='validateItemCount(this, this.value, this.max, "+item.cartId+");' onmouseup='validateItemCount(this, this.value, this.max, "+item.cartId+")' readonly></span>";
                             var itemQty = "<div class='itemQty'>" +   itemQtyContent + "</div>";
 
 
@@ -305,7 +309,7 @@ function addNewAddressShowModal(){
 function addAddress(form){
     if($("#newaddress-form").valid())
     {
-        alert("going to submit ");
+        // alert("going to submit ");
         addNewAddress(form);
     }
 }

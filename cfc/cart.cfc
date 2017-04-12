@@ -1,18 +1,32 @@
-<cfcomponent>
+<cfcomponent extends="checkout" >
     <cfset VARIABLES.cartDB = CreateObject("db.cart_db") />
 
     <cffunction  name="isCartEmpty" output="false" returntype="boolean"  returnFormat="json" access="remote">
         <cfif session.loggedin>
             <cfset LOCAL.result = "false" />
             <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
-                returnvariable="REQUEST.items" />
-            <cfif NOT REQUEST.items.recordcount >   <cfset LOCAL.result = "true" />
+                returnvariable="LOCAL.items" />
+            <cfif NOT LOCAL.items.recordcount >   <cfset LOCAL.result = "true" />
             </cfif>
         <cfelse>
             <cfset LOCAL.result = ArrayIsEmpty(session.cart) />
         </cfif>
 
         <cfreturn #LOCAL.result#/>
+    </cffunction>
+
+
+<!--- removes Product from either session OR User Cart --->
+    <cffunction name="removeFromCart" returnFormat = "JSON" returntype = "boolean" access="remote" >
+        <cfargument name="pid" type="numeric" required = "true" />
+
+        <cfif SESSION.loggedin>
+            <cfset LOCAL.response = removeFromUserCart(pid) />
+        <cfelse>
+            <cfset LOCAL.response = removeFromSessionCart(pid) />
+        </cfif>
+
+        <cfreturn LOCAL.response />
     </cffunction>
 
 
@@ -40,9 +54,9 @@
         <cfif session.loggedin>
 
             <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
-                returnvariable="REQUEST.items" />
+                returnvariable="LOCAL.items" />
 
-            <cfreturn #REQUEST.items.recordCount#/>
+            <cfreturn #LOCAL.items.recordCount#/>
 
         <cfelse>
             <cfif StructKeyExists(session, "cart")>
@@ -54,7 +68,12 @@
     </cffunction>
 
 
-    <cffunction name="getCartItems" returnformat="JSON" returntype="Array" access="remote" output="true">
+<!---
+    returntype array for Session Cart
+    returntype query for User Cart
+    may not being used
+ --->
+    <cffunction name="getCartItems" returnformat="JSON" returntype="Any" access="remote" output="true">
         <cfset LOCAL.pList = []/>
 
         <cfif session.loggedin>     <cfset LOCAL.pList = getUserCartItems() />
@@ -63,18 +82,20 @@
             <cfset LOCAL.pList = getSessionCartItems() />
         </cfif>
 
-        <cfreturn #LOCAL.pList#/>
+        <cfreturn LOCAL.pList />
     </cffunction>
 
 
     <!--- PRODUCT IN LOGGED USERS CART --->
-    <cffunction name="getUserCartItems" returntype="Array" access = "private" >
+    <cffunction name="getUserCartItems" returntype="Query" access = "private" >
         <cfset LOCAL.pList = [] />
 
-        <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
-            returnvariable="REQUEST.products" />
+        <cfset LOCAL.products = VARIABLES.cartDB.queryProductsFromUserCart() />
+        <!--- CartId, ProductId Name Qty UserId DiscountAmount DiscountedPrice --->
 
-        <cfloop query="REQUEST.products">
+        <!--- <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
+            returnvariable="LOCAL.products" /> --->
+        <!--- <cfloop query="LOCAL.products">
             <cfset ArrayAppend(LOCAL.pList, {
                 "CartId"      = "#CartId#",
                 "ProductId"   = "#ProductId#",
@@ -84,9 +105,9 @@
                 "DiscountAmount"  = "#DiscountAmount#",
                 "DiscountedPrice" = "#DiscountedPrice#"
             })/>
-        </cfloop>
+        </cfloop> --->
 
-        <cfreturn #LOCAL.pList# />
+        <cfreturn LOCAL.products />
     </cffunction>
 
 
@@ -96,9 +117,9 @@
         <cfif NOT ArrayIsEmpty(session.cart)>
 
             <cfinvoke method="queryProductsFromSessionCart" component="#VARIABLES.cartDB#"
-                returnvariable="REQUEST.products" />
+                returnvariable="LOCAL.products" />
 
-            <cfloop query="REQUEST.products">
+            <cfloop query="LOCAL.products">
                 <cfset ArrayAppend(LOCAL.pList, {
                         "ProductId" = #ProductId#,
                         "Name" = #Name#

@@ -8,7 +8,7 @@
     <cffunction name="getOrderDetails" returntype="Query" access="public"  >
         <cfargument name="OrderId" required = "true" type="numeric" />
 
-        <cfquery name="REQUEST.orderDetails">
+        <cfquery name="LOCAL.orderDetails">
             SELECT o.OrderId , o.SubTotal, o.OrderDate, o.PaymentMethod, o.Status,
                    od.OrderQty, od.ProductId, od.SupplierId, od.ShipToAddressId,
                    a.AddressLine, a.PhoneNo,
@@ -28,7 +28,7 @@
             WHERE od.OrderId = #ARGUMENTS.OrderId#
         </cfquery>
 
-        <cfreturn REQUEST.orderDetails />
+        <cfreturn LOCAL.orderDetails />
     </cffunction>
 
 

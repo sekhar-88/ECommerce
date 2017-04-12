@@ -5,9 +5,9 @@
         <cfset LOCAL.brandlist = {}/>
 
         <cfinvoke method = "queryBrands" component = "#VARIABLES.adminDB#"
-            returnvariable = "REQUEST.brands" />
+            returnvariable = "LOCAL.brands" />
 
-        <cfloop query = "REQUEST.brands" >
+        <cfloop query = "LOCAL.brands" >
             <cfset StructInsert(LOCAL.brandlist, #BrandId#, #BrandName#) />
         </cfloop>
 
@@ -19,9 +19,9 @@
         <cfset supplierlist = {}/>
 
         <cfinvoke method = "querySuppliers" component = "#VARIABLES.adminDB#"
-            returnvariable = "REQUEST.suppliers" />
+            returnvariable = "LOCAL.suppliers" />
 
-        <cfloop query = "REQUEST.suppliers" >
+        <cfloop query = "LOCAL.suppliers" >
             <cfset StructInsert(supplierlist, #SupplierId#, #CompanyName#) />
         </cfloop>
 
@@ -34,9 +34,9 @@
         <cfset LOCAL.productsObj = []/>
 
             <cfinvoke method = "queryProductsForSubCategory" component = "#VARIABLES.adminDB#"
-                returnvariable = "REQUEST.products" argumentcollection = "#ARGUMENTS#"  />
+                returnvariable = "LOCAL.products" argumentcollection = "#ARGUMENTS#"  />
 
-            <cfloop query = "REQUEST.products" >
+            <cfloop query = "LOCAL.products" >
                 <cfset ArrayAppend(productsObj, {
                         "ProductId" = "#ProductId#",
                         "BrandId" = "#BrandId#",
@@ -142,9 +142,9 @@
 
                 <cfcase value = "categoryname" >
                     <cfinvoke method = "queryForCategory" component = "#VARIABLES.adminDB#"
-                        returnvariable = "REQUEST.categoryQuery" argumentcollection = "#ARGUMENTS#"  />
+                        returnvariable = "LOCAL.categoryQuery" argumentcollection = "#ARGUMENTS#"  />
 
-                    <cfif REQUEST.categoryQuery.recordCount>
+                    <cfif LOCAL.categoryQuery.recordCount>
                         <cfreturn true/>
                         <cfelse>
                         <cfreturn false/>
@@ -155,9 +155,9 @@
 
                 <cfcase value = "subcategoryname" >
                     <cfinvoke method = "queryForSubCategory" component = "#VARIABLES.adminDB#"
-                        returnvariable = "REQUEST.subCategoryQuery" argumentcollection = "#ARGUMENTS#" />
+                        returnvariable = "LOCAL.subCategoryQuery" argumentcollection = "#ARGUMENTS#" />
 
-                    <cfif REQUEST.subCategoryQuery.recordCount>
+                    <cfif LOCAL.subCategoryQuery.recordCount>
                         <cfreturn true/>
                         <cfelse>
                         <cfreturn false/>
@@ -168,9 +168,9 @@
 
                 <cfcase value = "brandname" >
                     <cfinvoke method = "queryForBrand" component = "#VARIABLES.adminDB#"
-                        returnvariable = "REQUEST.brandQuery" argumentcollection = "#ARGUMENTS#" />
+                        returnvariable = "LOCAL.brandQuery" argumentcollection = "#ARGUMENTS#" />
 
-                    <cfif REQUEST.brandQuery.recordCount>
+                    <cfif LOCAL.brandQuery.recordCount>
                         <cfreturn true/>
                     <cfelse>
                         <cfreturn false/>

@@ -5,7 +5,7 @@
 
     <cffunction name="getOrders" access="remote" returntype="query" >
 
-        <cfquery name="REQUEST.Orders">
+        <cfquery name="LOCAL.Orders">
             SELECT o.OrderId --, o.SubTotal, o.OrderDate, o.PaymentMethod, o.Status--, od.OrderQty, od.ProductId, od.SupplierId
             from [Order] o
             <!--- INNER JOIN [OrderDetails] od --->
@@ -13,7 +13,7 @@
             WHERE o.UserId = #SESSION.User.UserId#
         </cfquery>
 
-        <cfreturn REQUEST.Orders />
+        <cfreturn LOCAL.Orders />
     </cffunction>
 
 
@@ -25,9 +25,9 @@
         <cfargument name="OrderId" type="numeric" required = "true" />
 
         <cfinvoke method="getOrderDetails" component="#VARIABLES.orderDB#"
-            returnvariable="REQUEST.orderDetails" OrderId = #ARGUMENTS.OrderId# />
+            returnvariable="LOCAL.orderDetails" OrderId = #ARGUMENTS.OrderId# />
 
-        <cfreturn REQUEST.orderDetails />
+        <cfreturn LOCAL.orderDetails />
     </cffunction>
 
 

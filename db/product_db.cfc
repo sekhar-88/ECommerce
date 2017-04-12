@@ -9,7 +9,7 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfargument name="productUpdate" type="struct" required = "true"  />
         <cfargument name="imagename" type="string" required = "true" />
 
-        <cfquery name="REQUEST.updateDetails">
+        <cfquery name="LOCAL.updateDetails">
             UPDATE [Product]
             SET Name        =  <cfqueryparam value="#ARGUMENTS.productUpdate.Name#" cfsqltype="CF_SQL_NVARCHAR" />,
                 Qty         =  <cfqueryparam value="#ARGUMENTS.productUpdate.Qty#" cfsqltype="cf_sql_int" />,
@@ -43,20 +43,20 @@ like adding to cart removing from cart, editing updating product details etc. --
     <cffunction name = "queryCartForProduct" returntype = "query" access = "public" >
         <cfargument name = "pid" type = "numeric" required = "true" />
 
-        <cfquery name = "REQUEST.cart">
+        <cfquery name = "LOCAL.cart">
             select CartId
             from [Cart]
             Where ProductId= < cfqueryparam value = "#ARGUMENTS.pid#" cfsqltype = "cf_sql_bigint" >  AND UserId = #Session.User.UserId#
         </cfquery>
 
-        <cfreturn #REQUEST.cart# />
+        <cfreturn #LOCAL.cart# />
     </cffunction>
 
 
     <cffunction name = "queryProductsForSubCategory" returntype = "query" access = "public" >
         <cfargument name = "scat" required = "true" type = "numeric" output = "false" />
 
-        <cfquery name = "REQUEST.products" >
+        <cfquery name = "LOCAL.products" >
             SELECT  ProductId, Name, BrandId, SubCategoryid, ListPrice, SupplierId,
                     DiscontinuedDate, DiscountPercent, DiscountedPrice, Qty,
                     Description, Image
@@ -64,27 +64,27 @@ like adding to cart removing from cart, editing updating product details etc. --
             WHERE SubCategoryId = <cfqueryparam value = "#ARGUMENTS.scat#" CFSQLType = "[cf_sql_integer]">
         </cfquery>
 
-        <cfreturn #REQUEST.products# />
+        <cfreturn #LOCAL.products# />
     </cffunction>
 
 
     <cffunction name = "getProduct" returntype = "query" access = "public" >
         <cfargument name = "pid" type = "numeric" required = "true">
 
-        <cfquery name = "REQUEST.productItem">
+        <cfquery name = "LOCAL.productItem">
             SELECT *
             FROM [Product]
             WHERE ProductId = <cfqueryparam value = "#ARGUMENTS.pid#" cfsqltype = "cf_sql_bigint" />
         </cfquery>
 
-        <cfreturn #REQUEST.productItem#/>
+        <cfreturn #LOCAL.productItem#/>
     </cffunction>
 
 
     <cffunction name = "queryProductDetailsAndBrand" returntype = "query" access = "public" >
         <cfargument name = "pid" required = "true" type = "numeric" />
 
-            <cfquery name = "REQUEST.productDetails">
+            <cfquery name = "LOCAL.productDetails">
                 SELECT p.* , b.BrandName
                 FROM [Product] p
                 INNER JOIN [Brand] b
@@ -94,7 +94,7 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfquery>
 
 
-        <cfreturn #REQUEST.productDetails# />
+        <cfreturn #LOCAL.productDetails# />
     </cffunction>
 
 
@@ -102,7 +102,7 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfargument name="q" type = "string" required = "true" />
 
         <cftry>
-            <cfquery name="REQUEST.subCategoryFilters">
+            <cfquery name="LOCAL.subCategoryFilters">
                 SELECT DISTINCT psc.SubCategoryName, psc.SubCategoryId
                 FROM [ProductSubCategory] psc
                 INNER JOIN [Product] p
@@ -116,14 +116,14 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfcatch>
 
         </cftry>
-        <cfreturn REQUEST.subCategoryFilters />
+        <cfreturn LOCAL.subCategoryFilters />
     </cffunction>
 
 
     <cffunction name="getBrandsFilter" returntype = "Query" access = "public" >
         <cfargument name="scat" type = "string" required = "true" />
 
-        <cfquery name="REQUEST.brandsFilter">
+        <cfquery name="LOCAL.brandsFilter">
             SELECT DISTINCT b.BrandName , b.BrandId
             FROM [Brand] b
             INNER JOIN [Product] p
@@ -131,20 +131,20 @@ like adding to cart removing from cart, editing updating product details etc. --
             WHERE p.SubCategoryId = <cfqueryparam value="#ARGUMENTS.scat#" cfsqltype="cf_sql_int" />
         </cfquery>
 
-        <cfreturn REQUEST.brandsFilter />
+        <cfreturn LOCAL.brandsFilter />
     </cffunction>
 
 
     <cffunction name="queryProducts" returntype = "query" access = "public" >
         <cfargument name="q" required="true" type = "string"  />
 
-        <cfquery name = "REQUEST.productsQuery">
+        <cfquery name = "LOCAL.productsQuery">
             select *
               from [Product]
              where Name LIKE <cfqueryparam value="%#ARGUMENTS.q#%" cfsqltype="cf_sql_char" >
         </cfquery>
 
-        <cfreturn REQUEST.productsQuery />
+        <cfreturn LOCAL.productsQuery />
     </cffunction>
 
     <cffunction name="addNewProductToDB" returntype="boolean" access = "public" >
@@ -175,13 +175,13 @@ like adding to cart removing from cart, editing updating product details etc. --
     <cffunction name="getSubCategoryName" returntype = "Query" access="public" >
         <cfargument name="scat" type="numeric" required = "true" />
 
-        <cfquery name="REQUEST.subCategory">
+        <cfquery name="LOCAL.subCategory">
             SELECT SubCategoryName
             FROM [ProductSubCategory]
             WHERE SubCategoryId = <cfqueryparam value="#ARGUMENTS.scat#" cfsqltype="cf_sql_int">
         </cfquery>
 
-        <cfreturn REQUEST.subCategory />
+        <cfreturn LOCAL.subCategory />
     </cffunction>
 
 </cfcomponent>

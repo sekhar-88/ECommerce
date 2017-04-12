@@ -50,21 +50,21 @@ return response
                 }/>
 
                 <cfinvoke method="getUserPassword" component="#VARIABLES.userDB#"
-                    returnvariable="REQUEST.findUser" argumentcollection="#ARGUMENTS#"  />
+                    returnvariable="LOCAL.findUser" argumentcollection="#ARGUMENTS#"  />
 
-                <cfif REQUEST.findUser.recordcount>
+                <cfif LOCAL.findUser.recordcount>
 
-                    <cfif REQUEST.findUser.Password EQ ARGUMENTS.password>   <!--- login success --->
+                    <cfif LOCAL.findUser.Password EQ ARGUMENTS.password>   <!--- login success --->
 
                         <cfinvoke method="getUserDetails" component="#VARIABLES.userDB#"
-                            returnvariable="REQUEST.result" argumentcollection="#ARGUMENTS#"  />
+                            returnvariable="LOCAL.result" argumentcollection="#ARGUMENTS#"  />
 
                         <cfset session.User = {
-                            UserId = "#REQUEST.result.UserId#",
-                            UserName = "#REQUEST.result.FirstName#" & " " & "#REQUEST.result.LastName#",
-                            UserEmail = "#REQUEST.result.Email#",
-                            UserPhoneNo = "#REQUEST.result.PhoneNo#",
-                            Role = "#REQUEST.result.Role#"
+                            UserId = "#LOCAL.result.UserId#",
+                            UserName = "#LOCAL.result.FirstName#" & " " & "#LOCAL.result.LastName#",
+                            UserEmail = "#LOCAL.result.Email#",
+                            UserPhoneNo = "#LOCAL.result.PhoneNo#",
+                            Role = "#LOCAL.result.Role#"
                         } />
 
                             <cfset SESSION.loggedin="true" />
@@ -111,11 +111,11 @@ return response
 
             <cfif isValid('email', FORM.Email)>
                 <cfinvoke method="searchExistingEmails" component="#VARIABLES.userDB#"
-                    returnvariable = "REQUEST.emailExists" email = "#LOCAL.form.Email#" />
+                    returnvariable = "LOCAL.emailExists" email = "#LOCAL.form.Email#" />
 
-                <cfif NOT REQUEST.emailExists>
+                <cfif NOT LOCAL.emailExists>
                     <cfinvoke method="createUser" component="#VARIABLES.userDB#"
-                        returnvariable = "REQUEST.createUserResponse" form = #LOCAL.form# />
+                        returnvariable = "LOCAL.createUserResponse" form = #LOCAL.form# />
 
                 <cfelse>
                     <!--- email error --->

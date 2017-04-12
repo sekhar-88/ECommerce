@@ -116,5 +116,6 @@
 		    <cfcookie name="CFTOKEN" expires="now" /> --->
 
 		    <cfset session.loggedin = "false" />
+			<cfset sessionRotate() />
 			<cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
 		</cfif>
