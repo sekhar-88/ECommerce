@@ -37,7 +37,7 @@
     <input type="hidden" id="refreshed" value="no"/>
 
 
-    <form class="" action="" enctype="multipart/form-data" method="post" id="product_add_form" name="product_add_form">
+    <form class="" action="" enctype="multipart/form-data" method="post" id="product-add-form" name="product-add-form">
     <div class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
       <div class="modal-dialog" role="document" style="width: 450px;">
         <div class="modal-content" style="-webkit-border-radius: 0px !important;-moz-border-radius: 0px !important;border-radius: 0px !important;">

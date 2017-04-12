@@ -1,6 +1,7 @@
 $(document).ready(function(){
     $(".product-price").hide();
     $(".product-discounted-price").hide();
+    $("form#product-add-form").validate();
 
     $(".product-discounted-price").each(function(){
         if($.trim($(this).text())  == "") {

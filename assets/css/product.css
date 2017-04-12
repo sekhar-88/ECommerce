@@ -151,28 +151,33 @@ h4.modal-title {
 
 #product-add-form .form-group > input,
 #product-add-form .form-group > select {
-    width: 56%;
+    /*width: 56%;*/
     border: 0px;
     border: 1px solid #bbdefb;
     border-radius: 4px;
     padding: 3px;
 }
+
+#product-add-form .form-group:not(.product-desc-fields) > input {
+    width: 56%;
+}
+
 #product-add-form .form-group > input:focus,
 #product-add-form .form-group > select:focus {
     outline: none;
     box-shadow: 1px 1px 1px lightgrey;
 }
-.product-desc-fields {
+#product-add-form .product-desc-fields {
     padding-left: 9%;
 }
-.product-desc-fields > input[type="text"] {
+#product-add-form .product-desc-fields > input[type="text"] {
     width: auto;
     border: 1px solid lightgrey;
     border-radius: 2px;
     margin: 2px;
     /*border-bottom: 1px solid lightgrey;*/
 }
-.product-desc-fields > input[type="text"]:focus {
+#product-add-form .product-desc-fields > input[type="text"]:focus {
     outline : 0px;
 }
 .btn-file {

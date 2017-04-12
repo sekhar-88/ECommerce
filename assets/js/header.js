@@ -15,7 +15,7 @@ $(document).ready(function(){
             e.preventDefault();
             notify("enter some value first..", "warning");
         }
-    })
+    });
 });
 
     $(document.body).on("mouseenter", ".category", function(event) {
