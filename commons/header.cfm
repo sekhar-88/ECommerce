@@ -1,6 +1,6 @@
 <head>
-  <link rel="stylesheet" href="assets/css/header.css">
-  <script src="assets/js/header.js"></script>
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <script src="../assets/js/header.js"></script>
 
   <style>
   </style>
@@ -25,7 +25,7 @@
 				</button>
 
 				<a class="navbar-brand" href="index.cfm">
-					<img class="img" src="assets/images/logo2.png" width="150px"/>
+					<img class="img" src="../assets/images/logo2.png" width="150px"/>
 				</a>
 			</div>
 
@@ -88,7 +88,7 @@
                                 <li><a href="orders.cfm">orders</a></li>
                                 <li role="separator" class="separator"></li>
 								<li>
-									<form method="POST" action="actions/logout.cfm">
+									<form method="POST" action="">
 										<div class="form-group has-feedback">
 											<span class="glyphicon glyphicon glyphicon-log-out form-control-feedback"></span>
 											<button type="submit" name="logout" class="btn_type_text form-control">Logout</button>

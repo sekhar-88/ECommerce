@@ -5,9 +5,9 @@
 <html>
 <head>
     <title>Checkout</title>
-    <cfinclude template="assets/libraries/libraries.cfm" />
-    <link href = "assets/css/checkout.css" rel="stylesheet">
-    <script src="assets/js/checkout.js"></script>
+    <cfinclude template="/include/libraries.cfm" />
+    <link href = "../assets/css/checkout.css" rel="stylesheet">
+    <script src="../assets/js/checkout.js"></script>
     <style>
     </style>
         <script>
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<cfinclude template="commons/header.cfm" />
+<cfinclude template="/commons/header.cfm" />
 <!--- pagerefreshlogic --->
 <input type="hidden" id="refreshed" value="no"/>
 
@@ -239,7 +239,7 @@
     </cfif>
     </div>
 
-<cfinclude template="commons/footer.cfm" />
+<cfinclude template="/commons/footer.cfm" />
 </body>
 </html>
 

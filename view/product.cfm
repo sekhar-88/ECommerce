@@ -3,7 +3,7 @@
 <cfif IsNumeric(URL.cat) AND IsNumeric(URL.scat)>
     <cfelse>
         <!--- <script>$(document).ready(function(){$(html).empty();});</script> --->
-        <cfinclude template="commons/error404.cfm" />
+        <cfinclude template="/commons/error404.cfm" />
         <cfabort />
     </cfif>
 
@@ -12,13 +12,13 @@
 
 <!DOCTYPE html>
 <head>
-    <cfinclude template = "assets/libraries/libraries.cfm">
-    <link href="assets/css/product.css" rel="stylesheet">
-    <script src="assets/js/product.js"></script>
+    <cfinclude template = "/include/libraries.cfm">
+    <link href="../assets/css/product.css" rel="stylesheet">
+    <script src="../assets/js/product.js"></script>
 
     <!--- <cfdump var="#session#" /> --->
     <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
-        <script src="assets/js/adminpage.js"></script>
+        <script src="../assets/js/adminpage.js"></script>
     </cfif>
 </head>
 <!---
@@ -32,7 +32,7 @@
 
 --->
     <body>
-    <div id="header"><cfinclude template = "commons/header.cfm" /></div>
+    <div id="header"><cfinclude template = "/commons/header.cfm" /></div>
     <!--- page refresh logic --->
     <input type="hidden" id="refreshed" value="no"/>
 
@@ -185,7 +185,7 @@
                                 <div class="productadd" data-scat="#URL.scat#" onclick="addNewProduct(this);">
 
                                     <div class="product-image">
-                                        <img src="assets/images/products/commons/productaddnew.png" width="300px"/>
+                                        <img src="../assets/images/products/commons/productaddnew.png" width="300px"/>
                                     </div>
                                     <div class="product-content" style="display: flex; align-items:center; justify-content:center; ">
                                         <div class="product-name font-size-30 color-grey"> Add New Product In this Category/SubCategory </div>
@@ -202,7 +202,7 @@
 
                                                     <a href="productDetails.cfm?pid=#ProductId#"></a>
                                                     <div class="product-image">
-                                                        <img class="" src="assets/images/products/medium/#Image#">
+                                                        <img class="" src="../assets/images/products/medium/#Image#">
                                                     </div>
 
                                                     <div class="product-content">
@@ -239,7 +239,7 @@
     </div>
 
 
-<cfinclude template = "commons/footer.cfm">
+<cfinclude template = "/commons/footer.cfm">
 </body>
 </html>
 

@@ -2,15 +2,15 @@
 <html>
 <head>
   <title>Register</title>
-  <cfinclude template = "assets/libraries/libraries.cfm">
-      <link rel="stylesheet" href="assets/css/register.css">
+  <cfinclude template = "/include/libraries.cfm">
+      <link rel="stylesheet" href="../assets/css/register.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.2.0/zxcvbn.js"></script>
-  <script src="assets/js/register.js"></script>
+  <script src="../assets/js/register.js"></script>
 
  </head>
 
   <body>
-    <cfinclude template = "commons/header.cfm">
+    <cfinclude template = "/commons/header.cfm">
 
 
     <h1 class="signup-header" align="center">Register With Us</h1>
@@ -64,6 +64,6 @@
 <!--- Server side check for signup --->
 <!--- move into cfc  IMPLEMENT USING CFC--->
 
-<cfinclude template = "commons/footer.cfm">
+<cfinclude template = "/commons/footer.cfm">
 </body>
 </html>

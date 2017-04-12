@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html>
-
 <head>
 
 	<meta charset="utf-8">
@@ -9,15 +6,13 @@
 	<!--- <meta name="keywords" content="footer, address, phone, icons" /> --->
 
 	<!--- <link rel="stylesheet" href="css/demo.css"> --->
-	<link rel="stylesheet" href="assets/css/footer-distributed-with-address-and-phones.css">
+	<link rel="stylesheet" href="../assets/css/footer-distributed-with-address-and-phones.css">
 
 	<!--- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"> --->
 
 	<!--- <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css"> --->
 
 </head>
-
-	<body>
 
 		<!--- <header>
 
@@ -104,6 +99,22 @@
 
 		</footer>
 
-	</body>
 
-</html>
+
+
+<!---
+	SERVER CODES for CHECKING LOGOUT CLICKED OR NOT.
+--->
+
+		<cfif StructKeyExists(FORM, "LOGOUT")>
+
+		    <cfset structClear(SESSION.User) />
+
+		    <!--- <cfset StructDelete(SESSION, "CFTOKEN")/>
+		    <cfset StructDelete(SESSION, "CFID" )/>
+		    <cfcookie name="CFID" expires="now" />
+		    <cfcookie name="CFTOKEN" expires="now" /> --->
+
+		    <cfset session.loggedin = "false" />
+			<cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
+		</cfif>

@@ -30,7 +30,7 @@ function checkOut(el,uid){
 function checkOut(el, uid){
     var pid = $(el).val();
     $.ajax({
-        url: "cfc/product.cfc?method=user_checkout",
+        url: "../cfc/product.cfc?method=user_checkout",
         data: {
             pid: pid
         },
@@ -54,7 +54,7 @@ function addToCart(el){
     // alert(prdtId);
 
     $.ajax({
-        url: "cfc/product.cfc?method=addToCart",
+        url: "../cfc/product.cfc?method=addToCart",
         data: {
             pid: prdtId
         },

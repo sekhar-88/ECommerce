@@ -45,7 +45,7 @@ $(document).ready(function(){
         if( $("#login-form").valid() ) {
 
             $.ajax({
-                url: "cfc/user.cfc?method=validate",
+                url: "../cfc/user.cfc?method=validate",
                 data: {
                     email: mail,
                     password: pswd
@@ -86,7 +86,7 @@ $(document).ready(function(){
 //update cart count pageonload bind
 function updateCartCount(){
     $.ajax({
-        url: "cfc/cart.cfc?method=getCartCount",
+        url: "../cfc/cart.cfc?method=getCartCount",
         dataType: "json"
     }).done(function(response){
         $("#badge").text(response);

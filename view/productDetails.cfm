@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <cfinclude template = "assets/libraries/libraries.cfm">
-      <link href="assets/css/productDetail.css" rel="stylesheet">
+    <cfinclude template = "/include/libraries.cfm">
+      <link href="../assets/css/productDetail.css" rel="stylesheet">
 
 
      <script>
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div id="header"><cfinclude template = "commons/header.cfm" /></div>
+<div id="header"><cfinclude template = "/commons/header.cfm" /></div>
 <!--- page refresh logic --->
 <input type="hidden" id="refreshed" value="no" />
 
@@ -47,7 +47,7 @@
                     <div class="image-view">
 
                         <div class="image-container-lg">
-                            <img src="assets/images/products/medium/#VARIABLES.productDetails.Image#" alt="">
+                            <img src="../assets/images/products/medium/#VARIABLES.productDetails.Image#" alt="">
                         </div>
 
                         <div id="buttons-container">
@@ -228,8 +228,8 @@
 
 
 
-<script src="assets/js/productDetail.js"></script>
-<cfinclude template = "commons/footer.cfm">
+<script src="../assets/js/productDetail.js"></script>
+<cfinclude template = "/commons/footer.cfm">
 </body>
 </html>
 

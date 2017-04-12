@@ -64,7 +64,7 @@ $().ready(function(){// password meter codes
 
         if( $(this).valid() ){
             $.ajax({
-                url: "cfc/user.cfc?method=newUser",
+                url: "../cfc/user.cfc?method=newUser",
                 dataType: "json",
                 contentType: "json",
                 data: {

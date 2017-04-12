@@ -4,15 +4,15 @@
 <html>
 <head>
     <title>eShopping</title>
-    <cfinclude template = "assets/libraries/libraries.cfm" />
-    <link href="assets/css/index.css" rel="stylesheet">
-    <script src="assets/js/index.js"></script>
-    <style>
+    <cfinclude template = "/include/libraries.cfm" />
+    <link href="../assets/css/index.css" rel="stylesheet">
+    <script src="../assets/js/index.js"></script>
 
+    <style>
     </style>
 </head>
 <body>
-<div id="header"><cfinclude template = "commons/header.cfm"></div>
+<div id="header"><cfinclude template = "/commons/header.cfm"></div>
 
 <!--- page refresh logic --->
 <input type="hidden" id="refreshed" value="no"/>
@@ -65,7 +65,7 @@
                                 <div class="product scat_#SubCategoryId#">
                                     <a href="productDetails.cfm?pid=#ProductId#"></a>
                                     <div class="product_image">
-                                        <img class="" src="assets/images/products/medium/#Image#">
+                                        <img class="" src="../assets/images/products/medium/#Image#">
                                     </div>
                                     <div class="product_content">
                                         <div class="product_name"> #Name# </div>
@@ -112,19 +112,19 @@
                       <div class="carousel-inner" role="listbox" style="height: 400px;">
 
                         <div class="item active">
-                          <a href="product.cfm?cat=2&amp;scat=3"><img src="assets/images/products/featured/frontpagecarousel/mensfashion.jpg" alt="mensfashion"></a>
+                          <a href="product.cfm?cat=2&amp;scat=3"><img src="../assets/images/products/featured/frontpagecarousel/mensfashion.jpg" alt="mensfashion"></a>
                         </div>
 
                         <div class="item">
-                          <a href="product.cfm?cat=1&amp;scat=1"><img src="assets/images/products/featured/frontpagecarousel/mensfootwear.jpg" alt="mensfootwear"></a>
+                          <a href="product.cfm?cat=1&amp;scat=1"><img src="../assets/images/products/featured/frontpagecarousel/mensfootwear.jpg" alt="mensfootwear"></a>
                         </div>
 
                         <div class="item">
-                            <a href=""><img src="assets/images/products/featured/frontpagecarousel/casualstyle.jpg" alt="casualstyle"></a>
+                            <a href=""><img src="../assets/images/products/featured/frontpagecarousel/casualstyle.jpg" alt="casualstyle"></a>
                         </div>
 
                         <!--- <div class="item">
-                          <img src="assets/images/products/featured/frontpagecarousel/menstshirts.jpg" alt="menstshirts">
+                              <img src="../assets/images/products/featured/frontpagecarousel/menstshirts.jpg" alt="menstshirts">
                         </div> --->
 
                       </div>
@@ -144,6 +144,6 @@
     </cfif>
 </div>
 
-<cfinclude template = "commons/footer.cfm">
+<cfinclude template = "/commons/footer.cfm">
 </body>
 </html>

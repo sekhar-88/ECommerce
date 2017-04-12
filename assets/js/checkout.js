@@ -38,7 +38,7 @@ $(document).ready(function(){
 
 function gotoCheckOutStep(){
     $.ajax({
-        url: "cfc/checkout.cfc?method=getCheckOutStep",
+        url: "../cfc/checkout.cfc?method=getCheckOutStep",
         success: function(response){
             // alert( "AT STEP: " + response)
             gotoStep(response);
@@ -88,7 +88,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
     $("#address_section .show_when_collapsed").fadeIn();
     $.ajax({
         async: false,
-        url: "cfc/checkout.cfc?method=getOrderSummary",
+        url: "../cfc/checkout.cfc?method=getOrderSummary",
         dataType: "json",
         success: function(response){
             console.log(response);       // response.itemsArray   // response.totalPrice
@@ -122,7 +122,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
 
                     $.ajax({
                         async: false,
-                        url: "cfc/checkout.cfc?method=getAvailableQuantity",
+                        url: "../cfc/checkout.cfc?method=getAvailableQuantity",
                         data: { itemid: item.id },
                         dataType: "json",
 
@@ -171,7 +171,7 @@ function validateItemCount(element, value, max, cartId){
 
     $.ajax({
         async: false,
-        url: "cfc/checkout.cfc?method=updateCartAndTotalPrice",
+        url: "../cfc/checkout.cfc?method=updateCartAndTotalPrice",
         data: {
             cartid: cartId,
             pid: pid,
@@ -198,7 +198,7 @@ function removeItem(element){
     $(itemToBeRemovedFromCheckoutPage).remove();  //remove from the checkout page
     //remove from cart too
     $.ajax({
-        url:"cfc/cart.cfc?method=removeFromUserCart",
+        url:"../cfc/cart.cfc?method=removeFromUserCart",
         data: {
             pid: pid
         },
@@ -218,7 +218,7 @@ function removeItem(element){
 
     //remove item from session too
     $.ajax({
-        url: "cfc/checkout.cfc?method=refreshSessionCheckoutList",
+        url: "../cfc/checkout.cfc?method=refreshSessionCheckoutList",
         data: { arrayindex: sessionArrayIndex },
         dataType: "json",
         success: function(response){
@@ -247,7 +247,7 @@ function gotoStep2(){
 
 function revertToStep(stp){
     $.ajax({
-        url: "cfc/checkout.cfc?method=revertToStep",
+        url: "../cfc/checkout.cfc?method=revertToStep",
         data: {
             step: stp
         },
@@ -267,7 +267,7 @@ function storeAddressGotoStep1(el){  //gotoOrderSummary Section
     addressid = $(el).val();
 
     $.ajax({
-        url: "cfc/checkout.cfc?method=setCheckoutAddress",
+        url: "../cfc/checkout.cfc?method=setCheckoutAddress",
         data:{
             addressid : addressid
         },
@@ -313,7 +313,7 @@ function addAddress(form){
 function addNewAddress(oform){
     var form = oform.elements;
     $.ajax({
-        url: "cfc/checkout.cfc?method=saveShippingAddress",
+        url: "../cfc/checkout.cfc?method=saveShippingAddress",
         data:
         {
             AddressLine: form.AddressLine.value,
@@ -335,7 +335,7 @@ function addNewAddress(oform){
 function deleteAddress(dltBtn){
     if( confirm("Sure to Delete the Address?") == true ){
         $.ajax({
-            url: "cfc/checkout.cfc?method=deleteAddress&addressid="+dltBtn.value,
+            url: "../cfc/checkout.cfc?method=deleteAddress&addressid="+dltBtn.value,
             dataType: "json"
         }).done(function(response){
             console.log(response + " removed Address");
@@ -366,7 +366,7 @@ function editAddressAndSave(form,address_id){
     // alert('clicked' + address_id);
 
     $.ajax({
-        url: "cfc/checkout.cfc?method=updateShippingAddress",
+        url: "../cfc/checkout.cfc?method=updateShippingAddress",
         data: {
             addressid : address_id,
             formdata : $(form).serialize()
@@ -387,7 +387,7 @@ function editAddressAndSave(form,address_id){
 function placeOrderByCOD(){
     if(validateItemQuantity()){  //purchasee section handling
         $.ajax({
-            url: "cfc/checkout.cfc?method=orderPlacedByCOD",
+            url: "../cfc/checkout.cfc?method=orderPlacedByCOD",
             data:{},
             dataType: "json",
             success: function(response){
@@ -428,7 +428,7 @@ function validateItemQuantity(){
         if( parseInt(qty) > 0 ){
             $.ajax({
                     async: false,
-                    url: "cfc/checkout.cfc?method=getAvailableQuantity",
+                    url: "../cfc/checkout.cfc?method=getAvailableQuantity",
                     data: {
                         itemid: itemId
                     },

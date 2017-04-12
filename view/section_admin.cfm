@@ -3,15 +3,15 @@
 <html>
 <head>
   <title>Admin&#8226;eShopping</title>
-  <cfinclude template = "assets/libraries/libraries.cfm" />
+  <cfinclude template = "/include/libraries.cfm" />
 
-  <link href="assets/css/adminpage.css" rel="stylesheet" />
-  <script src="assets/js/adminpage.js"></script>
+  <link href="../assets/css/adminpage.css" rel="stylesheet" />
+  <script src="../assets/js/adminpage.js"></script>
   <style>
   </style>
 </head>
 <body>
-<div id="header"><cfinclude template = "commons/header.cfm"></div>
+<div id="header"><cfinclude template = "/commons/header.cfm"></div>
     <cfif session.loggedin>
     <cfif session.User.Role EQ 'admin'>  <!--can include a admin module .cfm file from other folders --->
     <div class="admin-panel">
@@ -167,7 +167,7 @@
 
     <div id="response">
     </div>
-    <!--- <cfinclude template="commons/footer.cfm" /> --->
+    <!--- <cfinclude template="/commons/footer.cfm" /> --->
 </body>
 </html>
 <cftry>

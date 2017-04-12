@@ -5,7 +5,7 @@ $().ready(function(){
 
 function checkout(){
     $.ajax({
-        url: "cfc/user.cfc?method=isUserLogggedin",
+        url: "../cfc/user.cfc?method=isUserLogggedin",
         dataType: "json",
         success: function(response){
             if(response == true){
@@ -21,7 +21,7 @@ function checkout(){
 
 function user_removeFromCart(el, pid){
     $.ajax({
-        url: "cfc/cart.cfc?method=removeFromUserCart",
+        url: "../cfc/cart.cfc?method=removeFromUserCart",
         data: {
             pid: pid
         },
@@ -50,7 +50,7 @@ function user_removeFromCart(el, pid){
 
 function removeFromSessionCart(el, pid){
     $.ajax({
-        url: "cfc/cart.cfc?method=removeFromSessionCart",
+        url: "../cfc/cart.cfc?method=removeFromSessionCart",
         data: {
             pid: pid
         },
@@ -86,7 +86,7 @@ onload = function () {
 
 function fetchCartItems(){
     $.ajax({
-        url: "cfc/cart.cfc?method=getCartItems",
+        url: "../cfc/cart.cfc?method=getCartItems",
         dataType: "json"
     }).done(function(response){
         if(response.length) {                   //Cart not empty

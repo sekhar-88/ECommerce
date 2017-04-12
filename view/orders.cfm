@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <cfinclude template="assets/libraries/libraries.cfm" />
-    <link href="assets/css/orders.css" rel="stylesheet">
+    <cfinclude template="/include/libraries.cfm" />
+    <link href="../assets/css/orders.css" rel="stylesheet">
 </head>
 <body>
-    <cfinclude template = "commons/header.cfm" />
+    <cfinclude template = "/commons/header.cfm" />
 
     <cfif NOT SESSION.loggedin>
         <cfoutput>
@@ -50,6 +50,6 @@
     </cfoutput>
 
 
-    <cfinclude template = "commons/footer.cfm">
+    <cfinclude template = "/commons/footer.cfm">
 </body>
 </html>

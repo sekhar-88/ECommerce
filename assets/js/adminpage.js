@@ -26,7 +26,7 @@ function addProductToDB(oform){
     }
 
     $.ajax({
-        url: "cfc/admin.cfc?method=addNewProduct",
+        url: "../cfc/admin.cfc?method=addNewProduct",
         data: {
             formdata : JSON.stringify(formProduct)
         },
@@ -49,7 +49,7 @@ function getSubCategoryId(){
 function fillSubCategory(name){
     $(".action_li").show();
     $.ajax({
-        url: "cfc/header.cfc?method=getSubCategoriesJSObject",
+        url: "../cfc/header.cfc?method=getSubCategoriesJSObject",
         data:{
             categoryname: name
         },
@@ -74,7 +74,7 @@ function populateBrandsSuppliers(brand,supplier,ve){
     $(brandselectlist).empty();
     $(supplierselectlist).empty();
     $.ajax({
-        url: "cfc/admin.cfc?method=getBrands",
+        url: "../cfc/admin.cfc?method=getBrands",
         dataType: "json",
         success: function(response){
             $.each(response, function(key,value){
@@ -84,7 +84,7 @@ function populateBrandsSuppliers(brand,supplier,ve){
         }
     });
     $.ajax({
-        url: "cfc/admin.cfc?method=getSuppliers",
+        url: "../cfc/admin.cfc?method=getSuppliers",
         dataType: "json",
         success: function(response){
             $.each(response, function(key,value){
@@ -105,7 +105,7 @@ function getProductsAndShow(){     //after click retrieve products  (product act
     $("#products-list").empty();
     $("#products-info").empty();
     $.ajax({
-        url: "cfc/admin.cfc?method=getProducts",
+        url: "../cfc/admin.cfc?method=getProducts",
         data: { scatid: subcategoryid },
         dataType: "json"
     }).done(function(response){
@@ -181,7 +181,7 @@ function addCategory(el){
     var CategoryName = ($(el).prev().val()).trim();
     if(CategoryName != ""){
         $.ajax({
-            url: "cfc/admin.cfc?method=addCategory",
+            url: "../cfc/admin.cfc?method=addCategory",
             data: {categoryname: CategoryName},
             // dataType: "JSON",
         }).done(function(response){
@@ -201,7 +201,7 @@ function addBrands(el){
     var BrandName = ($(el).prev().val()).trim();
     if(BrandName != ""){
         $.ajax({
-            url: "cfc/admin.cfc?method=addBrand",
+            url: "../cfc/admin.cfc?method=addBrand",
             data: { brand: BrandName },
             success: function(response){ if(response == "true") {
                                             notify("added Brand "+ BrandName, "success", "fa fa-check" );
@@ -227,7 +227,7 @@ function addSubCategory(el){
 
     if( SubCategoryName != ""){
         $.ajax({
-            url: "cfc/admin.cfc?method=addSubCategory",
+            url: "../cfc/admin.cfc?method=addSubCategory",
             data: { categoryid : categoryid, subcategoryname : SubCategoryName },
             dateType: "JSON",
             success: function(res){
@@ -258,7 +258,7 @@ function enableSubCategoryTextField(el){
 
     if( categoryname != "invalid" ) {
         $.ajax({
-            url: "cfc/admin.cfc?method=getSubCategoriesJSON",
+            url: "../cfc/admin.cfc?method=getSubCategoriesJSON",
             data: { categoryid: categoryid },
             dataType: "json",
             success:function(arr){

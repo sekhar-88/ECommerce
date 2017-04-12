@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <cfinclude template = "assets/libraries/libraries.cfm">
-    <link rel="stylesheet" href="assets/css/cart.css">
-    <script src="assets/js/cart.js"></script>
+    <cfinclude template = "/include/libraries.cfm">
+    <link rel="stylesheet" href="../assets/css/cart.css">
+    <script src="../assets/js/cart.js"></script>
 </head>
 <body>
-    <cfinclude template = "commons/header.cfm">
+    <cfinclude template = "/commons/header.cfm">
     <!--- page refresh logic --->
     <input type="hidden" id="refreshed" value="no"/>
 
@@ -33,6 +33,6 @@
             </div>
     </div>
 
-        <cfinclude template="commons/footer.cfm" />
+        <cfinclude template="/commons/footer.cfm" />
     </body>
 </html>
