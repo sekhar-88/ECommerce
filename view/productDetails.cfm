@@ -126,80 +126,83 @@
                     </div>
 
 
+                    <!---
+                        MODAL FOR UPDATING THE PRODUCT DETAILS
+                    --->
                     <form class="" action="" enctype="multipart/form-data" method="post" id="product-update-form" name="product-update-form">
-                    <div class="modal fade" tabindex="-1" role="dialog" id="update-product-modal">
-                      <div class="modal-dialog" role="document" style="width: 450px;">
-                        <div class="modal-content" style="-webkit-border-radius: 0px !important;-moz-border-radius: 0px !important;border-radius: 0px !important;">
+                        <div class="modal fade" tabindex="-1" role="dialog" id="update-product-modal">
+                          <div class="modal-dialog" role="document" style="width: 450px;">
+                            <div class="modal-content" style="-webkit-border-radius: 0px !important;-moz-border-radius: 0px !important;border-radius: 0px !important;">
 
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 align="center" class="modal-title">Update Product</h3>
-                          </div>
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h3 align="center" class="modal-title">Update Product</h3>
+                              </div>
 
-                          <div class="modal-body">
-                              <cfoutput>
+                              <div class="modal-body">
+                                  <cfoutput>
 
-                                  <div class="form-group">
-                                      <label>Product Name: </label>
-                                      <input type="text" name="Name" value="#VARIABLES.productdetails.Name#" required>
-                                  </div>
+                                      <div class="form-group">
+                                          <label>Product Name: </label>
+                                          <input type="text" name="Name" value="#VARIABLES.productdetails.Name#" required>
+                                      </div>
 
-                                  <!--- <div class="form-group">
-                                      <label>Brand: </label>
-                                      <select name="BrandId" id="brands_select_list" required>
-                                      </select>
-                                  </div> --->
+                                      <!--- <div class="form-group">
+                                          <label>Brand: </label>
+                                          <select name="BrandId" id="brands_select_list" required>
+                                          </select>
+                                      </div> --->
 
-                                  <div class="form-group">
-                                      <input name="ProductId" id="ProductIdValue" type="hidden" value="#VARIABLES.productDetails.ProductId#" required />
-                                      <input name="SubCategoryId" id="subCategoryValue" type="hidden" value="23" required />
-                                  </div>
+                                      <div class="form-group">
+                                          <input name="ProductId" id="ProductIdValue" type="hidden" value="#VARIABLES.productDetails.ProductId#" required />
+                                          <input name="SubCategoryId" id="subCategoryValue" type="hidden" value="23" required />
+                                      </div>
 
-                                  <!--- <div class="form-group" class="hidden">
-                                      <label>Supplier(self): </label>
-                                      <select name="SupplierId" id="suppliers_select_list" required>
-                                      </select>
-                                  </div> --->
+                                      <!--- <div class="form-group" class="hidden">
+                                          <label>Supplier(self): </label>
+                                          <select name="SupplierId" id="suppliers_select_list" required>
+                                          </select>
+                                      </div> --->
 
-                                  <div class="form-group">
-                                      <label>Stock Quantity: </label>
-                                      <input type="number" min="0" name="Qty" value="#VARIABLES.productDetails.Qty#" required/>
-                                  </div>
+                                      <div class="form-group">
+                                          <label>Stock Quantity: </label>
+                                          <input type="number" min="0" name="Qty" value="#VARIABLES.productDetails.Qty#" required/>
+                                      </div>
 
-                                  <div class="form-group">
-                                      <label>ListPrice(&##8377;): </label>
-                                      <input type="number" min="0" name="ListPrice" value="#VARIABLES.productDetails.ListPrice#" required />
-                                  </div>
+                                      <div class="form-group">
+                                          <label>ListPrice(&##8377;): </label>
+                                          <input type="number" min="0" name="ListPrice" value="#VARIABLES.productDetails.ListPrice#" required />
+                                      </div>
 
-                                  <div class="form-group product-desc-fields">
-                                      <label>Description: </label>
-                                      <cfloop index="i" list="#productDetails.Description#" delimiters="`"  >
-                                          <input type="text" value = "#i#" class="y form-control"> <br />
-                                      </cfloop>
-                                   </div>
+                                      <div class="form-group product-desc-fields">
+                                          <label>Description: </label>
+                                          <cfloop index="i" list="#productDetails.Description#" delimiters="`"  >
+                                              <input type="text" value = "#i#" class="y form-control"> <br />
+                                          </cfloop>
+                                       </div>
 
-                                  <button type="button" onclick='$(this).prev().append("<input type="+"text"+" class="+"x"+" placeholder="+"property"+"> <input type="+"text"+" class="+"x"+" placeholder="+"property"+">")'>add new field</button>
-                                  <textarea name="Description" id="prdt-desc" placeholder="Product Description Goes Here..." cols="22" value="Description" class="hidden"></textarea>
+                                      <button type="button" onclick="appendInputBox(this);">add new field</button>
+                                      <textarea name="Description" id="prdt-desc" placeholder="Product Description Goes Here..." cols="22" value="Description" class="hidden"></textarea>
 
-                                  <div class="form-group">
-                                      <label>Images File: </label>
-                                      <input type="hidden" name="Image_old" value="#VARIABLES.productDetails.Image#">
-                                      <input type="file" id="imageFile" name="Image" accept="image/jpeg" class="form-control">
-                                  </div>
+                                      <div class="form-group">
+                                          <label>Images File: </label>
+                                          <input type="hidden" name="Image_old" value="#VARIABLES.productDetails.Image#">
+                                          <input type="file" id="imageFile" name="Image" accept="image/jpeg" class="form-control">
+                                      </div>
 
-                              </cfoutput>
-                          </div>
+                                  </cfoutput>
+                              </div>
 
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" name="submit_productupdate" form="product-update-form" class="btn btn-primary">Save changes</button>
-                            <button type="reset" class="btn btn-default">Clear</button>
-                          </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" name="submit_productupdate" form="product-update-form" class="btn btn-primary">Save changes</button>
+                                <button type="reset" class="btn btn-default">Clear</button>
+                              </div>
 
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-                </form>
+                            </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </form>
 
               </cfoutput>
 

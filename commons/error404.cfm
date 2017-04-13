@@ -27,11 +27,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<div class="icons">
 		<p>Follow us on:</p>
 		  <ul>
-		  	 <li><a href="#"><img src="assets/images/error404/img1.png"></a></li>
-		     <li><a href="#"><img src="assets/images/error404/img2.png"></a></li>
-		     <li><a href="#"><img src="assets/images/error404/img3.png"></a></li>
-		     <li><a href="#"><img src="assets/images/error404/img4.png"></a></li>
-		     <li><a href="#"><img src="assets/images/error404/img5.png"></a></li>
+		  	 <li><a href="#"><img src="../assets/images/error404/img1.png"></a></li>
+		     <li><a href="#"><img src="../assets/images/error404/img2.png"></a></li>
+		     <li><a href="#"><img src="../assets/images/error404/img3.png"></a></li>
+		     <li><a href="#"><img src="../assets/images/error404/img4.png"></a></li>
+		     <li><a href="#"><img src="../assets/images/error404/img5.png"></a></li>
 		  </ul>
 	   </div>
    </div>

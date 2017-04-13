@@ -1,18 +1,19 @@
 $(document).ready(function(){
     $("form#product-update-form").validate();
+
     $("form#product-update-form").submit(function(){
         var productDescription = "";
         $.each($(".product-desc-fields > .y"), function(i, item){
             productDescription += $(item).val() + "`";
         });
-        $.each($(".product-desc-fields > .x"), function(i,item){
-            if(i % 2 == 0){
-                productDescription += $(item).val() + " ";
-            }
-            else{
-                productDescription += $(item).val() + "`";
-            }
-        });
+        // $.each($(".product-desc-fields > .x"), function(i,item){
+        //     if(i % 2 == 0){
+        //         productDescription += $(item).val() + " ";
+        //     }
+        //     else{
+        //         productDescription += $(item).val() + "`";
+        //     }
+        // });
         $("#prdt-desc").val(productDescription);
     });
 });
@@ -100,3 +101,9 @@ onload = function () {
                    if (e.value == "no") e.value = "yes";
                    else { e.value = "no"; location.reload(); }
                }
+
+
+//for appending input boxes to update Product Modal
+function appendInputBox(el){
+    $(el).prev().append("<input type='text' class='y form-control' placeholder='desc...'>");
+}

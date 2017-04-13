@@ -37,7 +37,10 @@
    <cfoutput>#name# : #Beatles#  </cfoutput>
 </cfloop>
  --->
+<cfinclude template="/include/libraries.cfm" />
 
+<script src="../assets/js/header.js"></script>
+<link href="../assets/css/header.css" rel="stylesheet">
 
 <!--- this works in coldfusion 10 --->
 <cfset myArray = ["John", "Paul", "George", "Ringo"] >
@@ -51,3 +54,11 @@ calculating password hash
     SELECT Password
     FROM [User]
 </cfquery>
+
+
+<button type="button" onclick="generate();">generate Notification</button>
+<script>
+function generate(){
+    notify("text alert", "success");
+}
+</script>

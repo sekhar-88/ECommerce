@@ -4,15 +4,14 @@
     <cffunction  name="isCartEmpty" output="false" returntype="boolean"  returnFormat="json" access="remote">
         <cfif session.loggedin>
             <cfset LOCAL.result = "false" />
-            <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
-                returnvariable="LOCAL.items" />
+            <cfset LOCAL.items = VARIABLES.cartDB.queryProductsFromUserCart() />
             <cfif NOT LOCAL.items.recordcount >   <cfset LOCAL.result = "true" />
             </cfif>
         <cfelse>
-            <cfset LOCAL.result = ArrayIsEmpty(session.cart) />
+            <cfset LOCAL.result = ArrayIsEmpty(SESSION.cart) />
         </cfif>
 
-        <cfreturn #LOCAL.result#/>
+        <cfreturn LOCAL.result />
     </cffunction>
 
 
@@ -33,11 +32,17 @@
     <cffunction name="removeFromUserCart" output="true" returntype="boolean" returnformat="json" access="remote">
         <cfargument name="pid" type="numeric" required="true" />
 
-            <cfinvoke method="removeItemFromUserCart" component="#VARIABLES.cartDB#"
-                argumentcollection="#ARGUMENTS#" />
+            <cftry >
 
-            <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
+                <cfinvoke method="removeItemFromUserCart" component="#VARIABLES.cartDB#"
+                    argumentcollection="#ARGUMENTS#" />
+                <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
 
+                <cfcatch>
+                    <cfdump var="#cfcatch#" />
+                </cfcatch>
+
+            </cftry>
             <cfreturn true/>
     </cffunction>
 
@@ -49,8 +54,11 @@
     </cffunction>
 
 
-
+<!---
+    both for USER & SESSION CART
+ --->
     <cffunction name="getCartCount" output="true" returnType="numeric" returnFormat="json" access="remote" >
+
         <cfif session.loggedin>
 
             <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
@@ -77,9 +85,7 @@
         <cfset LOCAL.pList = []/>
 
         <cfif session.loggedin>     <cfset LOCAL.pList = getUserCartItems() />
-
-            <cfelse>  <!---NOT LOGGEDIN  --->
-            <cfset LOCAL.pList = getSessionCartItems() />
+        <cfelse>                    <cfset LOCAL.pList = getSessionCartItems() />
         </cfif>
 
         <cfreturn LOCAL.pList />

@@ -1,9 +1,21 @@
+/*CHECKOIUT PANE*/
+.checkout_section {
+    min-height: 350px;
+}
+#checkout_pane{
+    width: 20%;
+    float:right;
+    /*background-color: #e8ffe8;*/
+    padding: 20px;
+    display: flex;
+}
+
+
 #items_pane{
-    float:left;
+    float: left;
     width: 78%;
-    padding: 20px 1px;
-    background-color: #90A4AE;
-    min-height: 200px;
+    background-color: #f1f1f1;
+    min-height: 315px;
 }
 /*sub items_pane element*/
 .item{
@@ -14,33 +26,21 @@
     justify-content: space-between;
 }
 
-/*sub item divs*/
-.item_info{
-
-}
-.item_actions{
-
-}
-
 /*right to items_pane*/
-#checkout_pane{
-    width: 20%;
-    float:right;
-    /*background-color: #e8ffe8;*/
-    padding: 20px;
-    display: flex;
-
-}
-.btn{
-    border-radius: 2px;
-}
 
 
 /*   ORDERS SUMMARY SECTION   */
 
-#order_summary .subsection{
+.header_text h2 {
+    margin-top: 10px;
+    font-family: monospace;
+    color: #8c8c8c;
+    font-weight: bold;
+}
+.section .subsection{
     display:flex;
     flex-flow: column nowrap;
+    margin: 10px;
 }
 .summary_subsection_header{
     display:flex;
@@ -48,7 +48,7 @@
 }
 .summary_subsection_header > * {
     text-align: center;
-    border: 1px solid lightgrey;
+    border: 5px solid #f9f9f9;
 }
 .summary_subsection_header > :nth-child(1){
     width: 50%;
@@ -62,12 +62,23 @@
 .summary_subsection_header > :nth-child(4){
     width: 10%;
 }
-#order_summary .subsection .items {
+.section .subsection .items {
     display: flex;
     flex-flow: column nowrap;
 }
-
+.section .no-items {
+    height: 275px;
+    display: block;
+    text-align: center;
+    background-color: white;
+    background-image: url(http://www.shoppingbuzz.com/assets/images/cart/cart_empty.png), url(http://www.shoppingbuzz.com/assets/images/cart/cart_empty.jpg);
+    background-size: 237px 209px, 390px 80px;
+    background-repeat: no-repeat;
+    background-position: 67% 32%, 34% 31%;
+    /*margin: 0 1px;*/
+}
 /*.items > .item*/
+
 .item{
         height: 180px;
         display: flex;
@@ -138,11 +149,12 @@
     /*width: 170px;*/
     /*height: 130px;*/
 }
+
+
+/*abstract*/
 .checkoutPrice{
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 1px 1px 5px black;
+    font-size: 30px;
+    color: #4CAF50;
 }
 .inputItemsQuantity{
     border: 0px;
@@ -158,8 +170,12 @@
     padding: 3px;
     border-bottom: 1px solid #CDDC39;
 }
-/*.item{
-    background-color: green;
-    margin: 2px;
-}*/
 /*-----------------------------*/
+
+
+
+
+
+.btn{
+    border-radius: 2px;
+}

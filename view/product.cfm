@@ -94,14 +94,16 @@
                   <textarea name="Description" id="prdt-desc" placeholder="Product Description Goes Here..." cols="22" value="Description" class="hidden"></textarea>
 
 
+                  <label style="margin-left: -100px;">Choose Image:</label>
                   <div class="input-group">
                       <label class="input-group-btn">
                           <span class="btn btn-file">
                               Browse... <input type="file" id="imageFile" name="Image" accept="image/jpeg" style="display: none;" required>
                           </span>
                       </label>
-                      <input type="text" class="form-control" readonly>
+                      <input type="text" class="form-control" readonly required>
                   </div>
+                  <label id="-error" class="error" for="" style="display:none;">This field is required.</label>
 <!---
                       <label class="btn btn-default btn-file">
                           Images File:
@@ -109,18 +111,18 @@
                       </label>
  --->
 
-              </form>
           </div>
 
           <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Add Product</button>
-              <button type="reset"  class="btn btn-default" name="reset">Clear</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" name="submit"> Add Product  </button>
+              <button type="reset"  class="btn btn-default" name="reset" >       Clear  </button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close  </button>
           </div>
 
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    </form>
 
 <!--- Body content --->
 

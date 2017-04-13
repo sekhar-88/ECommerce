@@ -93,16 +93,18 @@
                 from [Cart]
                 Where UserId = #session.User.UserId#
             </cfquery>
-        <cfelse>
-
-            <cfreturn -1 />
-        </cfif>
 
             <cfloop query="LOCAL.cartPrices" >
-                <cfset sumTotal += #TotalPrice# />
+                <cfset LOCAL.sumTotal += #TotalPrice# />
             </cfloop>
 
-            <cfreturn #LOCAL.sumTotal# />
+        <cfelse>
+
+            <cfset LOCAL.sumTotal = -1 />
+        </cfif>
+
+
+        <cfreturn LOCAL.sumTotal />
     </cffunction>
 
 
@@ -133,19 +135,6 @@
     </cffunction>
 
 
-    <cffunction name="insertToOrderTable" returntype="struct" access = "public">
-
-        <cfset LOCAL.subTotal = getCartTotal()/>
-
-        <cfquery name="LOCAL.insertToOrderTable" result="LOCAL.insertedOrder">
-            INSERT INTO [Order]
-            (UserId, SubTotal, OrderDate, PaymentMethod, Status)
-            VALUES
-            (#SESSION.User.UserId#, #LOCAL.subTotal#, GETDATE(), 'COD', 'Processing')
-        </cfquery>
-
-        <cfreturn #LOCAL.insertedOrder# />
-    </cffunction>
 
 
 
@@ -164,33 +153,75 @@
         <cfreturn #LOCAL.cartItemDetails# />
     </cffunction>
 
+    <cffunction name="insertToOrderTable" returntype="struct" access = "public">
+
+        <cfset LOCAL.subTotal = getCartTotal()/>
+
+        <cfquery name="LOCAL.insertToOrderTable" result="LOCAL.insertedOrder">
+            INSERT INTO [Order]
+            (UserId, SubTotal, OrderDate, PaymentMethod, Status)
+            VALUES
+            (#SESSION.User.UserId#, #LOCAL.subTotal#, GETDATE(), 'COD', 'Processing')
+        </cfquery>
+
+        <cfreturn #LOCAL.insertedOrder# />
+    </cffunction>
 
 
 <!--- its first argument value getProductsDetailFromCart()
         which is a query containing the necessary items for inserting into the orderDetails table
 
-        second argument depends on insertToOrderTable()
-        which gets the order ID from the result struct from the inesrting query to Order table.
+        second argument depends on insertToOrderTable() query
+        which gets the order ID from the 'resulted structure' from the inesrting query to Order table.
 --->
-    <cffunction name="insertToOrderDetails" returntype="void" access="public"  >
+
+    <cffunction name="getShippingDetails" returntype="Query" access= "public" >
+        <cftry>
+            <cfquery name="LOCAL.shippingAddress">
+                SELECT AddressLine, City, PostalCode, PhonoNo
+                FROM [Address]
+                WHERE AddressId = #SESSION.User.checkout.AddressId#
+            </cfquery>
+
+            <cfcatch type="any">
+
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.shippingAddress />
+    </cffunction>
+
+    <cffunction name="insertToOrderDetails" returntype="void" access="public" >
         <cfargument name="cartItemDetails" type="query" required = "true" />
+        <cfargument name="shippingDetails" type="query" required = "true" />
         <cfargument name="orderId" type="numeric" required = "true" />
 
+        <cftry>
+
         <cfquery>
-            <cfloop query="LOCAL.cartItemDetails" >
+            <cfloop query="ARGUMENTS.cartItemDetails" >
                 INSERT INTO [OrderDetails]
-                (OrderId, ProductId, OrderQty, UnitPrice, ShipToAddressId, SupplierId)
+                (OrderId, ProductId, OrderQty, UnitPrice, SupplierId, AddressLine, City, PostalCode, PhoneNo)
                 VALUES
                 (
                     #ARGUMENTS.OrderId#,
-                    #LOCAL.cartItemDetails.ProductId#,
-                    #LOCAL.cartItemDetails.OrderQty#,
-                    #LOCAL.cartItemDetails.UnitPrice#,
-                    #SESSION.User.checkout.AddressId#,
-                    #LOCAL.cartItemDetails.SupplierId#
+                    #ARGUMENTS.cartItemDetails.ProductId#,
+                    #ARGUMENTS.cartItemDetails.OrderQty#,
+                    #ARGUMENTS.cartItemDetails.UnitPrice#,
+                    #ARGUMENTS.cartItemDetails.SupplierId#,
+                    #ARGUMENTS.shippingDetails.AddressLine#,
+                    #ARGUMENTS.shippingDetails.City#,
+                    #ARGUMENTS.shippingDetails.PostalCode#,
+                    #ARGUMENTS.shippingDetails.PhoneNo#
                 )
             </cfloop>
         </cfquery>
+
+
+            <cfcatch type="DATABASE">
+                <cfdump var="#cfcatch#" />
+            </cfcatch>
+        </cftry>
 
     </cffunction>
 

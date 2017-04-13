@@ -3,7 +3,12 @@
 
 var login_validator
 $(document).ready(function(){
-    login_validator = $("#login-form").validate();
+    login_validator = $("#login-form").validate({
+        messages: {
+            email: "Enter your email",
+            password: "Enter a valid password"
+        }
+    });
     updateCartCount();
     $("#product-search-form").submit(function(e){
         if($("#product_searchbox").val().trim() != "" ){

@@ -141,7 +141,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                             //data-session_index is for removing the corresponding entry from sessoin user Arry(session.User.checkout.itemsInfo(type array) ) while removed from checkout Page
                             $("#order_summary .items").append("<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + removeContent + "</div>");
 
-                            orderSummary +=  "<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemPrice + "/item" + "</div>"; //store in global variable
+                            orderSummary +=  "<div class='item' data-session_index="+ index +" id="+ item.id +">" + itemDesc + itemQty + itemPrice + "/item" + "</div>"; //store in global variable
                         },
 
                         error: function(error){

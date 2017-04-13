@@ -59,6 +59,7 @@ return response
                         <cfinvoke method="getUserDetails" component="#VARIABLES.userDB#"
                             returnvariable="LOCAL.result" argumentcollection="#ARGUMENTS#"  />
 
+                        <cfset sessionrotate() />
                         <cfset session.User = {
                             UserId = "#LOCAL.result.UserId#",
                             UserName = "#LOCAL.result.FirstName#" & " " & "#LOCAL.result.LastName#",

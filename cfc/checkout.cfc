@@ -6,7 +6,6 @@
         <cfset ArrayDeleteAt(session.User.checkout.itemsInfo, arguments.arrayindex)/>
     </cffunction>
 
-
     <cffunction name="getAddressesOfUser" output="false" returntype="query" access="remote" >
         <cfinvoke method="getAddressForUser" component="#VARIABLES.checkoutDB#"
             returnvariable="LOCAL.addresses"  />
@@ -57,7 +56,6 @@
         </cfcatch>
         </cftry>
     </cffunction>
-
 
     <cffunction name="revertToStep" output="true" access="remote" returnType="boolean" returnFormat="json">
         <cfargument name="step" type="numeric" required="true" />
@@ -210,30 +208,33 @@ this function returns cart items details &  price & image for showing in cart se
                 addressid = #ARGUMENTS.addressid# />
 
             <cfreturn #LOCAL.success# />
-
     </cffunction>
 
-    <cffunction name="orderPlacedByCOD" output="false" returntype="Struct" returnformat="JSON" access="remote">
+    <cffunction name="orderPlacedByCOD" output="true" returntype="Struct" returnformat="JSON" access="remote">
         <cfset response = {}/>
         <!--- <cfset subTotal = getCartTotal()/> --->
 
         <cftry>
             <!--- INSERT INTO ORDER TABLE --->
 
-            <cfinvoke method="insertToOrderTable" component="#VARIABLES.checkoutDB#"
-                returnvariable="LOCAL.insertedOrder" />
+            <cfset LOCAL.insertedOrder = VARIABLES.checkoutDB.insertToOrderTable() />
+            <!--- <cfinvoke method="insertToOrderTable" component="#VARIABLES.checkoutDB#"
+                returnvariable="LOCAL.insertedOrder" /> --->
 
             <!--- GET GENERATED ORDER_ID OF ORDERS TABLE --->
             <cfset LOCAL.OrderId = #LOCAL.insertedOrder.GENERATEDKEY#/>
 
             <!--- GET REQUIRED ITEMS FOR INSERTING INTO ORDERDETAILS TABLE --->
-            <cfinvoke method="getProductsDetailFromCart" component="#VARIABLES.checkoutDB#"
-                returnvariable="LOCAL.cartItemDetails" />
+            <cfset LOCAL.cartItemDetails = VARIABLES.checkoutDB.getProductsDetailFromCart() />
+            <!--- <cfinvoke method="getProductsDetailFromCart" component="#VARIABLES.checkoutDB#"
+                returnvariable="LOCAL.cartItemDetails" /> --->
 
-
+            <cfset LOCAL.shippingDetails = VARIABLES.checkoutDB.getShippingDetails()/>
             <!--- INSERT INTO ORDERDETAILS TABLE USING cart QUERY--->
-            <cfinvoke method="insertToOrderDetails" component="#VARIABLES.checkoutDB#"
-                cartItemDetails = #LOCAL.cartItemDetails# orderId = #LOCAL.OrderId# />
+
+            <cfset VARIABLES.checkoutDB.insertToOrderDetails(cartItemDetails = LOCAL.cartItemDetails, shippingDetails = LOCAL.shippingDetails, orderId = LOCAL.OrderId) />
+            <!--- <cfinvoke method="insertToOrderDetails" component="#VARIABLES.checkoutDB#"
+                cartItemDetails = #LOCAL.cartItemDetails# orderId = #LOCAL.OrderId# /> --->
 
             <cfset cartCleared = clearCart()/>
             <cfif cartCleared>
@@ -251,6 +252,10 @@ this function returns cart items details &  price & image for showing in cart se
         <cfreturn #response#/>
     </cffunction>
 
+<!---
+UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
+& RETURN THE TOTAL PRICE OF PRODUCTS IN CART
+ --->
     <cffunction name="updateCartAndTotalPrice" returntype="Any" returnformat="JSON" access="remote" output="false">
         <cfargument name="cartid" required="true" type="numeric"/>
         <cfargument name="pid" required="true" type="numeric"  />
@@ -276,7 +281,7 @@ this function returns cart items details &  price & image for showing in cart se
         </cftry>
     </cffunction>
 
-
+<!--- TOTAL CART AMOUNT --->
     <cffunction name="getCartTotal" returntype="Numeric" returnFormat="JSON" access="remote" output="true" >
 
         <cftry>
@@ -313,6 +318,7 @@ this function returns cart items details &  price & image for showing in cart se
             </cfcatch>
         </cftry>
     </cffunction>
+
 
     <cffunction name="getPriceOfProduct" access="remote" returntype="boolean" output="true">
         <cfargument name="pid" required="true" type="numeric"/>

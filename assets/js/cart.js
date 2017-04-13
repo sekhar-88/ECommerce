@@ -7,7 +7,7 @@ $().ready(function(){
 
 
 var updateCartTotalvalue = function(price){
-    $("#total-checkout-price").text(price);
+    $("#total-checkout-price").text(parseInt(price).toLocaleString('en-IN'));
 }
 
 function getCartTotal(callback){
@@ -29,19 +29,22 @@ function getCartTotal(callback){
 
 
 function checkout(){
-    $.ajax({
-        url: "../cfc/user.cfc?method=isUserLogggedin",
-        dataType: "json",
-        success: function(response){
-            if(response == true){
-                window.location.href="checkout.cfm";
-            }
-            else{
-                // alert("error occured");
-                notify("Please Login to continue Checkout", "info", "fa fa-exclamation-circle");
-            }
-        }
-    });
+    window.location.href="checkout.cfm";
+
+    // checkout page has logged in or not logged in checking .. so noworries
+    // $.ajax({
+    //     url: "../cfc/user.cfc?method=isUserLogggedin",
+    //     dataType: "json",
+    //     success: function(response){
+    //         if(response == true){
+    //             window.location.href="checkout.cfm";
+    //         }
+    //         else{
+    //             // alert("error occured");
+    //             notify("Please Login to continue Checkout", "info", "fa fa-exclamation-circle");
+    //         }
+    //     }
+    // });
 }
 
 function removeFromCart(remove_button){
@@ -57,13 +60,14 @@ function removeFromCart(remove_button){
             pid: pid
         }
     }).done(function(response){
-        if(response == true){
+        if(response == "true"){
             var val = $("#badge").text();
             val--;
             $("#badge").text(val);
             $(el).remove();
             if(val == 0) {
-                $("#checkout_pane button").attr("onclick", "alert('Add some products first..')").addClass("disabled");
+                $("#order_summary .subsection").remove()
+                $(".section").append("<div class='no-items'></div>");
             }
             notify("<span style='color: #42a5f5; font-weight: bold;'>" + $(el).data('name') + "</span> \rremoved from cart", "info", 'fa fa-check-circle', "", "", "fadeInUp", "fadeOutDown");
             console.log('cart Data Changed');
@@ -107,7 +111,6 @@ function validateItemCount(element, value, max, cartId){
 }
 
 onload = function () {
-                //    fetchCartItems();
                    var e = document.getElementById("refreshed");
                    if (e.value == "no") e.value = "yes";
                    else { e.value = "no"; location.reload(); }
@@ -116,37 +119,39 @@ onload = function () {
 
 
 
-function fetchCartItems(){
-    $.ajax({
-        url: "../cfc/cart.cfc?method=getCartItems",
-        dataType: "json"
-    }).done(function(response){
-        if(response.length) {                   //Cart not empty
 
-            var fnOpen;
-            if("CartId" in response[0]) fnOpen = "user_removeFromCart(this,"; // in user Cart
-            else                        fnOpen = "removeFromSessionCart(this,"; //in session Cart
-            var fnClose = ")";
-
-            $.each(response, function(i, item){
-                    console.log(item);
-                    var itemStr = '<div id="item_'+item.ProductId+'" class="item">' +
-                                    '<div class="item_info">' +
-                                        item.ProductId + ' ' + item.Name +
-                                    '</div>' +
-                                    '<div class="item_actions">' +
-                                        '<button type="button" class="btn btn-warning" data-name="'+item.Name+'" onclick="'+fnOpen+item.ProductId+fnClose+'">Remove</button>' +   // onclick="removeItemFromCart('+ item.ProductId +')">Remove</button>' +   // try this
-                                    '</div>'+
-                                  '</div> '
-                    $("#items_pane").append(itemStr);
-            });
-
-        }
-        else {
-            $("#items_pane").append("<div class='item'>Currently No items in the cart</div>");
-        }
-    }).fail(function(error){
-        console.log("error: \n");
-        console.log(error);
-    });
-}
+// May NOT being used
+// function fetchCartItems(){
+//     $.ajax({
+//         url: "../cfc/cart.cfc?method=getCartItems",
+//         dataType: "json"
+//     }).done(function(response){
+//         if(response.length) {                   //Cart not empty
+//
+//             var fnOpen;
+//             if("CartId" in response[0]) fnOpen = "user_removeFromCart(this,"; // in user Cart
+//             else                        fnOpen = "removeFromSessionCart(this,"; //in session Cart
+//             var fnClose = ")";
+//
+//             $.each(response, function(i, item){
+//                     console.log(item);
+//                     var itemStr = '<div id="item_'+item.ProductId+'" class="item">' +
+//                                     '<div class="item_info">' +
+//                                         item.ProductId + ' ' + item.Name +
+//                                     '</div>' +
+//                                     '<div class="item_actions">' +
+//                                         '<button type="button" class="btn btn-warning" data-name="'+item.Name+'" onclick="'+fnOpen+item.ProductId+fnClose+'">Remove</button>' +   // onclick="removeItemFromCart('+ item.ProductId +')">Remove</button>' +   // try this
+//                                     '</div>'+
+//                                   '</div> '
+//                     $("#items_pane").append(itemStr);
+//             });
+//
+//         }
+//         else {
+//             $("#items_pane").append("<div class='item'>Currently No items in the cart</div>");
+//         }
+//     }).fail(function(error){
+//         console.log("error: \n");
+//         console.log(error);
+//     });
+// }

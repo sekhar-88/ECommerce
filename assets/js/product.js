@@ -1,7 +1,13 @@
 $(document).ready(function(){
     $(".product-price").hide();
     $(".product-discounted-price").hide();
-    $("form#product-add-form").validate();
+    $("form#product-add-form").validate({
+        messages: {
+            Name: "Enter product name",
+            ListPrice: "This field is required",
+            Image: "Choose product Image"
+        }
+    });
 
     $(".product-discounted-price").each(function(){
         if($.trim($(this).text())  == "") {

@@ -61,12 +61,13 @@ div#buttons-container > * > * {
     width: 50%;
     border: 1px solid lightgrey;
     margin-left: 10px;
-    padding: 10px;
+    /*padding: 10px;*/
     width: auto;
     min-height: 450px;
 }
 
 .pd-name {
+    padding: 12px;
     font-size: 25px;
     width: 600px;
     color: black;
@@ -86,7 +87,7 @@ div#buttons-container > * > * {
 .product-specification{
     border-radius: 4px;
     border-top:1px solid lightgrey;
-    border-bottom:1px solid lightgrey;
+    /*border-bottom:1px solid lightgrey;*/
 }
 
 .ps-header{
@@ -94,6 +95,11 @@ div#buttons-container > * > * {
     font-size: 20px;
     /*font-weight: bold;*/
     padding: 5px;
+}
+.ps-content {
+    border: 10px solid #fbfbfb;
+    border-radius: 10px;
+
 }
 .ps-content > ul {
     list-style: none;
@@ -104,6 +110,7 @@ div#buttons-container > * > * {
     padding: 5px;
     font-family: monospace;
     color: #607D8B;
+    word-break: break-all;
 }
 
 .pd-price::before{

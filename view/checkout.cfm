@@ -7,10 +7,7 @@
     <title>Checkout</title>
     <link href = "../assets/css/checkout.css" rel="stylesheet">
     <script src="../assets/js/checkout.js"></script>
-    <style>
-    </style>
-        <script>
-        </script>
+
 </head>
 <body>
 
