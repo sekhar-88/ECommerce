@@ -2,9 +2,10 @@
 .checkout_section {
     min-height: 350px;
 }
+
 #checkout_pane{
-    width: 20%;
-    float:right;
+    width: auto;
+    float:left;
     /*background-color: #e8ffe8;*/
     padding: 20px;
     display: flex;
@@ -13,7 +14,7 @@
 
 #items_pane{
     float: left;
-    width: 78%;
+    width: 850px;
     background-color: #f1f1f1;
     min-height: 315px;
 }
@@ -130,11 +131,13 @@
     position: relative;
 }
 .item > :nth-child(4) > span{
+    border-radius: 30px;
+    background-color: #2196F3;
+    color: white;
     position: absolute;
-    top: 34%;
+    top: 38%;
     left: 25%;
-    /*border: 1px solid black;*/
-    padding: 15%;
+    padding: 6px;
     cursor: pointer;
 }
 .cart_product_image{
@@ -145,13 +148,36 @@
 }
 .cart_thumbnail{
     width: inherit;
-    /*height: inherit;*/
-    /*width: 170px;*/
-    /*height: 130px;*/
 }
 
 
 /*abstract*/
+div.guest-cart-div {
+    height: 400px;
+    position: relative;
+}
+div.guest-cart-div .login-image {
+    height: 170px;
+    width: 150px;
+    position: relative;
+    top: 0;
+    left: 42%;
+    background-image: url(../images/cart/g/login.ico);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+div.guest-cart-div h3 {
+    background-image: url(../images/cart/g/proceed.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-size: 45px 45px;
+    background-position: 27% 47%;
+}
+
+div.guest-cart-div h3 span{
+    margin-left: 30%;
+}
+
 .checkoutPrice{
     font-size: 30px;
     color: #4CAF50;

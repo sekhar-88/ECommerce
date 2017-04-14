@@ -91,6 +91,13 @@
     [DiscountPercent] ,[DiscountedPrice] ,[Qty] ,[Description] ,[Image]
  --->
                     <div class="product-details">
+                        <cfif structKeyExists(Session.User, "Role") AND SESSION.User.Role EQ 'admin'>
+                            <div class="buttons-admin" style="float: right;">
+                                <button class="btn btn-warning" onclick="showUpdateModal(#VARIABLES.productDetails.ProductId#);" ><span class="fa fa-pencil"></span> Update</button>
+                                <button class="btn btn-danger" onclick="deleteProduct(#VARIABLES.productDetails.ProductId#)"><span class="fa fa-trash"> </span> Delete</button>
+                            </div>
+                        </cfif>
+
                     <cfsavecontent variable="productDetailsHTML" >
 
                         <div class="pd-name">
@@ -113,13 +120,6 @@
                                     </ul>
                             </div>
                         </div>
-
-                        <cfif structKeyExists(Session.User, "Role") AND SESSION.User.Role EQ 'admin'>
-                            <div class="buttons-admin" >
-                                <button class="btn btn-warning" onclick="showUpdateModal(#VARIABLES.productDetails.ProductId#);" ><span class="glyphicon glyphicon-pencil"></span> Update Details</button>
-                                <button class="btn btn-danger" onclick="deleteProduct(#VARIABLES.productDetails.ProductId#)">Delete Product</button>
-                            </div>
-                        </cfif>
 
                     </cfsavecontent>
                     #productDetailsHTML#
@@ -144,7 +144,7 @@
 
                                       <div class="form-group">
                                           <label>Product Name: </label>
-                                          <input type="text" name="Name" value="#VARIABLES.productdetails.Name#" required>
+                                          <span id="product-name">#VARIABLES.productdetails.Name#</span>
                                       </div>
 
                                       <!--- <div class="form-group">
@@ -176,19 +176,31 @@
 
                                       <div class="form-group product-desc-fields">
                                           <label>Description: </label>
-                                          <cfloop index="i" list="#productDetails.Description#" delimiters="`"  >
-                                              <input type="text" value = "#i#" class="y form-control"> <br />
-                                          </cfloop>
+                                          <div class="desc-fields">
+                                              <cfloop index="i" list="#productDetails.Description#" delimiters="`"  >
+                                                  <input type="text" value = "#i#" class="y form-control"> <br />
+                                              </cfloop>
+                                          </div>
                                        </div>
 
-                                      <button type="button" onclick="appendInputBox(this);">add new field</button>
+                                      <button type="button" onclick="appendInputBox(this);" class = "btn btn-sm btn-default" >add new field</button>
                                       <textarea name="Description" id="prdt-desc" placeholder="Product Description Goes Here..." cols="22" value="Description" class="hidden"></textarea>
 
                                       <div class="form-group">
                                           <label>Images File: </label>
-                                          <input type="hidden" name="Image_old" value="#VARIABLES.productDetails.Image#">
-                                          <input type="file" id="imageFile" name="Image" accept="image/jpeg" class="form-control">
+                                          <!--- <input type="file" id="imageFile" name="Image" accept="image/jpeg" class="form-control"> --->
                                       </div>
+
+                                      <div class="input-group">
+                                            <label class="input-group-btn" style="padding-right: 0px;">
+                                                <span class="btn btn-file">
+                                                              <input type="hidden" name="Image_old" value="#VARIABLES.productDetails.Image#">
+                                                    Browse... <input type="file" id="imageFile" name="Image" accept="image/jpeg" style="display: none;">
+                                                </span>
+                                            </label>
+                                            <input type="text" class="form-control" readonly>
+                                      </div>
+
 
                                   </cfoutput>
                               </div>
@@ -226,13 +238,16 @@
 
 
 
-<script src="../assets/js/productDetail.js"></script>
-<cfinclude template = "/commons/footer.cfm">
+    <script src="../assets/js/productDetail.js"></script>
+    <cfinclude template = "/commons/footer.cfm">
 </body>
 </html>
 
+
+
+<!--- for admin upload product update details .. --->
 <cfif StructKeyExists(FORM, "submit_productupdate") >
-    <cfdump var="#FORM#" />
+    <!--- <cfdump var="#FORM#" /> --->
     <cftry >
 
         <cfif #FORM.Image# NEQ ''>

@@ -109,7 +109,7 @@
                       </ol>
 
                       <!-- Wrapper for slides -->
-                      <div class="carousel-inner" role="listbox" style="height: 400px;">
+                      <div class="carousel-inner" role="listbox">
 
                         <div class="item active">
                           <a href="product.cfm?cat=2&amp;scat=3"><img src="../assets/images/products/featured/frontpagecarousel/mensfashion.jpg" alt="mensfashion"></a>

@@ -3,6 +3,8 @@ h2.order-page-header {
     padding: 9px;
     color: #c2fbff;
     font-family: monospace;
+    width: 87%;
+    margin: auto;
 }
 
 div.orders-container {

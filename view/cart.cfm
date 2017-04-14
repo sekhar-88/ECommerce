@@ -112,11 +112,14 @@
 
                     </div>   <!---  end #items pane --->
                     <cfelse>
-                        <h4 class="jumbotron well width-75p">Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To complete Checkout Process</h4>
+                        <div class="guest-cart-div well well-sm">
+                            <div class="login-image"></div>
+                            <h3 class="jumbotron"><span>Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To view items in Cart &amp; edit<span></h3>
+                        </div>
                     </cfif>
 
                 <div id="checkout_pane">
-                    <cfif SESSION.loggedin>
+                    <cfif SESSION.loggedin AND (NOT cartCFC.isCartEmpty()) >
                         <button type="button" class="btn btn-success btn-lg" onclick="checkout();">Checkout</button>
                     </cfif>
                 </div> <!---  #checkout pane --->

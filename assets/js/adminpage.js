@@ -189,7 +189,7 @@ function addCategory(el){
                 $(el).next().children(".list").append("<p class='list-item'>" + CategoryName + "</p>");
                 notify("Added category: " + CategoryName, "success", "glyphicon glyphicon-ok")
             }
-            else if(response == "false")    alert("Same Category Name already Exists..");
+            else if(response == "false")   notify("Same Category Name already Exists..","danger", "fa fa-exclamation-circle");
         }).fail();
     }
     else{
@@ -238,7 +238,6 @@ function addSubCategory(el){
                 else if( res == "false"){
                     notify("Subcategory Already Exists", "danger", "fa fa-exclamation-circle");
                 }
-
             },
             error:function(err){
                 console.log(err);

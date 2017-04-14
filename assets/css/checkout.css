@@ -13,6 +13,9 @@
 .modal-header{
     background-color: #ececec;
 }
+#address_modal .modal-content {
+    width: 434px;
+}
 
 
 
@@ -175,37 +178,15 @@
     flex-flow: column nowrap;
     /*border-top:5px solid #c4d2d8;*/
 }
-.section {
-    border-radius: 5px;
-    margin-bottom: 1px;
-    /*border-bottom: 5px solid #c4d2d8;*/
-
-    /*border-left: 1px solid #CFD8DC;*/
-    /*border-right: 1px solid #CFD8DC;*/
-}
-
-.section_header{
-    padding: 5px;
-    background-color: #d0effd;
-    display: flex;
-    justify-content: space-between;
-}
-
 .btn-review{
     background-color: #64b5f6;
     box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
     width: 160px;
     color: white;
 }
-.section_header .header_text{
-    color: grey;
-    font-size: 16px;
-    font-family: "verdana";
-    padding: 2px;
-}
 
 .addresses{
-    background-color: white;
+    background-color: #fbfbfb;
     height: 230px;
     padding: 10px;
     display: flex;
@@ -224,6 +205,13 @@
     background-color: rgba(255,255,255,0.9);
     /* background-color: #E0E0E0; */
     box-shadow: -1px -1px 16px -6px;
+}
+.address h5 {
+    font-size: 18px;
+    color: #2196F3;
+}
+.address h5::first-letter {
+    text-transform: capitalize;
 }
 .separator{
     display: block;
@@ -285,22 +273,48 @@
 
 /*-----------------------------------------*/
 
+/*PAGE */
+.section {
+    border-radius: 5px;
+    margin-bottom: 1px;
 
+}
+
+.subsection {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.section_header{
+    padding: 5px;
+    background-color: #d0effd;
+    display: flex;
+    justify-content: space-between;
+}
+.section_header .header_text{
+    color: grey;
+    font-size: 16px;
+    font-family: "verdana";
+    padding: 2px;
+}
+#address_modal .modal-header {
+    background-color: black;
+}
+#address_modal .modal-title {
+    font-family: monospace;
+    font-size: 25px;
+    color: white;
+}
+/*-----------------------------------*/
 
 
 /*GLOBAL*/
 .btn, .btn-info, .btn-success, .btn-primary, .btn-default, .btn-warning{
-    border-radius: 1px;
+    border-radius: 3px;
     margin: 0px;
-    /*padding: 0px;*/
     border: 0px;
 }
-/*.fa{
-    color: black;
-}*/
-/*.glyphicon{
-    color: black;
-}*/
+
 .label {
     border-radius: 7px;
     border: 0px;

@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    var productAddFormValidator = $("form#product-add-form").validate();
+
     $(".product-price").hide();
     $(".product-discounted-price").hide();
     $("form#product-add-form").validate({
@@ -41,17 +43,37 @@ $(document).ready(function(){
     });
 
     $("form#product-add-form").submit(function(e){
-        var desc = "";
-        // going to submit form
-        $.each( $(".product-desc-fields > input "), function(i, item){
-            desc += $(item).val() + " " ;
-            if( (i+1)%2 == 0 )
-                { desc +=  "`"}
-            else{
-                desc += " : ";
+
+        var pName = $(this)[0].elements.Name
+        $.ajax({
+            url: "../cfc/product.cfc?method=checkExistingProduct",
+            data: {
+                name: pName
             }
-        });
-        $("textarea#prdt-desc").val(desc);
+        }).done(function(response){
+            if(response == true ){
+                var desc = "";
+                // going to submit form
+                $.each( $(".product-desc-fields > input "), function(i, item){
+                    desc += $(item).val() + " " ;
+                    if( (i+1)%2 == 0 )
+                    { desc +=  "`"}
+                    else{
+                        desc += " : ";
+                    }
+                });
+                $("textarea#prdt-desc").val(desc);
+            }
+            else {
+                e.preventDefault();
+                productAddFormValidator.showErrors({
+                    Name: "this product already exists"
+                })
+
+            }
+        }).fail(function(error){
+            console.log(error);
+        })
     });
 
 
@@ -66,19 +88,17 @@ $(document).ready(function(){
     });
 
 // We can watch for our custom `fileselect` event like this
-    $(document).ready( function() {
-        $(':file').on('fileselect', function(event, numFiles, label) {
+    $(':file').on('fileselect', function(event, numFiles, label) {
 
-           var input = $(this).parents('.input-group').find(':text'),
-               log = numFiles > 1 ? numFiles + ' files selected' : label;
+       var input = $(this).parents('.input-group').find(':text'),
+           log = numFiles > 1 ? numFiles + ' files selected' : label;
 
-           if( input.length ) {
-               input.val(log);
-           } else {
-               if( log ) alert(log);
-           }
+       if( input.length ) {
+           input.val(log);
+       } else {
+           if( log ) alert(log);
+       }
 
-        });
     });
 
 });

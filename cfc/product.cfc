@@ -8,8 +8,7 @@
         <cfargument name="productUpdate" type="struct" required = "true"  />
         <cfargument name="imagename" type="string" required = "true" />
 
-        <cfinvoke method="updateProductDetails" component="#VARIABLES.productDB#"
-            returnvariable="LOCAL.success" argumentcollection="#ARGUMENTS#"  />
+        <cfset LOCAL.success = VARIABLES.productDB.updateProductDetails(argumentcollection = "#ARGUMENTS#") />
 
         <cfreturn LOCAL.success />
     </cffunction>
@@ -163,12 +162,16 @@
         <cfreturn LOCAL.products />
     </cffunction>
 
+
+<!---
+    ADDS A NEW PRODUCT
+    BEFORE ADDING SEARCHES FOR EXISTING PRODUCT
+ --->
     <cffunction name = "addNewProduct" returntype = "boolean" access = "remote"  >
         <cfargument name = "form" type = "struct" required = "true" />
         <cfargument name = "imageName" type = "string" required = "true"  />
 
-        <cfinvoke method = "addNewProductToDB" component = "#VARIABLES.productDB#"
-            returnvariable = "LOCAL.success" argumentcollection = "#ARGUMENTS#"  />
+            <cfset LOCAL.success = VARIABLES.productDB.addNewProductToDB(argumentcollection = "#ARGUMENTS#") />
 
         <cfreturn LOCAL.success />
     </cffunction>
@@ -182,5 +185,20 @@
             returnvariable="LOCAL.subCategory" argumentcollection="#ARGUMENTS#" />
 
         <cfreturn LOCAL.subCategory.SubCategoryName />
+    </cffunction>
+
+    <cffunction name="checkExistingProduct" returntype="boolean" access = "remote"  >
+        <cfargument name="name" type = "string" required = "true" />
+
+        <cftry >
+            <cfset LOCAL.productExists = VARIABLES.productDB.queryExistingProductByName(name = #ARGUMENTS.form.Name#) />
+
+            <cfcatch >
+                <cfdump var="#cfcatch#" />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.productExists />
+
     </cffunction>
 </cfcomponent>

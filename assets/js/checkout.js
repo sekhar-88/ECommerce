@@ -27,7 +27,7 @@ $(document).ready(function(){
                     required: "Enter a valid Postal code",
                     maxlength: "enter 6 digits"
             },
-            AddressLine: "Enter The Contact Details",
+            AddressLine: "Address Field can't be left emtpy",
             // LandMark: ""
             Country: "Enter the country",
             PhoneNo: {
@@ -199,14 +199,14 @@ function removeItem(element){
     var removeItemFromSessionUserCheckoutItemsInfoArray = $(element).parents(".item").data('session_index');
     var sessionArrayIndex = removeItemFromSessionUserCheckoutItemsInfoArray+1;
 
-    $(itemToBeRemovedFromCheckoutPage).remove();  //remove from the checkout page
-    //remove from cart too
+    //remove from cart
     $.ajax({
         url:"../cfc/cart.cfc?method=removeFromUserCart",
         data: {
             pid: pid
         },
         success: function(resopnse){
+            $(itemToBeRemovedFromCheckoutPage).remove();  //if success remove from the checkout page
             var val = $("#badge").text();
             val--;
             $("#badge").text(val);
@@ -234,7 +234,7 @@ function removeItem(element){
         error: function(error){
             console.log(error);
         }
-    })
+    });
 }
 
 function revertToStep1(){
@@ -352,19 +352,6 @@ function deleteAddress(dltBtn){
     }
 }
 
-function editAddress(editBtn){
-    var addressDiv = $(editBtn).parents(".address");
-
-    $("#newaddress-form input[name='Name']").val(addressDiv.data('name'));
-    $("input[name='PostalCode']").val(addressDiv.data('postal-code'));
-    $("input[name='AddressLine']").val(addressDiv.data('address-line'));
-    $("input[name='PhoneNo']").val(addressDiv.data('phone-no'));
-    $("input[name='LandMark']").val(addressDiv.data('landmark'));
-
-    $(".modal-title").text("Edit Address");
-    $(".modal-submit-link").attr("onclick", "editAddressAndSave(this.form,"+addressDiv.data('addressid')+")");
-    $("#address_modal").modal('show');
-}
 
 function editAddressAndSave(form,address_id){
     // alert('clicked' + address_id);
@@ -457,8 +444,55 @@ function validateItemQuantity(){
     return result;
 }
 
+
+
 onload = function () {
                    var e = document.getElementById("refreshed");
                    if (e.value == "no") e.value = "yes";
                    else { e.value = "no"; location.reload(); }
                }
+
+
+
+function getCartTotal(callback){
+   var totalCartValue = 0;
+   $.ajax({
+       url: "../cfc/checkout.cfc?method=getCartTotal",
+       dataType: "json",
+       success: function(response){
+           if( callback != undefined )           callback(response);
+           else alert("callback undefined.. for getCartTotal function");
+       }
+   }).fail(function(error){
+           alert(error);
+           document.body.innerHTML = error;
+   });
+   return totalCartValue;
+}
+
+
+var updateCartTotalvalue = function(price){
+   $("#total-checkout-price").text(parseInt(price).toLocaleString('en-IN'));
+}
+
+
+
+
+
+
+
+//not used
+
+function editAddress(editBtn){
+    var addressDiv = $(editBtn).parents(".address");
+
+    $("#newaddress-form input[name='Name']").val(addressDiv.data('name'));
+    $("input[name='PostalCode']").val(addressDiv.data('postal-code'));
+    $("input[name='AddressLine']").val(addressDiv.data('address-line'));
+    $("input[name='PhoneNo']").val(addressDiv.data('phone-no'));
+    $("input[name='LandMark']").val(addressDiv.data('landmark'));
+
+    $(".modal-title").text("Edit Address");
+    $(".modal-submit-link").attr("onclick", "editAddressAndSave(this.form,"+addressDiv.data('addressid')+")");
+    $("#address_modal").modal('show');
+}

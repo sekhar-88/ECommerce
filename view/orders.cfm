@@ -25,24 +25,30 @@
         <cfset orders = ordersCFC.getOrders() />
         <div class="orders-container">
 
-            <cfloop query="orders" >
-            <div class="orders">
+            <cfif orders.recordCount>
 
-                in orders query : #OrderId#
-                <cfset orderDetails = ordersCFC.getOrderDetails(#OrderId#) />
-                <cfloop query="orderDetails" >
-                <div class="order">
+                <cfloop query="orders" >
+                <div class="orders">
 
-                        in OrderDetails:
-                        OrderId     : #OrderId#
-                        Products    : #ProductId# <br />
-                        Shipping to : #AddressLine# <br />
+                    in orders query : #OrderId#
+                    <cfset orderDetails = ordersCFC.getOrderDetails(#OrderId#) />
+                    <cfloop query="orderDetails" >
+                    <div class="order">
+
+                            in OrderDetails:
+                            OrderId     : #OrderId#
+                            Products    : #ProductId# <br />
+                            Shipping to : #AddressLine# <br />
+
+                    </div>
+                    </cfloop>
 
                 </div>
                 </cfloop>
 
-            </div>
-            </cfloop>
+            <cfelse>
+                <div class="no-orders">You have no orders, Buy some thing to show up here.</div>
+            </cfif>
 
         </div>  <!--- end .orders-container --->
     </div>      <!--- end .container-fluid --->

@@ -3,19 +3,46 @@ $(document).ready(function(){
 
     $("form#product-update-form").submit(function(){
         var productDescription = "";
-        $.each($(".product-desc-fields > .y"), function(i, item){
+        $.each($(".product-desc-fields > .desc-fields > .y"), function(i, item){
             productDescription += $(item).val() + "`";
         });
-        // $.each($(".product-desc-fields > .x"), function(i,item){
-        //     if(i % 2 == 0){
-        //         productDescription += $(item).val() + " ";
-        //     }
-        //     else{
-        //         productDescription += $(item).val() + "`";
-        //     }
-        // });
         $("#prdt-desc").val(productDescription);
     });
+
+
+    // file input bootstrap box in product add form - ( while in admin mode )
+        $(document).on('change', ':file', function() {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+
+    // We can watch for our custom `fileselect` event like this
+        $(':file').on('fileselect', function(event, numFiles, label) {
+
+           var input = $(this).parents('.input-group').find(':text'),
+               log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+           if( input.length ) {
+               input.val(log);
+           } else {
+               if( log ) alert(log);
+           }
+
+        });
+
+    //unbind the enter key for  forms being submitted on ENTER KEY PRESS
+    $('#product-update-form').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // CHANGE PRICE FORMAT TO LOCAL FORMAT WITH COMMAS
+    $(".pd-price > span:last-child").text(parseInt($(".pd-price > span:last-child").text()).toLocaleString('en-IN'));
 });
 
 function checkOut(el,uid){
@@ -105,5 +132,5 @@ onload = function () {
 
 //for appending input boxes to update Product Modal
 function appendInputBox(el){
-    $(el).prev().append("<input type='text' class='y form-control' placeholder='desc...'>");
+    $(el).prev().children(".desc-fields").append("<input type='text' class='y form-control' placeholder='desc...'>");
 }

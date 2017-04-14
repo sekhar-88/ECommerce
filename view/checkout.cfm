@@ -120,9 +120,9 @@
                             <span class="text-success">Mob</span>: #PhoneNo#
                             </div>
                             <div style="">
-                                <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);">   Deliver Here  </button>
-                                <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button>
-                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);">  Delete        </button>
+                                <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);" style="float: left;">   Deliver Here  </button>
+                                <!--- <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button> --->
+                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);" style="float: right;">  Delete        </button>
                             </div>
                     </div>
                 </cfloop>

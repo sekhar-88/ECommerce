@@ -214,41 +214,37 @@ this function returns cart items details &  price & image for showing in cart se
         <cfset response = {}/>
         <!--- <cfset subTotal = getCartTotal()/> --->
 
-        <cftry>
-            <!--- INSERT INTO ORDER TABLE --->
+        <cftransaction>
 
-            <cfset LOCAL.insertedOrder = VARIABLES.checkoutDB.insertToOrderTable() />
-            <!--- <cfinvoke method="insertToOrderTable" component="#VARIABLES.checkoutDB#"
-                returnvariable="LOCAL.insertedOrder" /> --->
+            <cftry>
+                <!--- INSERT INTO ORDER TABLE --->
+                <cfset LOCAL.insertedOrder = VARIABLES.checkoutDB.insertToOrderTable() />
 
-            <!--- GET GENERATED ORDER_ID OF ORDERS TABLE --->
-            <cfset LOCAL.OrderId = #LOCAL.insertedOrder.GENERATEDKEY#/>
+                <!--- GET GENERATED ORDER_ID from QUERY result & ITEM DETAILS from Cart --->
+                <cfset LOCAL.OrderId = #LOCAL.insertedOrder.GENERATEDKEY#/>
+                <cfset LOCAL.cartItemDetails = VARIABLES.checkoutDB.getProductsDetailFromCart() />
 
-            <!--- GET REQUIRED ITEMS FOR INSERTING INTO ORDERDETAILS TABLE --->
-            <cfset LOCAL.cartItemDetails = VARIABLES.checkoutDB.getProductsDetailFromCart() />
-            <!--- <cfinvoke method="getProductsDetailFromCart" component="#VARIABLES.checkoutDB#"
-                returnvariable="LOCAL.cartItemDetails" /> --->
+                <!--- INSERT INTO ORDERDETAILS TABLE USING cart QUERY--->
+                <cfset VARIABLES.checkoutDB.insertToOrderDetails(cartItemDetails = LOCAL.cartItemDetails, orderId = LOCAL.OrderId) />
 
-            <cfset LOCAL.shippingDetails = VARIABLES.checkoutDB.getShippingDetails()/>
-            <!--- INSERT INTO ORDERDETAILS TABLE USING cart QUERY--->
 
-            <cfset VARIABLES.checkoutDB.insertToOrderDetails(cartItemDetails = LOCAL.cartItemDetails, shippingDetails = LOCAL.shippingDetails, orderId = LOCAL.OrderId) />
-            <!--- <cfinvoke method="insertToOrderDetails" component="#VARIABLES.checkoutDB#"
-                cartItemDetails = #LOCAL.cartItemDetails# orderId = #LOCAL.OrderId# /> --->
+                <cfset cartCleared = clearCart()/>
+                <cfif cartCleared>
+                    <cfset session.cartDataChanged = true/>
+                    <cfset StructInsert(response, "status", "true")/>
+                    <cfelse>
+                    <cfset StructInsert(response, "status", "false")/>
+                </cfif>
 
-            <cfset cartCleared = clearCart()/>
-            <cfif cartCleared>
-                <cfset session.cartDataChanged = true/>
-                <cfset StructInsert(response, "status", "true")/>
-                <cfelse>
+            <cfcatch>
+                <cftransaction action="rollback" />
                 <cfset StructInsert(response, "status", "false")/>
-            </cfif>
+                <cfdump var="#cfcatch#" />
+            </cfcatch>
+            </cftry>
 
-        <cfcatch>
-            <cfset StructInsert(response, "status", "false")/>
-            <cfdump var="#cfcatch#" />
-        </cfcatch>
-        </cftry>
+        </cftransaction>
+
         <cfreturn #response#/>
     </cffunction>
 

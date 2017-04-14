@@ -261,7 +261,7 @@
             <cfset VARIABLES.image = "#uploadresult.SERVERFILE#" />
 
             <cfset newProduct = productCFC.addNewProduct(form = FORM, imageName = VARIABLES.image ) />
-
+            
             <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
 
 
