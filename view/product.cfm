@@ -114,7 +114,7 @@
           </div>
 
           <div class="modal-footer">
-              <button type="submit" class="btn btn-primary" name="submit"> Add Product  </button>
+              <button type="button" class="btn btn-primary" name="submit" id="product-add-form-submit-button"> Add Product  </button>
               <button type="reset"  class="btn btn-default" name="reset" >       Clear  </button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close  </button>
           </div>
@@ -246,32 +246,33 @@
 
 <cftry>
 
-<cfif IsDefined("FORM.Image") AND IsDefined("FORM.submit")>
-    <cfset path = "D:\ShoppingSite\assets\images\products\medium" />
-    <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
+    <cfif IsDefined("FORM.Image") AND IsDefined("FORM.submit")>
 
-    <cffile action="upload"
-            filefield   ="Image"
-            destination ="#path#"
-            nameconflict="makeunique"
-            accept      ="image/jpeg,image/jpg,image/png"
-            result      ="uploadresult"
- />
-            <!--- <cfdump var="#uploadresult#" /> --->
-            <cfset VARIABLES.image = "#uploadresult.SERVERFILE#" />
+        <cffile action="upload"
+                filefield   ="Image"
+                destination ="#APPLICATION.imagePath#"
+                nameconflict="makeunique"
+                accept      ="image/jpeg,image/jpg,image/png"
+                result      ="uploadresult"
+                />
+                <cfdump var="#uploadresult#" />
+                <cfset VARIABLES.image = "#uploadresult.SERVERFILE#" />
 
-            <cfset newProduct = productCFC.addNewProduct(form = FORM, imageName = VARIABLES.image ) />
-            
-            <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
+                <cfset newProduct = productCFC.addNewProduct(form = FORM, imageName = VARIABLES.image ) />
 
+                <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
 
-            <!--- <cfset adminCFC = createObject("cfc.admin") />
-            <cfset productAdd = adminCFC.addProduct(#FORM#,#image#)/>
-            <cfdump var="#productAdd#"> --->
+                <!--- <cfset adminCFC = createObject("cfc.admin") />
+                <cfset productAdd = adminCFC.addProduct(#FORM#,#image#)/>
+                <cfdump var="#productAdd#"> --->
 
-</cfif>
+    </cfif>
 
-<cfcatch type="any">
-    <cfdump var="#cfcatch#" />
-</cfcatch>
+    <cfcatch type="any">
+        <cfoutput>
+            Some error happened
+        </cfoutput>
+        <cfdump var="#cfcatch#" />
+    </cfcatch>
+
 </cftry>

@@ -251,11 +251,9 @@
     <cftry >
 
         <cfif #FORM.Image# NEQ ''>
-            <cfset path = "D:\ShoppingSite\assets\images\products\medium" />
-            <!--- <cfset path = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
 
             <cffile action="Delete"
-                    file= "#path#\#FORM.Image_old#"
+                    file= "#APPLICATION.imagePath#\#FORM.Image_old#"
                     />
 
             <cffile action="upload"
@@ -284,3 +282,4 @@
         </cfcatch>
     </cftry>
 </cfif>
+<cfdump var="#APPLICATION.productImagePath#" />

@@ -183,12 +183,11 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfreturn LOCAL.subCategory />
     </cffunction>
 
-    <cffunction name="queryExistingProductByName" returntype="boolean" access = "public"  >
+    <cffunction name="queryExistingProductByName" returntype="boolean" access = "remote" output="true" >
         <cfargument name="name" type="string" required="true" />
+        <cfset LOCAL.response = true />
 
-        <cfset LOCAL.productExists = QueryNew(ProductId) />
         <cftry>
-
             <cfquery name="LOCAL.ProductExists">
                 SELECT ProductId
                 FROM [Product]
@@ -200,10 +199,60 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfcatch>
         </cftry>
 
-        <cfif LOCAL.productExists.recordCount>
-            <cfreturn true/>
-        <cfelse>
-            <cfreturn false/>
+        <cfif LOCAL.ProductExists.recordCount>
+                    <cfset LOCAL.response = true />
+        <cfelse>    <cfset LOCAL.response = false />
         </cfif>
+
+        <cfreturn LOCAL.response />
+    </cffunction>
+
+
+    <cffunction name="getProductImage" returntype = "String" access = "public" >
+        <cfargument name="pid" type="numeric" required = "true" />
+        <cftry>
+            <cfquery name="LOCAL.ImageColumn">
+                SELECT Image
+                FROM [Product]
+                WHERE ProductId = <cfqueryparam value = "#ARGUMENTS.pid#" cfsqltype="cf_sql_bigint" />
+            </cfquery>
+            <cfcatch type="database">
+                <cfdump var="#cfcatch#" />
+                <cfabort />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn #LOCAL.ImageColumn.Image# />
+    </cffunction>
+<!---
+    THIS TRIES TO DELETE PRODUCT FROM DATABASE IF NO CONNECTION OF THE PRODUCT
+    WITH ANY OTHER TABLE EXISTS ... RETURNS TRUE
+    ELSE RETURNS FALSE FROM CATCH BLOCK
+--->
+    <cffunction name="deleteProductFromDB" returntype="boolean" access = "public" >
+        <cfargument name="pid" type="numeric" required = "true" />
+
+        <cfset LOCAL.response = false />
+
+        <cfset LOCAL.Image = getProductImage(#ARGUMENTS.pid#) />
+        <cftry>
+            <!--- delete product from db --->
+            <cfquery name="LOCAL.deleteProduct">
+                DELETE
+                FROM [Product]
+                WHERE ProductId = <cfqueryparam value = "#ARGUMENTS.pid#" cfsqltype="cf_sql_bigint" />
+            </cfquery>
+
+            <!--- delete it's image --->
+            <cffile action="Delete"
+                    file= "#APPLICATION.imagePath#\#LOCAL.Image#"
+                    />
+            <cfset LOCAL.response = true />
+            <cfcatch >
+                <cfset LOCAL.response = false />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.response />
     </cffunction>
 </cfcomponent>

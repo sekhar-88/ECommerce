@@ -30,7 +30,6 @@
                 <cfloop query="orders" >
                 <div class="orders">
 
-                    in orders query : #OrderId#
                     <cfset orderDetails = ordersCFC.getOrderDetails(#OrderId#) />
                     <cfloop query="orderDetails" >
                     <div class="order">

@@ -187,11 +187,15 @@
         <cfreturn LOCAL.subCategory.SubCategoryName />
     </cffunction>
 
-    <cffunction name="checkExistingProduct" returntype="boolean" access = "remote"  >
+
+<!---   CHECKS FOR PRODUCTS EXISTS OR NOT
+        BEFORE ADDING TO THE PRODUCT DATABASE
+--->
+    <cffunction name="checkExistingProduct" returnformat = "json" returntype="boolean" access = "remote" >
         <cfargument name="name" type = "string" required = "true" />
 
         <cftry >
-            <cfset LOCAL.productExists = VARIABLES.productDB.queryExistingProductByName(name = #ARGUMENTS.form.Name#) />
+            <cfset LOCAL.productExists = VARIABLES.productDB.queryExistingProductByName(name = #ARGUMENTS.name#) />
 
             <cfcatch >
                 <cfdump var="#cfcatch#" />
@@ -199,6 +203,14 @@
         </cftry>
 
         <cfreturn LOCAL.productExists />
+    </cffunction>
 
+
+    <cffunction name="deleteProduct" returntype = "boolean" returnformat = "json" access = "remote"  >
+        <cfargument name="pid" type="numeric" required = "true" />
+
+        <cfset LOCAL.deleted = VARIABLES.productDB.deleteProductFromDB( pid = #ARGUMENTS.pid# )/>
+
+        <cfreturn LOCAL.deleted />
     </cffunction>
 </cfcomponent>

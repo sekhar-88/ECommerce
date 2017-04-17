@@ -16,6 +16,9 @@
     <cfset THIS.mappings[ "/include" ] = "#THIS.rootDir#assets/libraries/" />
     <cfset THIS.mappings[ "/commons" ] = "#THIS.rootDir#commons/" />
 
+    <cfset APPLICATION.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
+    <cfset APPLICATION.imagePath = "D:\ShoppingSite\assets\images\products\medium" />
+
     <!--- <cfoutput>
         #THIS.rootDir#assets/libraries/ <br />
         #THIS.rootDir#commons/
@@ -159,11 +162,11 @@
             <!--- WriteLog(type="Error", file="shoppingbuzz.log", text="[#arguments.exception.type#] #arguments.exception.message#") --->
 
 
-            <cfif #ARGUMENTS.Exception.type# EQ "Expression">
+            <!--- <cfif #ARGUMENTS.Exception.type# EQ "Expression">
                 <cflocation url="index.cfm" addtoken="false" />
             <cfelse>
                 <cfinclude template="/commons/error404.cfm" />
-            </cfif>
+            </cfif> --->
 
         <cfreturn />
     </cffunction>

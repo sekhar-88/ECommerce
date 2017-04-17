@@ -134,3 +134,24 @@ onload = function () {
 function appendInputBox(el){
     $(el).prev().children(".desc-fields").append("<input type='text' class='y form-control' placeholder='desc...'>");
 }
+
+function deleteProduct(pid){
+    $.ajax({
+        url:"../cfc/product.cfc?method=deleteProduct",
+        data: {
+            pid : pid
+        },
+        dataType: "json",
+    }).done(function(response){
+        if(response == "true"){
+            alert("product Deleted");
+            location.href = "index.cfm";
+        }
+        else if( response == "false") {
+            alert("product is linked to some orders.. so marked as Discontinud");
+            $.ajax({
+
+            })
+        }
+    })
+}

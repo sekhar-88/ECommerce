@@ -42,38 +42,44 @@ $(document).ready(function(){
         }
     });
 
-    $("form#product-add-form").submit(function(e){
-
-        var pName = $(this)[0].elements.Name
-        $.ajax({
-            url: "../cfc/product.cfc?method=checkExistingProduct",
-            data: {
-                name: pName
-            }
-        }).done(function(response){
-            if(response == true ){
-                var desc = "";
-                // going to submit form
-                $.each( $(".product-desc-fields > input "), function(i, item){
-                    desc += $(item).val() + " " ;
-                    if( (i+1)%2 == 0 )
-                    { desc +=  "`"}
-                    else{
-                        desc += " : ";
-                    }
-                });
-                $("textarea#prdt-desc").val(desc);
-            }
-            else {
-                e.preventDefault();
-                productAddFormValidator.showErrors({
-                    Name: "this product already exists"
-                })
-
-            }
-        }).fail(function(error){
-            console.log(error);
-        })
+    $("#product-add-form-submit-button").click(function(){
+        if($(this).valid() ) {
+            var pName = $("form#product-add-form")[0].elements.Name.value;
+            console.log("checking for already existing product: " + pName);
+            $.ajax({
+                url: "../cfc/product.cfc?method=checkExistingProduct",
+                data: {
+                    name: pName
+                },
+                datatype: "json"
+            }).done(function(response){
+                console.log("response: " + response);
+                if(response != "true" ){
+                    console.log("product doesn't exists");
+                    var desc = "";
+                    // going to submit form
+                    $.each( $(".product-desc-fields > input "), function(i, item){
+                        desc += $(item).val() + " " ;
+                        if( (i+1)%2 == 0 )
+                        { desc +=  "`"}
+                        else{
+                            desc += " : ";
+                        }
+                    });
+                    $("textarea#prdt-desc").val(desc);
+                    // console.log($("form"));
+                    $("#product-add-form").submit();
+                }
+                else {
+                    console.log("product already exists;");
+                    productAddFormValidator.showErrors({
+                        Name : "this product already exists"
+                    });
+                }
+            }).fail(function(error){
+                console.log(error);
+            });
+        }
     });
 
 
