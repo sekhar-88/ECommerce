@@ -7,17 +7,132 @@ h2.order-page-header {
     margin: auto;
 }
 
+
+
+/*main container*/
 div.orders-container {
-    /*background-color: black;*/
     padding: 5px;
+    width: 74%;
+    margin: auto;
+}
+h4 {
+    font-family: monospace;
 }
 
+/*individual orders container*/
 .orders {
-    background-color: aliceblue;
+    background-color: #c6d5dc;
     padding: 10px;
+    margin-bottom: 40px;
 }
 
+/*header section to orders container*/
+.order-header {
+    padding-bottom: 10px;
+}
+.order-id {
+    width: 200px;
+    background-color: #a5b4bb;
+    padding: 5px;
+    font-family: monospace;
+    color: white;
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+}
+
+/*orders with each prodct details*/
 .order {
     background-color: white;
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+    border-bottom: 1px solid #edf1f3;
+}
+.order > * {
+
+}
+.order-img {
+    width: 200px;
+    height: 200px;
+    padding: 20px;
+}
+.order-img > div.img {
+    cursor: pointer;
+    width: 160px;
+    height: 160px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-color: white;
+}
+
+
+.order-info {
+    border-left: 1px solid #edf1f3;
+    border-right: 1px solid #edf1f3;
+    padding: 20px;
+    height: 100%;
+    width: 370px;
+}
+.order-info .product-name {
+    font-size : 17px;
+    color: black;
+}
+.order-info .product-desc {
+    font-size: small;
+    color: #b7b7b7;
+}
+
+
+.order-qty-price {
+    width: 200px;
+    display: flex;
+    align-self: center;
+    flex-direction: column;
     padding: 10px;
+}
+.order-qty-price div{
+    font-size: 18px;
+    text-align: center;
+    font-family: monospace;
+}
+.order-qty-price div > span {
+    font-weight: bold;
+    font-size  : 15px;
+    color: #FF9800;
+}
+
+
+.order-shippingaddress {
+    border-left: 1px solid #edf1f3;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+h3.shipping-header {
+    color: #607d8b
+}
+/*footer section to orders container */
+.order-footer {
+    height: 30px;
+    padding: 5px;
+}
+.order-date {
+    float: left;
+    color: #9e9e9e;
+}
+.order-date span {
+    color: #4c4c4c;
+    font-weight: bold;
+}
+.order-total {
+    float: right;
+    color: #9e9e9e;
+}
+.order-total span {
+    color: #5a5a5a;
+    font-size: 20px;
+    font-weight: bold;
 }

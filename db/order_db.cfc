@@ -8,15 +8,15 @@
     <cffunction name="getOrderDetails" returntype="Query" access="public"  >
         <cfargument name="OrderId" required = "true" type="numeric" />
 
-        <cfquery name="LOCAL.orderDetails">
+        <cfquery name="LOCAL.orderDetails" cachedwithin="#CreateTimeSpan(0,0,10,0)#" >
             SELECT o.OrderId , o.SubTotal, o.OrderDate, o.PaymentMethod, o.Status,
-                   od.OrderQty, od.ProductId, od.SupplierId, od.ShipToAddressId,
-                   a.AddressLine, a.PhoneNo,
-                   p.Image
+                   od.OrderQty, od.UnitPrice, od.ProductId, od.SupplierId, od.ShipToAddressId,
+                   a.Name AS PersonName , a.AddressLine, a.PhoneNo, a.PostalCode,
+                   p.Image, p.Name AS ProductName, p.Description
 
-            from [Order] o
+            FROM [OrderDetails] od
 
-                INNER JOIN [OrderDetails] od
+                INNER JOIN [Order] o
                 ON o.OrderId = od.OrderId
 
                     INNER JOIN [Address] a
@@ -32,4 +32,27 @@
     </cffunction>
 
 
+<!---
+    returns query containing no. of orders
+--->
+    <cffunction name="getOrdersFromDB" returntype= "Query" access = "public" >
+        <cftry >
+
+            <cfquery name="LOCAL.Orders">
+                SELECT o.OrderId, o.SubTotal, o.OrderDate, o.PaymentMethod, o.Status--, od.OrderQty, od.ProductId, od.SupplierId
+                FROM [Order] o
+                <!--- INNER JOIN [OrderDetails] od --->
+                <!--- ON o.OrderId = od.OrderId --->
+                WHERE o.UserId = #SESSION.User.UserId#
+            </cfquery>
+
+            <cfcatch >
+                <cfdump var="#cfcatch#" />
+                <cfabort />
+            </cfcatch>
+
+        </cftry>
+
+        <cfreturn LOCAL.Orders />
+    </cffunction>
 </cfcomponent>

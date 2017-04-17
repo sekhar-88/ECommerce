@@ -93,18 +93,19 @@ div#buttons-container > * > * {
 
 .product-specification{
     border-radius: 4px;
-    border-top:1px solid lightgrey;
+    /*border-top:1px solid lightgrey;*/
     /*border-bottom:1px solid lightgrey;*/
 }
 
 .ps-header{
-    background-color: #e8e8e8;
+    background-color: #f5f5f5;
     font-size: 20px;
     /*font-weight: bold;*/
     padding: 5px;
+    margin: 10px;
 }
 .ps-content {
-    border: 10px solid #fbfbfb;
+    /*border: 10px solid #fbfbfb;*/
     border-radius: 10px;
 
 }
@@ -112,6 +113,8 @@ div#buttons-container > * > * {
     list-style: none;
     padding: 20px;
     margin-left: 20px;
+    margin-right: 20px;
+    border: 1px solid #efefef
 }
 .ps-content > ul > li {
     padding: 5px;

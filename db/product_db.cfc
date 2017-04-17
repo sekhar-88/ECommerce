@@ -83,12 +83,12 @@ like adding to cart removing from cart, editing updating product details etc. --
     <cffunction name = "queryProductDetailsAndBrand" returntype = "query" access = "public" >
         <cfargument name = "pid" required = "true" type = "numeric" />
 
-            <cfquery name = "LOCAL.productDetails">
+            <cfquery name = "LOCAL.productDetails" >
                 SELECT p.* , b.BrandName
                 FROM [Product] p
                 INNER JOIN [Brand] b
                 ON p.BrandId = b.BrandId
-                WHERE p.ProductId = #ARGUMENTS.pid#
+                WHERE p.ProductId = #ARGUMENTS.pid# AND p.DiscontinuedDate IS NULL
                 <!--- <cfqueryparam value = "#ARGUMENTS.pid#" CFSQLType = "[cf_sql_integer]"> --->
             </cfquery>
 
@@ -258,6 +258,28 @@ like adding to cart removing from cart, editing updating product details etc. --
                 <cfset LOCAL.response = false />
             </cfcatch>
 
+        </cftry>
+
+        <cfreturn LOCAL.response />
+    </cffunction>
+
+
+    <!--- marks a product as discontinued  --->
+    <cffunction name="markAsDiscontinuedInDB" returntype="boolean" access = "public"  >
+        <cfargument name="pid" type = "numeric" requried = "true" />
+        <cfset LOCAL.response = false />
+
+        <cftry>
+            <cfquery>
+                UPDATE [Product]
+                SET DiscontinuedDate = GETDATE()
+                WHERE ProductId = <cfqueryparam value="#ARGUMENTS.pid#"/>
+            </cfquery>
+            <cfset LOCAL.response = true />
+            <cfcatch type="database">
+                <cfdump var="#cfcatch#" />
+                <cfset LOCAL.response = false />
+            </cfcatch>
         </cftry>
 
         <cfreturn LOCAL.response />

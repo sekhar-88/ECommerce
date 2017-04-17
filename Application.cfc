@@ -7,8 +7,8 @@
     <cfset THIS.Name = "Shopping" />
     <cfset THIS.sessionManagement = true />
     <!--- <cfset THIS.setClientCookies = false /> --->
-    <cfset THIS.applicationTimeout = CreateTimeSpan(0,0,1,0) />
-    <cfset THIS.sessionTimeout = CreateTimeSpan(0,0,30,0) />
+    <cfset THIS.applicationTimeout = CreateTimeSpan(0,0,30,0) />
+    <cfset THIS.sessionTimeout = CreateTimeSpan(0,0,10,0) />
     <cfset THIS.datasource = "eShoppingBasic" />
     <!--- <cfset THIS.rootDir = #server.ColdFusion.RootDir# /> --->
     <cfset THIS.rootDir = getDirectoryFromPath(getCurrentTemplatePath()) />
@@ -48,8 +48,8 @@
         <cfset SESSION.cart = [] />
         <cfset SESSION.cartDataChanged = false />
         <cfset SESSION.User = { role = "guest" } />
-        <cfset SESSION.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
-        <!--- <cfset APPLICATION.imagePath = "D:\ShoppingSite\assets\images\products\medium" /> --->
+        <!--- <cfset SESSION.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
+        <cfset SESSION.imagePath = "D:\ShoppingSite\assets\images\products\medium" />
 
 
         <cfreturn />

@@ -243,7 +243,7 @@
 <cfinclude template = "/commons/footer.cfm">
 </body>
 </html>
-<cfdump var="#SESSION#" />
+
 <cftry>
 
     <cfif IsDefined("FORM.Image") AND IsDefined("FORM.submit")>

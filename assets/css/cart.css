@@ -34,8 +34,8 @@
 
 .header_text h2 {
     margin-top: 10px;
-    font-family: monospace;
-    color: #8c8c8c;
+    font-family: -webkit-body ;
+    color: #00b103;
     font-weight: bold;
 }
 .section .subsection{

@@ -80,14 +80,13 @@
     </cffunction>
 
 
-
+<!--- fetch product detials to Show in product Details page --->
     <cffunction name = "fetchProductDetails" access = "remote" returntype = "query" output = "true">
         <cfargument name = "pid" required = "true" type = "numeric" />
 
-        <cfinvoke method = "queryProductDetailsAndBrand" component = "#VARIABLES.productDB#"
-            returnvariable = "LOCAL.productDetails" pid = "#ARGUMENTS.pid#" />
+        <cfset LOCAL.productDetails = VARIABLES.productDB.queryProductDetailsAndBrand(pid = #ARGUMENTS.pid#) />
 
-        <cfreturn #LOCAL.productDetails#/>
+        <cfreturn LOCAL.productDetails />
     </cffunction>
 
 
@@ -206,11 +205,21 @@
     </cffunction>
 
 
+<!--- tries to delete a product based on its pid --->
     <cffunction name="deleteProduct" returntype = "boolean" returnformat = "json" access = "remote"  output= "true">
         <cfargument name="pid" type="numeric" required = "true" />
 
         <cfset LOCAL.deleted = VARIABLES.productDB.deleteProductFromDB( pid = #ARGUMENTS.pid# )/>
 
         <cfreturn LOCAL.deleted />
+    </cffunction>
+
+    <!--- If delete Not successful, then marks it as discontinued  --->
+    <cffunction name="markAsDiscontinued" returntype="boolean" returnformat="json" access="remote" >
+        <cfargument name="pid" type="numeric" required = "true" />
+
+        <cfset LOCAL.success = VARIABLES.productDB.markAsDiscontinuedInDB(pid = #ARGUMENTS.pid#) />
+
+        <cfreturn LOCAL.success />
     </cffunction>
 </cfcomponent>

@@ -257,6 +257,7 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
         <cfargument name="pid" required="true" type="numeric"  />
         <cfargument name="qty" required="true" type="numeric" />
 
+        <cfset SESSION.cartDataChanged = true />
         <cfset LOCAL.price = getPriceOfProduct(ARGUMENTS.pid)/>
         <cfset LOCAL.totalPrice = LOCAL.price * #ARGUMENTS.qty# />
 
@@ -323,4 +324,9 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
         <cfreturn #LOCAL.productPrice# />
     </cffunction>
 
+
+    <cffunction name="isCartDataChanged" returntype="boolean" returnformat="json" access="remote" >
+        <cfreturn SESSION.cartDataChanged
+        />
+    </cffunction>
 </cfcomponent>

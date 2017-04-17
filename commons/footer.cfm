@@ -13,24 +13,23 @@
 	<!--- <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css"> --->
 
 </head>
-
-		<!--- <header>
-
-			<h1>Freebie: 5 Responsive Footer Templates</h1>
-			<h2><a href="http://tutorialzine.com/2015/01/freebie-5-responsive-footer-templates/">Download</a></h2>
-
-			<ul>
-				<li><a href="index.html">Basic Centered</a></li>
-				<li><a href="footer-distributed.html">Distributed</a></li>
-				<li><a href="footer-distributed-with-address-and-phones.html" class="active">Distributed With Address And Phones</a></li>
-				<li><a href="footer-distributed-with-contact-form.html">Distributed With Contact Form</a></li>
-				<li><a href="footer-distributed-with-search.html">Distributed With Search</a></li>
-			</ul>
-
-		</header> --->
-
+	<div class="modal fade" id="refresh-modal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+  					<button type="button" class="close" data-dismiss="modal">&times;</button>
+  					<h4 class="modal-title">Checking Items</h4>
+				</div>
+				<div class="modal-body">
+  					<i></i>
+				</div>
+				<div class="modal-footer">
+  					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 		<!-- The content of your page would go here. -->
-
 		<footer class="footer-distributed">
 
 			<cfif session.loggedin>

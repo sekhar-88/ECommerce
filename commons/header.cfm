@@ -136,7 +136,7 @@
 				</ul>
 
                 <ul class="nav navbar-nav navbar-right" >
-					<li class="" style="background-color: #d3d6ad;"><a href="cart.cfm" role="button" class="cart_button">
+					<li id="cart-button"><a href="cart.cfm" role="button" class="cart_button">
                         <span class="glyphicon glyphicon-shopping-cart"></span>  <span class="">Cart</span>
                         <span class="badge" id="badge"></span></a><!--- badge count of cart --->
                     </li>

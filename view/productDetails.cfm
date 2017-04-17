@@ -101,7 +101,7 @@
                     <cfsavecontent variable="productDetailsHTML" >
 
                         <div class="pd-name">
-                            #productDetails.BrandName# - #productDetails.Name# #productDetails.ListPrice#
+                            #productDetails.Name#
                         </div>
                         <div class="pd-rating">
                             <span class="badge">4</span>

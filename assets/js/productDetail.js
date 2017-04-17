@@ -136,23 +136,37 @@ function appendInputBox(el){
 }
 
 function deleteProduct(pid){
-    $.ajax({
-        url:"../cfc/product.cfc?method=deleteProduct",
-        data: {
-            pid : pid
-        },
-        dataType: "json",
-    }).done(function(response){
-        alert(response);
-        if(response == true){
-            alert("product Deleted");
-            location.href = "index.cfm";
-        }
-        else if( response == false) {
-            alert("product is linked to some orders.. so marked as Discontinud");
-            $.ajax({
+    if(confirm("Sure to delete?")) {
+        $.ajax({
+            url:"../cfc/product.cfc?method=deleteProduct",
+            data: {
+                pid : pid
+            },
+            dataType: "json",
+        }).done(function(response){
+            if(response == true){
+                alert("product Deleted");
+                location.href = "index.cfm";
+            }
+            else if( response == false) {
+                if(confirm("product is linked to one or more orders.. do you want to mark it as Discontinued ? ")){
+                    $.ajax({
+                        url: "../cfc/product.cfc?method=markAsDiscontinued",
+                        data: { pid: pid },
+                        dataType: "json"
+                    }).done(function(response){
+                        if(response == true ){
+                            window.location.reload();
+                        }
+                        else if(response == false) {
+                            notify("Couldn't mark the Product as Discontinued", "danger", "glyphicon glyphicon-remove");
+                        }
+                    }).fail(function(error){
 
-            });
-        }
-    })
+                    });
+                }
+
+            }
+        })
+    }
 }

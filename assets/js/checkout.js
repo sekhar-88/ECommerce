@@ -210,6 +210,7 @@ function removeItem(element){
             var val = $("#badge").text();
             val--;
             $("#badge").text(val);
+            getCartTotal(updateCartTotalvalue);
             if(val== 0){
                 alert('no item in cart..\nredirecting to cart page');
                 window.location.href = "cart.cfm";
@@ -376,36 +377,58 @@ function editAddressAndSave(form,address_id){
 
 
 function placeOrderByCOD(){
-    if(validateItemQuantity()){  //purchasee section handling
-        $.ajax({
-            url: "../cfc/checkout.cfc?method=orderPlacedByCOD",
-            data:{},
-            dataType: "json",
-            success: function(response){
-                if(response.status){
-                    alert("added to Orders & Orderdetails");
-                    $("#section-checkout-header").remove();
-                    // $("p").eq(0).css("height","45px");
-                    str = '<div><h1 align="center" style="color: blue;"><span></span>Thank you for your order!</h1>'
-                            +'<span style="color: #4CAF50;">Your order has been placed and is being processed. When the item(s) are shipped, you will receive an email with the details.</span></div>'
-                            +'<div><h2 align="center" style="color: teal;font-weight: bold;">Amount Payble:'+amountPayble+'</h2></div>'
-                    $(".checkout_section").html(str + orderSummary);
-                    // set step  = 0
-                    // cart datachanged = true
-                    // cart 0
-                    $("#badge").text(0);
-                }
-            },
-            error: function(error){
-                alert("error while processing COD request.");
-                console.log(error);
-            }
-        });
-    }
-    else{ //item quantity is not valid
-        alert("item quantity is not valid");
-    }
+    isCartDataChanged(placeOrder);
 }
+
+function isCartDataChanged(callback){
+    $.ajax({
+        url: "../cfc/checkout.cfc?method=isCartDataChanged",
+        dataType: "json"
+    }).done(function(response){
+        if(response == false) callback(response);  //place order cartData Didn't change
+        else {
+            $("#refresh-modal").modal('show');
+            setTimeout(function() {
+                $("#refresh-modal").modal('hide');
+            }, 2000)
+            window.location.reload();
+        }
+    })
+}
+
+var placeOrder = function(response){
+        if(validateItemQuantity()){  //purchasee section handling
+            $.ajax({
+                url: "../cfc/checkout.cfc?method=orderPlacedByCOD",
+                data:{},
+                dataType: "json",
+                success: function(response){
+                    if(response.status){
+                        alert("added to Orders & Orderdetails");
+                        $("#section-checkout-header").remove();
+                        // $("p").eq(0).css("height","45px");
+                        str = '<div><h1 align="center" style="color: blue;"><span></span>Thank you for your order!</h1>'
+                                +'<span style="color: #4CAF50;">Your order has been placed and is being processed. When the item(s) are shipped, you will receive an email with the details.</span></div>'
+                                +'<div><h2 align="center" style="color: teal;font-weight: bold;">Amount Payble:'+amountPayble+'</h2></div>'
+                        $(".checkout_section").html(str + orderSummary);
+                        // set step  = 0
+                        // cart datachanged = true
+                        // cart 0
+                        $("#badge").text(0);
+                    }
+                },
+                error: function(error){
+                    alert("error while processing COD request.");
+                    console.log(error);
+                }
+            });
+        }
+        else{ //item quantity is not valid
+            alert("item quantity is not valid");
+        }
+
+}
+
 
 function validateItemQuantity(){
     var result;
@@ -434,7 +457,7 @@ function validateItemQuantity(){
                     error: function(error){ alert('Error retrieving Available Product Quantity'); }
             });
         }
-        else{
+        else {
             productCountvalid = false;
             result = false;
             return false;  // equivalent to break;
@@ -470,13 +493,9 @@ function getCartTotal(callback){
    return totalCartValue;
 }
 
-
 var updateCartTotalvalue = function(price){
    $("#total-checkout-price").text(parseInt(price).toLocaleString('en-IN'));
 }
-
-
-
 
 
 
