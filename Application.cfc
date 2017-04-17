@@ -16,9 +16,6 @@
     <cfset THIS.mappings[ "/include" ] = "#THIS.rootDir#assets/libraries/" />
     <cfset THIS.mappings[ "/commons" ] = "#THIS.rootDir#commons/" />
 
-    <cfset APPLICATION.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
-    <cfset APPLICATION.imagePath = "D:\ShoppingSite\assets\images\products\medium" />
-
     <!--- <cfoutput>
         #THIS.rootDir#assets/libraries/ <br />
         #THIS.rootDir#commons/
@@ -47,10 +44,12 @@
         output = "false"
         hint = "fires when the session is first created." >
 
-        <cfset session.loggedin = false />
-        <cfset session.cart = [] />
-        <cfset session.cartDataChanged = false />
-        <cfset session.User = { role = "guest" } />
+        <cfset SESSION.loggedin = false />
+        <cfset SESSION.cart = [] />
+        <cfset SESSION.cartDataChanged = false />
+        <cfset SESSION.User = { role = "guest" } />
+        <cfset SESSION.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" />
+        <!--- <cfset APPLICATION.imagePath = "D:\ShoppingSite\assets\images\products\medium" /> --->
 
 
         <cfreturn />
@@ -119,6 +118,7 @@
             default = "#StructNew()#"
             />
 
+            <cfset StructClear(SESSION) />
         <cfreturn />
     </cffunction>
 

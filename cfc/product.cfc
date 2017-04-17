@@ -206,7 +206,7 @@
     </cffunction>
 
 
-    <cffunction name="deleteProduct" returntype = "boolean" returnformat = "json" access = "remote"  >
+    <cffunction name="deleteProduct" returntype = "boolean" returnformat = "json" access = "remote"  output= "true">
         <cfargument name="pid" type="numeric" required = "true" />
 
         <cfset LOCAL.deleted = VARIABLES.productDB.deleteProductFromDB( pid = #ARGUMENTS.pid# )/>

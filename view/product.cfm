@@ -243,14 +243,14 @@
 <cfinclude template = "/commons/footer.cfm">
 </body>
 </html>
-
+<cfdump var="#SESSION#" />
 <cftry>
 
     <cfif IsDefined("FORM.Image") AND IsDefined("FORM.submit")>
 
         <cffile action="upload"
                 filefield   ="Image"
-                destination ="#APPLICATION.imagePath#"
+                destination ="#SESSION.imagePath#"
                 nameconflict="makeunique"
                 accept      ="image/jpeg,image/jpg,image/png"
                 result      ="uploadresult"

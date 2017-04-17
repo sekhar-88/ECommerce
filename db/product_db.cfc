@@ -229,13 +229,15 @@ like adding to cart removing from cart, editing updating product details etc. --
     WITH ANY OTHER TABLE EXISTS ... RETURNS TRUE
     ELSE RETURNS FALSE FROM CATCH BLOCK
 --->
-    <cffunction name="deleteProductFromDB" returntype="boolean" access = "public" >
+    <cffunction name="deleteProductFromDB" returntype="boolean" access = "public" output="true">
         <cfargument name="pid" type="numeric" required = "true" />
 
         <cfset LOCAL.response = false />
 
-        <cfset LOCAL.Image = getProductImage(#ARGUMENTS.pid#) />
         <cftry>
+            <!--- get image of the product --->
+            <cfset LOCAL.Image = getProductImage(#ARGUMENTS.pid#) />
+
             <!--- delete product from db --->
             <cfquery name="LOCAL.deleteProduct">
                 DELETE
@@ -245,12 +247,17 @@ like adding to cart removing from cart, editing updating product details etc. --
 
             <!--- delete it's image --->
             <cffile action="Delete"
-                    file= "#APPLICATION.imagePath#\#LOCAL.Image#"
+                    file= "#SESSION.imagePath#\#LOCAL.Image#"
                     />
             <cfset LOCAL.response = true />
+
             <cfcatch >
+                <!--- <cfdump var="#SESSION.imagePath#" /> --->
+                <!--- <cfdump var="#LOCAL.Image#" /> --->
+                <!--- <cfdump var="#cfcatch#" /> --->
                 <cfset LOCAL.response = false />
             </cfcatch>
+
         </cftry>
 
         <cfreturn LOCAL.response />

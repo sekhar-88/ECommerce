@@ -143,15 +143,16 @@ function deleteProduct(pid){
         },
         dataType: "json",
     }).done(function(response){
-        if(response == "true"){
+        alert(response);
+        if(response == true){
             alert("product Deleted");
             location.href = "index.cfm";
         }
-        else if( response == "false") {
+        else if( response == false) {
             alert("product is linked to some orders.. so marked as Discontinud");
             $.ajax({
 
-            })
+            });
         }
     })
 }
