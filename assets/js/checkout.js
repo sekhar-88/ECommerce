@@ -390,8 +390,8 @@ function isCartDataChanged(callback){
             $("#refresh-modal").modal('show');
             setTimeout(function() {
                 $("#refresh-modal").modal('hide');
-            }, 2000)
-            window.location.reload();
+                window.location.reload();
+            }, 2000);
         }
     })
 }

@@ -253,12 +253,12 @@
         <cfif #FORM.Image# NEQ ''>
 
             <cffile action="Delete"
-                    file= "#SESSION.imagePath#\#FORM.Image_old#"
+                    file= "#APPLICATION.imagePath#\#FORM.Image_old#"
                     />
 
             <cffile action="upload"
                     filefield   ="Image"
-                    destination ="#SESSION.imagePath#"
+                    destination ="#APPLICATION.imagePath#"
                     nameconflict="makeunique"
                     accept      ="image/jpeg,image/jpg,image/png"
                     result      ="uploadresult"

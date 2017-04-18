@@ -149,7 +149,7 @@ function deleteProduct(pid){
                 location.href = "index.cfm";
             }
             else if( response == false) {
-                if(confirm("product is linked to one or more orders.. do you want to mark it as Discontinued ? ")){
+                if(confirm("product may b linked to one or more orders.. do you want to mark it as Discontinued ? ")){
                     $.ajax({
                         url: "../cfc/product.cfc?method=markAsDiscontinued",
                         data: { pid: pid },

@@ -20,7 +20,7 @@
             </cfif>
 
             <cfcatch>
-                <cfdump var="#cfcatch#" />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
             </cfcatch>
 
         </cftry>
@@ -48,14 +48,14 @@
                         <cfqueryparam value = "#ARGUMENTS.form.Email#" cfsqltype     = "cf_sql_nvarchar" >,
                         <cfqueryparam value = "#ARGUMENTS.form.PhoneNo#" cfsqltype   = "cf_sql_bigint" >,
                         <cfqueryparam value = "#ARGUMENTS.form.Password#" cfsqltype  = "cf_sql_nvarchar">,
-                        <cfqueryparam value = "#Hash(ARGUMENTS.form.Password)#" cfsqltype = "cf_sql_nvarchar">,
+                        <cfqueryparam value = "#HASH(ARGUMENTS.form.Password)#" cfsqltype = "cf_sql_nvarchar">,
                         'user'
                     )
                 </cfquery>
 
 
             <cfcatch type="DATABASE">
-                <cfdump var = "#cfcatch#" />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
             </cfcatch>
         </cftry>
 
@@ -76,7 +76,7 @@ matching == not existing accounts (email)
 
         <cfquery name = "LOCAL.findUser">
             <!--- dont query password, query for password salt --->
-            SELECT UserId,Password
+            SELECT UserId,PasswordHash
             FROM [User]
             WHERE Email = <cfqueryparam value = "#ARGUMENTS.email#" CFSQLType = "cf_sql_varchar" >
         </cfquery>
@@ -90,9 +90,8 @@ matching == not existing accounts (email)
         <cfargument name = "password" type = "string" required = "true">
 
         <cfquery name = "LOCAL.result" result = "userQuery">
-            SELECT UserId,FirstName,LastName,Email,PhoneNo,Role from [User]
+            SELECT UserId, FirstName, LastName, Email, PhoneNo, Role from [User]
             WHERE Email=<cfqueryparam value = "#ARGUMENTS.email#" CFSQLType = "cf_sql_varchar">
-                AND Password=<cfqueryparam value = "#ARGUMENTS.password#" CFSQLType = "cf_sql_varchar">
         </cfquery>
 
         <cfreturn LOCAL.result />

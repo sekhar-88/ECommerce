@@ -3,13 +3,13 @@
     <!--- returns cart item details with their respective product names --->
     <cffunction name="queryProductsFromUserCart" returntype="query" access="public"   >
         <cfquery name="LOCAL.items">
-                SELECT c.*,p.Name
+                SELECT c.CartId, c.UserId, c.ProductId, c.Qty, c.TotalPrice, c.DiscountAmount, p.Name
                 FROM [Cart] c
                 INNER JOIN [Product] p
                 ON c.ProductId = p.ProductId
                 WHERE c.UserId = #SESSION.User.UserId#
         </cfquery>
-        <cfreturn #LOCAL.items# />
+        <cfreturn LOCAL.items />
     </cffunction>
 
 
@@ -26,18 +26,28 @@
                                )
         </cfquery>
 
-        <cfreturn #LOCAL.products# />
+        <cfreturn LOCAL.products />
     </cffunction>
 
 
-    <cffunction name="removeItemFromUserCart" returntype="void" access = "public" >
+    <cffunction name="removeItemFromUserCart" returntype="boolean" access = "public" >
         <cfargument name="pid" type="numeric" required="true" />
+        <cfset LOCAL.response = false />
+        <cftry >
+            <cfquery name="removeItem">
+                DELETE
+                FROM [Cart]
+                WHERE ProductId = #ARGUMENTS.pid# AND UserId = #SESSION.User.UserId#
+            </cfquery>
+            <cfset LOCAL.response = true />
 
-        <cfquery name="removeItem">
-            DELETE
-            FROM [Cart]
-            WHERE ProductId = #ARGUMENTS.pid# AND UserId = #SESSION.User.UserId#
-        </cfquery>
+            <cfcatch type = "DATABASE">
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfset LOCAL.response = false />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.response/>
     </cffunction>
 
 </cfcomponent>

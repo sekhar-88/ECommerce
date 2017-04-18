@@ -2,7 +2,7 @@
     <cffunction name="getCategories" returntype="query" access="public"   >
 
         <cfquery name="LOCAL.categories">
-            Select *
+            Select CategoryId, CategoryName
             From [ProductCategory]
         </cfquery>
 
@@ -26,14 +26,14 @@
         <cfargument name="categoryname" required="true" type="string"/>
 
             <cfquery name="LOCAL.subcategories">
-                SELECT psc.*
+                SELECT psc.SubCategoryId, psc.SubCategoryName, psc.CategoryId
                 from [ProductSubCategory] psc
                 INNER JOIN [ProductCategory] pc
                 ON psc.CategoryId = pc.CategoryId
                 Where pc.CategoryName = <cfqueryparam value="#ARGUMENTS.categoryname#" cfsqltype="cf_sql_char">
             </cfquery>
 
-        <cfreturn #LOCAL.subcategories#/>
-        
+        <cfreturn LOCAL.subcategories/>
+
     </cffunction>
 </cfcomponent>

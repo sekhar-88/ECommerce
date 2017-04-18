@@ -14,6 +14,14 @@ form#login-form {
     padding: 4px;
     margin-bottom: 0;
 }
+
+.login-content {
+    margin: 20px 0;
+}
+.login-content > .input-group {
+    margin: 10px 0;
+}
+
 .navbar-brand{
     padding: 1px;
     width: 190px;
@@ -49,6 +57,10 @@ label.error{
     padding: 3px;
 }
 
+.dropdown.men, .dropdown.women {
+    background-color: #6bb0dc;
+    margin-right: 1px;
+}
 .subcat_list_div {
     position: absolute;
     left: 100%;
@@ -71,7 +83,8 @@ label.error{
     width: 100%;
 }
 .category:hover {
-    background-color: rgba(255, 210, 73, 0.54);
+    background-color: #03a9f4;
+    color: white;
 }
 
 .subcategory_list_li{

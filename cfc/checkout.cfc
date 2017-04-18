@@ -7,10 +7,9 @@
     </cffunction>
 
     <cffunction name="getAddressesOfUser" output="false" returntype="query" access="remote" >
-        <cfinvoke method="getAddressForUser" component="#VARIABLES.checkoutDB#"
-            returnvariable="LOCAL.addresses"  />
+        <cfset LOCAL.addresses = VARIABLES.checkoutDB.getAddressForUser() />
 
-        <cfreturn #LOCAL.addresses# />
+        <cfreturn LOCAL.addresses />
     </cffunction>
 
     <cffunction name="getCheckOutStep" access="remote" returntype="numeric" returnFormat="json" >
@@ -91,8 +90,6 @@ this function returns cart items details &  price & image for showing in cart se
         <cftry>
         <!--- Query for Items in Cart & their price for showing in Step 1 of (CHECKOUT PAGE)--->
             <cfset LOCAL.itemsQuery = VARIABLES.checkoutDB.queryOrderSummary() />
-            <!--- <cfinvoke method="queryOrderSummary" component="#VARIABLES.checkoutDB#"
-            returnvariable="LOCAL.itemsQuery" /> --->
 
             <cfif ARGUMENTS.calledFrom EQ 'ajax' >
 
@@ -157,23 +154,22 @@ this function returns cart items details &  price & image for showing in cart se
         <cfargument name="PhoneNo"     type="string" required="true" >
         <cfargument name="PostalCode"  type="string" required="true" >
 
-        <cfinvoke method="insertNewAddress" component = "#VARIABLES.checkoutDB#"
-            returnvariable="LOCAL.success" argumentcollection="#ARGUMENTS#" />
+        <cfset LOCAL.success = VARIABLES.checkoutDB.insertNewAddress( argumentcollection="#ARGUMENTS#" ) />
 
         <cfif LOCAL.success>
             <cfreturn true/>
             <cfelse>
             <cfreturn false/>
         </cfif>
+
     </cffunction>
 
     <cffunction name="deleteAddress" access="remote" output="true" returntype="any" returnFormat="json">
         <cfargument name="addressid" required="true" type="numeric" />
 
         <cftry>
-            <cfinvoke method="deleteAddress" component="#VARIABLES.checkoutDB#"
-                returnvariable="LOCAL.deleteAddressSuccess" argumentcollection="#ARGUMENTS#"  />
-            <cfreturn #LOCAL.deleteAddressSuccess# />
+            <cfset LOCAL.deleteAddressSuccess = VARIABLES.checkoutDB.deleteAddress( argumentcollection="#ARGUMENTS#" ) />
+            <cfreturn LOCAL.deleteAddressSuccess />
         <cfcatch>
             <cfdump var="#cfcatch#" />
             <cfreturn false/>
@@ -202,10 +198,7 @@ this function returns cart items details &  price & image for showing in cart se
         <cfset LOCAL.addressObj = URLstringToObj(ARGUMENTS.formdata) />     <!--- store form data as JSON file in this thing --->
             <cfset StructInsert(LOCAL.addressObj, "Country", "India")/>
 
-            <cfinvoke method="updateAddress" component="#VARIABLES.checkoutDB#"
-                returnvariable="LOCAL.success"
-                addressStruct = #LOCAL.addressObj#
-                addressid = #ARGUMENTS.addressid# />
+            <cfset LOCAL.success = VARIABLES.checkoutDB.updateAddress( addressStruct = #LOCAL.addressObj#, addressid = #ARGUMENTS.addressid# ) />
 
             <cfreturn #LOCAL.success# />
     </cffunction>
@@ -263,10 +256,6 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
 
         <cftry>
             <cfset LOCAL.success = VARIABLES.checkoutDB.updateCartAndTotalPrice(argumentcollection = "#ARGUMENTS#", totalPrice = #LOCAL.totalPrice#) />
-            <!--- <cfinvoke method="updateCartAndTotalPrice" component="#VARIABLES.checkoutDB#"
-                returnvariable = "LOCAL.success"
-                argumentcollection="#ARGUMENTS#"
-                totalPrice = #LOCAL.totalPrice# /> --->
 
             <cfset LOCAL.totalCartPrice = getCartTotal()/>
             <cfreturn #LOCAL.totalCartPrice#/>
@@ -283,8 +272,6 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
 
         <cftry>
                 <cfset LOCAL.total = VARIABLES.checkoutDB.getCartTotal() />
-                <!--- <cfinvoke method="getCartTotal" component="#VARIABLES.checkoutDB#"
-                    returnvariable="LOCAL.total" /> --->
 
                 <cfif LOCAL.total EQ -1 >
                     <!--- user not loggedin --->
@@ -304,10 +291,8 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
  <!--- DELETE CART ITEMS AFTER INSERTING INTO ORDER DETAILS SECTIOIN --->
     <cffunction name="clearCart" returntype="boolean" access="remote">
         <cftry>
-            <cfinvoke method="clearCart" component="#VARIABLES.checkoutDB#"
-                returnvariable="LOCAL.success" />
-
-                <cfreturn #LOCAL.success# />
+            <cfset LOCAL.success = VARIABLES.checkoutDB.clearCart() />
+            <cfreturn #LOCAL.success# />
 
             <cfcatch >
                 <cfreturn false/>

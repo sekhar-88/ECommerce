@@ -72,8 +72,8 @@
 				<form action="index.cfm" class="navbar-form navbar-left" role="search" method="get" id="product-search-form">
 					<div class="input-group">
 						<input type="text" id="product_searchbox" name="q" class="form-control" placeholder="Search Products..">
-						<span class="input-group-btn btn btn-search">
-                            <button type="submit">
+						<span class="input-group-btn btn btn-search" style="padding: 0px;">
+                            <button type="submit" style="padding: 10px;">
                                 <span class="glyphicon glyphicon-search" style="font-size: 12px;"></span>
                             </butotn>
                         </span>
@@ -106,15 +106,21 @@
 							<a href="" id="login_button" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-log-in"></span> Login</a>
 							<div class="dropdown-menu">
 								<form method="POST" id="login-form" style="padding: 4px;" >
-									<div class="form-group">
-										<label>Email:</label>
-										<input type="email" name="email" required> <br/>
-									</div>
 
-									<div class="form-group">
-										<label>Password:</label>
-										<input type="password" name="password" autocomplete="off" required> <br/>
-									</div>
+                                    <div class="login-content">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                            <input class="form-control" type="email" name="email" placeholder="Email address" required>
+                                        </div>
+                                        <label id="email-error" class="error" for="email" style="display: none;">Enter your email</label>
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                            <input class="form-control" type="password" name="password" placeholder="Password" required>
+                                        </div>
+                                        <label id="password-error" class="error" for="password" style="" style="display:hidden;"></label>
+                                    </div>
+
                                     <div class="form-group">
                                         <input type="hidden" name="errorfield" value="">
                                     </div>
@@ -135,7 +141,7 @@
                     </cfif>
 				</ul>
 
-                <ul class="nav navbar-nav navbar-right" >
+                <ul class="nav navbar-nav navbar-right">
 					<li id="cart-button"><a href="cart.cfm" role="button" class="cart_button">
                         <span class="glyphicon glyphicon-shopping-cart"></span>  <span class="">Cart</span>
                         <span class="badge" id="badge"></span></a><!--- badge count of cart --->

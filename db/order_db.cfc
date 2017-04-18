@@ -33,7 +33,7 @@
 
 
 <!---
-    returns query containing no. of orders
+    returns query containing no. of orders, with details
 --->
     <cffunction name="getOrdersFromDB" returntype= "Query" access = "public" >
         <cftry >
@@ -47,8 +47,10 @@
             </cfquery>
 
             <cfcatch >
-                <cfdump var="#cfcatch#" />
-                <cfabort />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfset LOCAL.response = {} />
+                <cfset LOCAL.response.message = "error while querying Orders table for details of user #SESSION.User.UserName#"/>
+                <cfreturn LOCAL.response />
             </cfcatch>
 
         </cftry>

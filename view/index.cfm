@@ -1,3 +1,4 @@
+<cftry>
 <cfset productCFC = CreateObject("cfc.product") />
 
 <!DOCTYPE html>
@@ -7,7 +8,6 @@
     <!--- <cfinclude template = "/include/libraries.cfm" /> --->
 
     <link href="../assets/css/index.css" rel="stylesheet">
-    <script src="../assets/js/index.js"></script>
 
     <style>
     </style>
@@ -146,5 +146,10 @@
 </div>
 
 <cfinclude template = "/commons/footer.cfm">
+<script src="../assets/js/index.js"></script>
 </body>
 </html>
+<cfcatch>
+    <cfdump var="#cfcatch#" />
+</cfcatch>
+</cftry>

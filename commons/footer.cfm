@@ -21,7 +21,9 @@
   					<h4 class="modal-title">Checking Items</h4>
 				</div>
 				<div class="modal-body">
-  					<i></i>
+					<h5 align="center"><i class="fa fa-refresh fa-spin fa-2x fa-fw"></i><h5>
+					<h3>Updating.. Please be patient</h3>
+					<span class="sr-only">Loading...</span>
 				</div>
 				<div class="modal-footer">
   					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -114,7 +114,7 @@
           </div>
 
           <div class="modal-footer">
-              <button type="button" class="btn btn-primary" name="submit" id="product-add-form-submit-button"> Add Product  </button>
+              <button type="button" class="btn btn-primary" id="product-add-form-submit-button"> Add Product  </button>
               <button type="reset"  class="btn btn-default" name="reset" >       Clear  </button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close  </button>
           </div>
@@ -142,7 +142,7 @@
                             <form id="brands-filter">
                                 <cfloop query="VARIABLES.brandFilter" >
                                     <div class="checkbox" style="padding-left: 10px;padding-top: 2px;">
-                                        <label><input type="checkbox" name="brand" value="#BrandId#"> #BrandName#</label>
+                                        <label><input type="checkbox" name="brand" value="#BrandId#" data-scat = "#URL.scat#"> #BrandName# </label>
                                     </div>
                                 </cfloop>
                             </form>
@@ -162,44 +162,48 @@
 
 
 
-                <div class="products">
-
+                <div class="products-section">
                     <cfif StructKeyExists(URL, "cat") AND StructKeyExists(URL, "scat")>
-                    <cfset subCategoryName = productCFC.getSubCategoryName(URL.scat) />
+                        <cfset subCategoryName = productCFC.getSubCategoryName(URL.scat) />
 
-                                <h3 class="product-section-header">
-                                    <cfoutput>
-                                        in  #subCategoryName#
-                                    </cfoutput>
-                                </h3>
+                        <h3 class="product-section-header">
+                            <cfoutput>
+                                in  #subCategoryName#
+                            </cfoutput>
+                        </h3>
 
-                                <cfset productCFC = createObject("cfc.product") />
-                                <cfset productsQuery = productCFC.getProductsForSubCat(scat = #URL.scat#) />
-                                <!---
-                                    productsQuery - contains these attributes
-                                        ProductId, Name, BrandId, SubCategoryid, ListPrice, SupplierId,
-                                        DiscontinuedDate, DiscountPercent, DiscountedPrice, Qty,
-                                        Description, Image
-                                --->
-                                <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
-                                <cfoutput>
-                                <div class="productadd" data-scat="#URL.scat#" onclick="addNewProduct(this);">
 
-                                    <div class="product-image">
-                                        <img src="../assets/images/products/commons/productaddnew.png" width="300px"/>
-                                    </div>
-                                    <div class="product-content" style="display: flex; align-items:center; justify-content:center; ">
-                                        <div class="product-name font-size-30 color-grey"> Add New Product In this Category/SubCategory </div>
-                                    </div>
-                                </div>
-                                </cfoutput>
-                                </cfif>
 
-                                <cfif productsQuery.recordCount>
+                        <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
+
+                        <cfoutput>
+                        <div class="productadd" data-scat="#URL.scat#" onclick="addNewProduct(this);">
+
+                            <div class="product-image">
+                                <img src="../assets/images/products/commons/productaddnew.png" width="300px"/>
+                            </div>
+                            <div class="product-content" style="display: flex; align-items:center; justify-content:center; ">
+                                <div class="product-name font-size-30 color-grey"> Add New Product In this Category/SubCategory </div>
+                            </div>
+                        </div>
+                        </cfoutput>
+                        </cfif>
+
+
+                        <cfset productsQuery = productCFC.getProductsForSubCat(scat = #URL.scat#) />
+                        <!---
+                        productsQuery - contains these attributes
+                        ProductId, Name, BrandId, SubCategoryid, ListPrice, SupplierId,
+                        DiscontinuedDate, DiscountPercent, DiscountedPrice, Qty,
+                        Description, Image
+                        --->
+
+                        <div class="products-inner">
+                        <cfif productsQuery.recordCount>
                                     <cfoutput>
                                     <cfloop query = "productsQuery">
 
-                                            <div class="product brand_#BrandId# price_#ListPrice#">
+                                            <div class="product">
 
                                                     <a href="productDetails.cfm?pid=#ProductId#"></a>
                                                     <div class="product-image">
@@ -224,7 +228,7 @@
                                             </div>
                                     </cfloop>
                                     </cfoutput>
-                                <cfelse>
+                        <cfelse>
                                     <cfoutput>
                                         <div class="no-product">
                                             <div class="product_info">
@@ -232,12 +236,14 @@
                                             </div>
                                         </div>
                                     </cfoutput>
-                                </cfif>
+                        </cfif>
+                        </div>
+
                     <cfelse>
                             <cflocation url="index.cfm" addToken="false">
                     </cfif>
-                </div>
-    </div>
+                </div>  <!--end products-section -->
+    </div> <!--end .container-fluid -->
 
 
 <cfinclude template = "/commons/footer.cfm">
@@ -246,11 +252,11 @@
 
 <cftry>
 
-    <cfif IsDefined("FORM.Image") AND IsDefined("FORM.submit")>
+    <cfif IsDefined("FORM.Image")>
 
         <cffile action="upload"
                 filefield   ="Image"
-                destination ="#SESSION.imagePath#"
+                destination ="#APPLICATION.imagePath#"
                 nameconflict="makeunique"
                 accept      ="image/jpeg,image/jpg,image/png"
                 result      ="uploadresult"

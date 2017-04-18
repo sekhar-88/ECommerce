@@ -49,16 +49,13 @@ return response
                     "errortype" = ""
                 }/>
 
-                <cfinvoke method="getUserPassword" component="#VARIABLES.userDB#"
-                    returnvariable="LOCAL.findUser" argumentcollection="#ARGUMENTS#"  />
-
+                <cfset LOCAL.findUser = VARIABLES.userDB.getUserPassword( argumentcollection="#ARGUMENTS#" ) />
                 <cfif LOCAL.findUser.recordcount>
 
-                    <cfif LOCAL.findUser.Password EQ ARGUMENTS.password>   <!--- login success --->
+                    <cfif LOCAL.findUser.PasswordHash EQ #HASH(ARGUMENTS.password)# >   <!--- login success --->
 
-                        <cfinvoke method="getUserDetails" component="#VARIABLES.userDB#"
-                            returnvariable="LOCAL.result" argumentcollection="#ARGUMENTS#"  />
-
+                        <!--- AUTHENTICATED --->
+                        <cfset LOCAL.result = VARIABLES.userDB.getUserDetails( argumentcollection="#ARGUMENTS#" ) />
                         <cfset sessionrotate() />
                         <cfset session.User = {
                             UserId = "#LOCAL.result.UserId#",

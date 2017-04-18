@@ -37,7 +37,14 @@
    <cfoutput>#name# : #Beatles#  </cfoutput>
 </cfloop>
  --->
-<cfinclude template="/include/libraries.cfm" />
+
+
+
+
+
+
+
+<!--- <cfinclude template="/include/libraries.cfm" />
 
 <script src="../assets/js/header.js"></script>
 <link href="../assets/css/header.css" rel="stylesheet">
@@ -61,4 +68,29 @@ calculating password hash
 function generate(){
     notify("text alert", "success");
 }
-</script>
+</script> --->
+
+
+
+
+
+
+<!--- This updates the password Hash from the Plain passwordboxes --->
+<cfquery name = "password">
+    SELECT UserId, Password, PasswordHash FROM [User]
+</cfquery>
+<cfdump var="#password#" />
+
+<cfquery name="updateHash">
+    <cfloop query="#password#">
+        update [User]
+        SET PasswordHash = '#HASH(password.Password)#'
+        WHERE UserId = #password.UserId#
+    </cfloop>
+</cfquery>
+<cfdump var="#updateHash#" />
+
+<cfquery name = "password">
+    SELECT Password,PasswordHash FROM [User]
+</cfquery>
+<cfdump var="#password#" />

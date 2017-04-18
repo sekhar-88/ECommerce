@@ -4,12 +4,13 @@
         <cftry >
 
             <cfquery name="LOCAL.addresses">
-                SELECT *
+                SELECT AddressId, UserId, Name, AddressLine, PhoneNo, PostalCode, State, City, Country, AddressType, LandMark
                 FROM [Address]
                 WHERE UserId = #SESSION.user.userid# AND Status IS NULL
             </cfquery>
 
             <cfcatch type="DATABASE">
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfdump var="#cfcatch#" />
             </cfcatch>
         </cftry>
@@ -25,10 +26,10 @@
             from [Cart] c
             inner join [Product] p
             ON c.ProductId = p.ProductId
-            Where c.UserId = #SESSION.User.UserId#
+            Where c.UserId = <cfqueryparam value="#SESSION.User.UserId#" cfsqltype="cf_sql_bigint" />
         </cfquery>
 
-        <cfreturn #LOCAL.itemsQuery# />
+        <cfreturn LOCAL.itemsQuery />
     </cffunction>
 
 
@@ -39,21 +40,30 @@
         <cfargument name="PhoneNo"     type="string" required="true" >
         <cfargument name="PostalCode"  type="string" required="true" >
 
-        <cfquery >
-            INSERT INTO [Address]
-            (UserId,AddressLine,Name,LandMark,PhoneNo,PostalCode,Country,AddressType)
-            VALUES
-            (   #session.User.UserId#,
-                <cfqueryparam value="#ARGUMENTS.AddressLine#" cfsqltype="CF_SQL_NVARCHAR" >,
-                <cfqueryparam value="#ARGUMENTS.Name#"        cfsqltype="CF_SQL_NVARCHAR" >,
-                <cfqueryparam value="#ARGUMENTS.LandMark#"    cfsqltype="CF_SQL_NVARCHAR" >,
-                <cfqueryparam value="#ARGUMENTS.PhoneNo#"     cfsqltype="CF_SQL_NVARCHAR" >,
-                <cfqueryparam value="#ARGUMENTS.PostalCode#"  cfsqltype="CF_SQL_NVARCHAR" >,
-                'India',
-                0
-            )
-        </cfquery>
-        <cfreturn true >
+        <cftry >
+            <cfquery >
+                INSERT INTO [Address]
+                (UserId,AddressLine,Name,LandMark,PhoneNo,PostalCode,Country,AddressType)
+                VALUES
+                (   #session.User.UserId#,
+                    <cfqueryparam value="#ARGUMENTS.AddressLine#" cfsqltype="CF_SQL_NVARCHAR" >,
+                    <cfqueryparam value="#ARGUMENTS.Name#"        cfsqltype="CF_SQL_NVARCHAR" >,
+                    <cfqueryparam value="#ARGUMENTS.LandMark#"    cfsqltype="CF_SQL_NVARCHAR" >,
+                    <cfqueryparam value="#ARGUMENTS.PhoneNo#"     cfsqltype="CF_SQL_NVARCHAR" >,
+                    <cfqueryparam value="#ARGUMENTS.PostalCode#"  cfsqltype="CF_SQL_NVARCHAR" >,
+                    'India',
+                    0
+                )
+            </cfquery>
+            <cfset LOCAL.response = true >
+
+            <cfcatch type="DATABASE">
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfset LOCAL.response = false />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.response />
     </cffunction>
 
 <!---
@@ -62,12 +72,23 @@
  --->
     <cffunction name="deleteAddress" returntype="boolean" access="public"  >
         <cfargument name="addressid" required="true" type="numeric" />
+        <cfset LOCAL.response = false />
 
-        <cfquery name="deleteAddress">
-            UPDATE [Address]
-            SET Status = 'deleted'
-            WHERE AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="CF_SQL_BIGINT"  />
-        </cfquery>
+        <cftry>
+
+            <cfquery name="deleteAddress">
+                UPDATE [Address]
+                SET Status = 'deleted'
+                WHERE AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="CF_SQL_BIGINT"  />
+            </cfquery>
+            <cfset LOCAL.response = true />
+
+            <cfcatch type="DATABASE">
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfset LOCAL.response = false />
+            </cfcatch>
+
+        </cftry>
 
         <cfreturn true />
     </cffunction>
@@ -80,19 +101,29 @@
         <cfargument name="addressStruct" type="struct" required = "true" />
         <cfargument name="addressid" required="true" type="numeric" />
 
-        <cfquery name = "updateAddress">                    <!--- start updaing the address of the corresponding User --->
-            <cfloop collection="#ARGUMENTS.addressStruct#" item="item" >
-                update [Address]
-                set #item# = <cfqueryparam value="#ARGUMENTS.addressStruct[item]#" cfsqltype="cf_sql_nvarchar" />
-                where AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="cf_sql_bigint" />
-            </cfloop>
-                update [Address]
-                set UserId = #session.User.UserId#,
-                    AddressType = 0
-                where AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="cf_sql_bigint" />
-        </cfquery>
+        <cftry >
 
-        <cfreturn true />
+            <cfquery name = "updateAddress">                    <!--- start updaing the address of the corresponding User --->
+                <cfloop collection="#ARGUMENTS.addressStruct#" item="item" >
+                    update [Address]
+                    set #item# = <cfqueryparam value="#ARGUMENTS.addressStruct[item]#" cfsqltype="cf_sql_nvarchar" />
+                    where AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="cf_sql_bigint" />
+                </cfloop>
+                    update [Address]
+                    set UserId = #session.User.UserId#,
+                        AddressType = 0
+                        where AddressId = <cfqueryparam value="#arguments.addressid#" cfsqltype="cf_sql_bigint" />
+            </cfquery>
+            <cfset LOCAL.response = true >
+
+            <cfcatch type="DATABASE">
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfset LOCAL.response = true />
+            </cfcatch>
+
+        </cftry>
+
+        <cfreturn LOCAL.response />
     </cffunction>
 
 
@@ -212,7 +243,8 @@
 
 
             <cfcatch type="DATABASE">
-                <cfdump var="#cfcatch#" />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfset LOCAL.response.message = "Error while inserting In Order Details Table" />
             </cfcatch>
         </cftry>
     </cffunction>
@@ -226,8 +258,8 @@
                 WHERE AddressId = #SESSION.User.checkout.AddressId#
             </cfquery>
 
-            <cfcatch type="any">
-
+            <cfcatch type="DATABASE">
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
             </cfcatch>
         </cftry>
 

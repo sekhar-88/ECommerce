@@ -1,11 +1,11 @@
+<!--- THE return response is structure containing function run status & result --->
 <cfcomponent extends = "header" >
     <cfset VARIABLES.adminDB = CreateObject("db.admin_db") />
 
     <cffunction name = "getBrands" access = "remote" returnType = "any" returnFormat = "json" >
         <cfset LOCAL.brandlist = {}/>
 
-        <cfinvoke method = "queryBrands" component = "#VARIABLES.adminDB#"
-            returnvariable = "LOCAL.brands" />
+        <cfset LOCAL.brands = VARIABLES.adminDB.queryBrands() />
 
         <cfloop query = "LOCAL.brands" >
             <cfset StructInsert(LOCAL.brandlist, #BrandId#, #BrandName#) />
@@ -18,10 +18,9 @@
     <cffunction name = "getSuppliers" access = "remote" returnType = "any" returnFormat = "json">
         <cfset supplierlist = {}/>
 
-        <cfinvoke method = "querySuppliers" component = "#VARIABLES.adminDB#"
-            returnvariable = "LOCAL.suppliers" />
+        <cfset LOCAL.response = VARIABLES.adminDB.querySuppliers() />
 
-        <cfloop query = "LOCAL.suppliers" >
+        <cfloop query = "LOCAL.response.result" >
             <cfset StructInsert(supplierlist, #SupplierId#, #CompanyName#) />
         </cfloop>
 
@@ -33,8 +32,8 @@
         <cfargument name = "scatid" type = "numeric" required = "true"  />
         <cfset LOCAL.productsObj = []/>
 
-            <cfinvoke method = "queryProductsForSubCategory" component = "#VARIABLES.adminDB#"
-                returnvariable = "LOCAL.products" argumentcollection = "#ARGUMENTS#"  />
+
+            <cfset LOCAL.products = VARIABLES.adminDB.queryProductsForSubCategory( argumentcollection = "#ARGUMENTS#" ) />
 
             <cfloop query = "LOCAL.products" >
                 <cfset ArrayAppend(productsObj, {
@@ -73,17 +72,14 @@
         <cftry>
             <cfset exists = searchDuplicates(subcategoryname = arguments.subcategoryname, query = "subcategoryname")/>
 
-            <cfif not #exists#>
-
-                <cfinvoke method = "insertSubCategory" component = "#VARIABLES.adminDB#"
-                    argumentcollection = "#ARGUMENTS#" />
+            <cfif NOT #exists#>
+                <cfset VARIABLES.adminDB.insertSubCategory( argumentcollection = "#ARGUMENTS#" ) />
                 <cfreturn true>
             <cfelse>
                 <cfreturn false/>
             </cfif>
 
             <cfcatch>
-                <cfdump var = "#cfcatch#" />
                 <cfreturn false/>
             </cfcatch>
         </cftry>
@@ -96,8 +92,7 @@
             <cfset exists = searchDuplicates(brand = arguments.brand, query = "brandname")/>
             <cfif not #exists#>
 
-                <cfinvoke method = "insertBrand" component = "#VARIABLES.adminDB#"
-                    brand = #ARGUMENTS.brand# />
+                <cfset VARIABLES.adminDB.insertBrand( brand = #ARGUMENTS.brand# ) />
 
                 <cfreturn true/>
             <cfelse>
@@ -118,13 +113,12 @@
             <cfset exists = searchDuplicates(categoryname = arguments.categoryname, query = "categoryname")/>
             <cfif not #exists#>
 
-                <cfinvoke method = "insertCategory" component = "#VARIABLES.adminDB#"
-                    categoryname = #ARGUMENTS.categoryname# />
-
+                <cfset VARIABLES.adminDB.insertCategory( categoryname = #ARGUMENTS.categoryname# ) />
                 <cfreturn true>
             <cfelse>
                 <cfreturn false/>
             </cfif>
+
             <cfcatch>
                 <cfdump var = "#cfcatch#" />
                 <cfreturn "error"/>
@@ -141,8 +135,7 @@
 
 
                 <cfcase value = "categoryname" >
-                    <cfinvoke method = "queryForCategory" component = "#VARIABLES.adminDB#"
-                        returnvariable = "LOCAL.categoryQuery" argumentcollection = "#ARGUMENTS#"  />
+                    <cfset LOCAL.categoryQuery = VARIABLES.adminDB.queryForCategory( argumentcollection = "#ARGUMENTS#" ) />
 
                     <cfif LOCAL.categoryQuery.recordCount>
                         <cfreturn true/>
@@ -154,8 +147,7 @@
 
 
                 <cfcase value = "subcategoryname" >
-                    <cfinvoke method = "queryForSubCategory" component = "#VARIABLES.adminDB#"
-                        returnvariable = "LOCAL.subCategoryQuery" argumentcollection = "#ARGUMENTS#" />
+                    <cfset LOCAL.subCategoryQuery = VARIABLES.adminDB.queryForSubCategory( argumentcollection = "#ARGUMENTS#" ) />
 
                     <cfif LOCAL.subCategoryQuery.recordCount>
                         <cfreturn true/>
@@ -167,8 +159,7 @@
 
 
                 <cfcase value = "brandname" >
-                    <cfinvoke method = "queryForBrand" component = "#VARIABLES.adminDB#"
-                        returnvariable = "LOCAL.brandQuery" argumentcollection = "#ARGUMENTS#" />
+                    <cfset LOCAL.brandQuery = VARIABLES.adminDB.queryForBrand( argumentcollection = "#ARGUMENTS#" ) />
 
                     <cfif LOCAL.brandQuery.recordCount>
                         <cfreturn true/>

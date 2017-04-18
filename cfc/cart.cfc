@@ -34,8 +34,7 @@
 
             <cftry >
 
-                <cfinvoke method="removeItemFromUserCart" component="#VARIABLES.cartDB#"
-                    argumentcollection="#ARGUMENTS#" />
+                <cfset VARIABLES.cartDB.removeItemFromUserCart( argumentcollection = "#ARGUMENTS#" ) />
                 <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
 
                 <cfcatch>
@@ -61,9 +60,7 @@
 
         <cfif session.loggedin>
 
-            <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
-                returnvariable="LOCAL.items" />
-
+            <cfset LOCAL.items = VARIABLES.cartDB.queryProductsFromUserCart() />
             <cfreturn #LOCAL.items.recordCount#/>
 
         <cfelse>
@@ -97,22 +94,6 @@
         <cfset LOCAL.pList = [] />
 
         <cfset LOCAL.products = VARIABLES.cartDB.queryProductsFromUserCart() />
-        <!--- CartId, ProductId Name Qty UserId DiscountAmount DiscountedPrice --->
-
-        <!--- <cfinvoke method="queryProductsFromUserCart" component="#VARIABLES.cartDB#"
-            returnvariable="LOCAL.products" /> --->
-        <!--- <cfloop query="LOCAL.products">
-            <cfset ArrayAppend(LOCAL.pList, {
-                "CartId"      = "#CartId#",
-                "ProductId"   = "#ProductId#",
-                "Name"        = "#Name#",
-                "Qty"         = "#Qty#",
-                "UserId"      = "#UserId#",
-                "DiscountAmount"  = "#DiscountAmount#",
-                "DiscountedPrice" = "#DiscountedPrice#"
-            })/>
-        </cfloop> --->
-
         <cfreturn LOCAL.products />
     </cffunction>
 
@@ -122,8 +103,7 @@
         <cfset LOCAL.pList = [] />
         <cfif NOT ArrayIsEmpty(session.cart)>
 
-            <cfinvoke method="queryProductsFromSessionCart" component="#VARIABLES.cartDB#"
-                returnvariable="LOCAL.products" />
+            <cfset LOCAL.products = VARIABLES.cartDB.queryProductsFromSessionCart() />
 
             <cfloop query="LOCAL.products">
                 <cfset ArrayAppend(LOCAL.pList, {

@@ -14,7 +14,8 @@ like adding to cart removing from cart, editing updating product details etc. --
             SET Qty         =  <cfqueryparam value="#ARGUMENTS.productUpdate.Qty#" cfsqltype="cf_sql_int" />,
                 ListPrice   =  <cfqueryparam value="#ARGUMENTS.productUpdate.ListPrice#" cfsqltype="CF_SQL_BIGINT" />,
                 Description =  <cfqueryparam value="#ARGUMENTS.productUpdate.Description#" cfsqltype="CF_SQL_NVARCHAR" />,
-                Image = <cfqueryparam value="#imagename#" cfsqltype="CF_SQL_NVARCHAR" />
+                Image = <cfqueryparam value="#imagename#" cfsqltype="CF_SQL_NVARCHAR" />,
+                ModifiedDate = GETDATE()
             WHERE ProductId = #ARGUMENTS.productUpdate.ProductId#
         </cfquery>
 
@@ -66,12 +67,12 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfreturn #LOCAL.products# />
     </cffunction>
 
-
+<!--- get product details from give Product Id --->
     <cffunction name = "getProduct" returntype = "query" access = "public" >
         <cfargument name = "pid" type = "numeric" required = "true">
 
         <cfquery name = "LOCAL.productItem">
-            SELECT *
+            SELECT [ProductId], [Name], [BrandId], [SubCategoryId], [Weight], [ListPrice], [SupplierId], [DiscontinuedDate], [DiscountPercent], [DiscountedPrice], [Qty], [Description], [Image]
             FROM [Product]
             WHERE ProductId = <cfqueryparam value = "#ARGUMENTS.pid#" cfsqltype = "cf_sql_bigint" />
         </cfquery>
@@ -84,7 +85,7 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfargument name = "pid" required = "true" type = "numeric" />
 
             <cfquery name = "LOCAL.productDetails" >
-                SELECT p.* , b.BrandName
+                SELECT p.[ProductId], p.[Name], p.[BrandId], p.[SubCategoryId], p.[Weight], p.[ListPrice], p.[SupplierId], p.[DiscontinuedDate], p.[DiscountPercent], p.[DiscountedPrice], p.[Qty], p.[Description], p.[Image] , b.BrandName
                 FROM [Product] p
                 INNER JOIN [Brand] b
                 ON p.BrandId = b.BrandId
@@ -110,8 +111,8 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfquery>
 
             <cfcatch>
-                <cfdump var="#cfcatch#" />
-                <cfabort />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+
             </cfcatch>
 
         </cftry>
@@ -133,12 +134,12 @@ like adding to cart removing from cart, editing updating product details etc. --
         <cfreturn LOCAL.brandsFilter />
     </cffunction>
 
-
+<!--- query products from product Name --->
     <cffunction name="queryProducts" returntype = "query" access = "public" >
         <cfargument name="q" required="true" type = "string"  />
 
         <cfquery name = "LOCAL.productsQuery">
-            select *
+            select [ProductId], [Name], [BrandId], [SubCategoryId], [Weight], [ListPrice], [SupplierId], [DiscontinuedDate], [DiscountPercent], [DiscountedPrice], [Qty], [Description], [Image]
               from [Product]
              where Name LIKE <cfqueryparam value="%#ARGUMENTS.q#%" cfsqltype="cf_sql_char" >
         </cfquery>
@@ -152,7 +153,7 @@ like adding to cart removing from cart, editing updating product details etc. --
 
         <cfquery name="insertProduct">
             INSERT INTO [Product]
-            (Name, BrandId, SubCategoryId, SupplierId, ListPrice, Qty, Description, Image)
+            ( Name, BrandId, SubCategoryId, SupplierId, ListPrice, Qty, Description, Image, AdditionDate )
             VALUES
             (
                 <cfqueryparam value="#ARGUMENTS.form.Name#" cfsqltype="cf_sql_char" >,
@@ -162,7 +163,8 @@ like adding to cart removing from cart, editing updating product details etc. --
                 <cfqueryparam value="#ARGUMENTS.form.ListPrice#" cfsqltype="cf_sql_bigint" >,
                 <cfqueryparam value="#ARGUMENTS.form.Qty#" cfsqltype="cf_sql_int" >,
                 <cfqueryparam value="#ARGUMENTS.form.Description#" cfsqltype="CF_SQL_NVARCHAR" >,
-                <cfqueryparam value="#ARGUMENTS.imageName#" cfsqltype="cf_sql_nvarchar">
+                <cfqueryparam value="#ARGUMENTS.imageName#" cfsqltype="cf_sql_nvarchar">,
+                GETDATE()
             )
         </cfquery>
 
@@ -195,7 +197,7 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfquery>
 
             <cfcatch>
-                <cfdump var="#cfcatch#" />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
             </cfcatch>
         </cftry>
 
@@ -217,7 +219,7 @@ like adding to cart removing from cart, editing updating product details etc. --
                 WHERE ProductId = <cfqueryparam value = "#ARGUMENTS.pid#" cfsqltype="cf_sql_bigint" />
             </cfquery>
             <cfcatch type="database">
-                <cfdump var="#cfcatch#" />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfabort />
             </cfcatch>
         </cftry>
@@ -234,6 +236,8 @@ like adding to cart removing from cart, editing updating product details etc. --
 
         <cfset LOCAL.response = false />
 
+        <!--- not deleting the product jsut mark it as discontinued --->
+<!---
         <cftry>
             <!--- get image of the product --->
             <cfset LOCAL.Image = getProductImage(#ARGUMENTS.pid#) />
@@ -247,19 +251,17 @@ like adding to cart removing from cart, editing updating product details etc. --
 
             <!--- delete it's image --->
             <cffile action="Delete"
-                    file= "#SESSION.imagePath#\#LOCAL.Image#"
+                    file= "#APPLICATION.imagePath#\#LOCAL.Image#"
                     />
             <cfset LOCAL.response = true />
 
             <cfcatch >
-                <!--- <cfdump var="#SESSION.imagePath#" /> --->
-                <!--- <cfdump var="#LOCAL.Image#" /> --->
-                <!--- <cfdump var="#cfcatch#" /> --->
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = false />
             </cfcatch>
 
         </cftry>
-
+ --->
         <cfreturn LOCAL.response />
     </cffunction>
 
@@ -277,11 +279,72 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfquery>
             <cfset LOCAL.response = true />
             <cfcatch type="database">
-                <cfdump var="#cfcatch#" />
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = false />
             </cfcatch>
         </cftry>
 
         <cfreturn LOCAL.response />
     </cffunction>
+
+
+    <!---
+        THIS function Queryies the Products Table Along with the provided filters
+        returns QUery Obj String
+    --->
+    <cffunction name="queryProductsWithFilters" returntype="Struct" access = "public" output="true">
+        <cfargument name="scat" required = "false" type= "numeric" default = "" />
+        <cfargument name="brandid" required = "false" type="numeric" default = "" />
+        <cfargument name="pricemin" required = "false" type = "numeric" default = "" />
+        <cfargument name="pricemax" required = "false" type = "numeric" default = "" />
+
+        <cfset LOCAL.response = {} />
+        <cftry>
+
+            <cfquery name = "LOCAL.productsQuery">
+                SELECT [ProductId], [Name], [BrandId], [SubCategoryId], [Weight], [ListPrice], [SupplierId], [DiscontinuedDate], [DiscountPercent], [DiscountedPrice], [Qty], [Description], [Image]
+                  FROM [Product]
+                 WHERE SubCategoryId = #ARGUMENTS.scat#
+                        <cfif ARGUMENTS.brandid NEQ -1 >
+                            AND BrandId = #ARGUMENTS.brandid#
+                        </cfif>
+
+            </cfquery>
+
+
+            <cfset LOCAL.response.status = "success" />
+            <cfset LOCAL.response.result = [] />
+
+            <cfloop query="#LOCAL.productsQuery#" >
+                <cfset ArrayAppend(LOCAL.response.result, {
+                        "ProductId"     = #LOCAL.productsQuery.ProductId# ,
+                        "Name"          = #LOCAL.productsQuery.Name# ,
+                        "BrandId"       = #LOCAL.productsQuery.BrandId# ,
+                        "SubCategoryId" = #LOCAL.productsQuery.SubCategoryId# ,
+                        "Weight"        = #LOCAL.productsQuery.Weight# ,
+                        "ListPrice"     = #LOCAL.productsQuery.ListPrice# ,
+                        "SupplierId"    = #LOCAL.productsQuery.SupplierId# ,
+                        "DiscontinuedDate"  = #LOCAL.productsQuery.DiscontinuedDate# ,
+                        "DiscountPercent"   = #LOCAL.productsQuery.DiscountPercent# ,
+                        "DiscountedPrice"   = #LOCAL.productsQuery.DiscountedPrice# ,
+                        "Qty"           = #LOCAL.productsQuery.Qty# ,
+                        "Description"   = #LOCAL.productsQuery.Description# ,
+                        "Image"         = #LOCAL.productsQuery.Image#
+                    })/>
+            </cfloop>
+
+            <cfcatch type="DATABASE">
+                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfset LOCAL.response.status = "error"/>
+                <cfset LOCAL.response.error = {} />
+                <cfset LOCAL.response.error.message = "#cfcatch.message#" />
+                <cfset LOCAL.response.error.details = "#cfcatch.detail#" />
+                <cfdump var="#cfcatch#" />
+                <cfreturn LOCAL.response />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.response />
+    </cffunction>
+
 </cfcomponent>

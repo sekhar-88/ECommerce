@@ -10,6 +10,12 @@ $(document).ready(function(){
         }
     });
     updateCartCount();
+
+    $(".subcategory_list_li").click(function(){
+        window.location = $(this).find("a").attr("href");
+        return false;
+    });
+
     $("#product-search-form").submit(function(e){
         if($("#product_searchbox").val().trim() != "" ){
             var query_cleaned = $("#product_searchbox").val().trim();
@@ -18,7 +24,6 @@ $(document).ready(function(){
         }
         else{
             e.preventDefault();
-            notify("enter some value first..", "warning");
         }
     });
 });

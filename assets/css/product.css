@@ -52,10 +52,14 @@ a:hover{
     font-family: arial;
     background-color: white;
 }
-
-.products{
+.products-section {
     float: right;
     width: 78%;
+    display: flex;
+    flex-direction: column;
+}
+
+.products-inner{
     display: flex;
     flex-direction: column;
 }

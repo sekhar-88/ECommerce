@@ -6,20 +6,19 @@
 
     <cfset THIS.Name = "Shopping" />
     <cfset THIS.sessionManagement = true />
-    <!--- <cfset THIS.setClientCookies = false /> --->
     <cfset THIS.applicationTimeout = CreateTimeSpan(0,0,30,0) />
     <cfset THIS.sessionTimeout = CreateTimeSpan(0,0,10,0) />
+
     <cfset THIS.datasource = "eShoppingBasic" />
-    <!--- <cfset THIS.rootDir = #server.ColdFusion.RootDir# /> --->
     <cfset THIS.rootDir = getDirectoryFromPath(getCurrentTemplatePath()) />
     <cfset THIS.mappings[ "/project" ] = getDirectoryFromPath(getCurrentTemplatePath()) />
     <cfset THIS.mappings[ "/include" ] = "#THIS.rootDir#assets/libraries/" />
     <cfset THIS.mappings[ "/commons" ] = "#THIS.rootDir#commons/" />
 
-    <!--- <cfoutput>
-        #THIS.rootDir#assets/libraries/ <br />
-        #THIS.rootDir#commons/
-    </cfoutput> --->
+    <!--- <cfset THIS.rootDir = #server.ColdFusion.RootDir# /> --->
+    <cfset THIS.db_logfile = "ShoppingDBlog">
+    <!--- <cfset THIS.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
+    <cfset THIS.imagePath = "D:\ShoppingSite\assets\images\products\medium" />
 
     <cfsetting
         enablecfoutputonly = "no"
@@ -48,8 +47,6 @@
         <cfset SESSION.cart = [] />
         <cfset SESSION.cartDataChanged = false />
         <cfset SESSION.User = { role = "guest" } />
-        <!--- <cfset SESSION.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
-        <cfset SESSION.imagePath = "D:\ShoppingSite\assets\images\products\medium" />
 
 
         <cfreturn />

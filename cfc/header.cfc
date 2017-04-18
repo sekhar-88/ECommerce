@@ -3,10 +3,9 @@
 
     <!--- for populating the header section --->
     <cffunction name="getCategories" returntype="Query" access="remote" output="false" >
-        <cfinvoke method="getCategories" component="#VARIABLES.headerDB#"
-            returnvariable="LOCAL.categories" argumentcollection = "#ARGUMENTS#" />
+        <cfset LOCAL.categories = VARIABLES.headerDB.getCategories( argumentcollection = "#ARGUMENTS#" ) />
 
-        <cfreturn #LOCAL.categories# />
+        <cfreturn LOCAL.categories />
     </cffunction>
 
 
@@ -14,10 +13,8 @@
     <cffunction name="getSubCategories" returntype="Query" output="false" >
         <cfargument name="CategoryId" type="numeric" required="true"  />
 
-        <cfinvoke method="getSubCategories" component="#VARIABLES.headerDB#"
-            returnvariable = "LOCAL.subcategories" argumentcollection="#ARGUMENTS#" />
-
-        <cfreturn #LOCAL.subcategories# />
+        <cfset LOCAL.subcategories = VARIABLES.headerDB.getSubCategories( CategoryId = #ARGUMENTS.CategoryId# ) />
+        <cfreturn LOCAL.subcategories />
     </cffunction>
 
 
@@ -26,8 +23,7 @@
         <cfargument name="categoryname" required="true" type="string"/>
 
         <!--- get subcategories from db layer --->
-        <cfinvoke method="getSubCategoriesFromCategoryName" component="#VARIABLES.headerDB#"
-            returnvariable="LOCAL.querySubcategories" argumentcollection="#ARGUMENTS#"  />
+        <cfset LOCAL.querySubcategories = VARIABLES.headerDB.getSubCategoriesFromCategoryName( argumentcollection="#ARGUMENTS#" ) />
 
             <cfset LOCAL.subCategoryObject = {} />
 

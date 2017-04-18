@@ -9,7 +9,6 @@
         <cfargument name="imagename" type="string" required = "true" />
 
         <cfset LOCAL.success = VARIABLES.productDB.updateProductDetails(argumentcollection = "#ARGUMENTS#") />
-
         <cfreturn LOCAL.success />
     </cffunction>
 
@@ -29,19 +28,17 @@
                 <cfset userid = #session.User.UserId# />
 
                 <!--- QUERY FOR ALREADY EXISTING PRODUCT --->
-                <cfinvoke method = "queryCartForProduct" component = "#VARIABLES.productDB#"
-                    returnvariable = "LOCAL.cart" pid = #ARGUMENTS.pid# />
+                <cfset LOCAL.cart = VARIABLES.productDB.queryCartForProduct( pid = #ARGUMENTS.pid# ) />
 
                 <cfif LOCAL.cart.recordCount >    <!--- in cart --->
                     <cfreturn true/>                <!--- THIS RETURN TRUE IS FOR sending (buynow) button that it is already in cart --->
 
                 <cfelse>           <!--- not in cart --->
                     <cfset LOCAL.price = getPriceOfProduct(arguments.pid)/>
-                    <cfinvoke method = "insertIntoCart" component = "#VARIABLES.productDB#"
-                        returnvariable = "cart" pid = #ARGUMENTS.pid# price = "#LOCAL.price#" />
+                    <cfset VARIABLES.productDB.insertIntoCart( pid = #ARGUMENTS.pid#, price = "#LOCAL.price#" ) />
 
                     <!--- cart data changed --->
-                    <cfset session.cartDataChanged = true/>;
+                    <cfset SESSION.cartDataChanged = true/>;
                     <cfreturn true />
                 </cfif>
 
@@ -61,22 +58,30 @@
     <cffunction name = "getProductsForSubCat" access = "remote" returntype = "Query" output = "false" >
         <cfargument name = "scat" required = "true" type = "numeric" output = "false" />
 
-        <cfinvoke method = "queryProductsForSubCategory" component = "#VARIABLES.productDB#"
-            returnvariable = "LOCAL.products" argumentcollection = "#ARGUMENTS#"  />
+        <cfset LOCAL.products = VARIABLES.productDB.queryProductsForSubCategory( argumentcollection = "#ARGUMENTS#" ) />
 
         <cfreturn #LOCAL.products#/>
     </cffunction>
 
+    <cffunction name="getFilteredProducts" access = "remote" returntype = "Struct" returnformat = "JSON" >
+        <cfargument name="scat" required = "true" type = "numeric" />
+        <cfargument name="brandid" required = "false" type="numeric" default = -1 />
+        <cfargument name="pricemin" required = "false" type = "numeric" default = -1 />
+        <cfargument name="pricemax" required = "false" type = "numeric" default = -1 />
+
+        <cfset LOCAL.response = VARIABLES.productDB.queryProductsWithFilters( argumentcollection = "#ARGUMENTS#" ) />
+
+        <cfreturn LOCAL.response />
+    </cffunction>
 
 
     <cffunction name = "getPriceOfProduct" access = "remote" returntype = "boolean" output = "true">
         <cfargument name = "pid" required = "true" type = "numeric"/>
         <cfset LOCAL.ListPrice = 0 />
 
-        <cfinvoke method = "getProduct" component = "#VARIABLES.productDB#"
-            returnvariable = "LOCAL.product" argumentcollection = "#ARGUMENTS#" />
+        <cfset LOCAL.product = VARIABLES.productDB.getProduct( argumentcollection = "#ARGUMENTS#" ) />
 
-        <cfreturn #LOCAL.product.ListPrice#/>
+        <cfreturn LOCAL.product.ListPrice />
     </cffunction>
 
 
@@ -97,8 +102,7 @@
 
         <!--- get cart count for that product --->
         <cfif SESSION.loggedin >
-            <cfinvoke method = "queryCartForProduct" component = "#VARIABLES.productDB#"
-                returnvariable = "LOCAL.cart" pid = #ARGUMENTS.pid# />
+            <cfset LOCAL.cart = VARIABLES.productDB.queryCartForProduct( pid = #ARGUMENTS.pid# ) />
 
                 <cfif LOCAL.cart.recordCount>
                     <cfset LOCAL.inCart = true/>
@@ -116,8 +120,7 @@
     <cffunction name = "getavailableProductQuantity" returntype = "numeric" access = "public"  >
         <cfargument name = "pid" type = "numeric" required = "true" />
 
-        <cfinvoke method = "getProduct" component = "#VARIABLES.productDB#"
-            returnvariable = "LOCAL.product" argumentcollection = "#ARGUMENTS#"  />
+        <cfset LOCAL.product = VARIABLES.productDB.getProduct( argumentcollection = "#ARGUMENTS#" ) />
 
         <cfreturn #LOCAL.product.Qty# />
     </cffunction>
@@ -129,8 +132,7 @@
         <cfset LOCAL.q = #Trim(ARGUMENTS.q)# />
         <cfset REReplace(LOCAL.q, "[^\w ]", "", "ALL") />
 
-        <cfinvoke method = "getSubCategoryFilters" component = "#VARIABLES.productDB#"
-            returnvariable = "LOCAL.subcategoryFilters" q = #LOCAL.q#  />
+        <cfset LOCAL.subcategoryFilters = VARIABLES.productDB.getSubCategoryFilters( q = #LOCAL.q# ) />
         <cfreturn LOCAL.subCategoryFilters />
     </cffunction>
 
@@ -139,8 +141,7 @@
         <cfargument name = "scat" type = "numeric" required = "true" />
         <cftry>
 
-            <cfinvoke method = "getBrandsFilter" component = "#VARIABLES.productDB#"
-                returnvariable = "LOCAL.brandsFilter" scat = "#ARGUMENTS.scat#" />
+            <cfset LOCAL.brandsFilter = VARIABLES.productDB.getBrandsFilter( scat = "#ARGUMENTS.scat#" ) />
         <cfcatch>
             <cfoutput>
                 soryy an error type  = "#cfcatch.type#" occured
@@ -155,10 +156,9 @@
         <cfargument name = "q" type = "string" required = "true" />
         <cfset LOCAL.q = #Trim(ARGUMENTS.q)# />
 
-        <cfinvoke method = "queryProducts" component = "#VARIABLES.productDB#"
-            returnvariable = "LOCAL.products" q = #LOCAL.q# />
-
+        <cfset LOCAL.products = VARIABLES.productDB.queryProducts( q = #LOCAL.q# ) />
         <cfreturn LOCAL.products />
+
     </cffunction>
 
 
@@ -180,8 +180,7 @@
     <cffunction name="getSubCategoryName" returntype = "String" access="remote" >
         <cfargument name="scat" type="numeric" required = "true" />
 
-        <cfinvoke method="getSubCategoryName" component="#VARIABLES.productDB#"
-            returnvariable="LOCAL.subCategory" argumentcollection="#ARGUMENTS#" />
+        <cfset LOCAL.subCategory = VARIABLES.productDB.getSubCategoryName( argumentcollection="#ARGUMENTS#" ) />
 
         <cfreturn LOCAL.subCategory.SubCategoryName />
     </cffunction>
