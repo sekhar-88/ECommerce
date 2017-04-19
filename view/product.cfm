@@ -150,13 +150,13 @@
                         </cfoutput>
                     </div>
 
-                    <div class="filter filter-price">
+                    <!--- <div class="filter filter-price">
                         <div class="filter-header">Price</div>
                     </div>
 
                     <div class="filter filter-other">
                         <div class="filter-header"></div>
-                    </div>
+                    </div> --->
 
                 </div>
 
@@ -172,7 +172,12 @@
                             </cfoutput>
                         </h3>
 
+                        <!--- pagination for products --->
+                        <!--- <div class="pages-link">
+                            <cfif>
 
+                            </cfif>
+                        </div> --->
 
                         <cfif StructKeyExists(session.User, "Role") AND session.User.Role EQ "admin">
 

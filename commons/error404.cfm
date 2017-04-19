@@ -12,6 +12,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href='http://fonts.googleapis.com/css?family=Fenix' rel='stylesheet' type='text/css'>
 </head>
 <body>
+
   <div class="wrap">
 	 <div class="main">
 		<h3>ShoppingBuzz</h3>

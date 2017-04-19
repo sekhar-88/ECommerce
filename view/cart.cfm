@@ -114,7 +114,7 @@
                     <cfelse>
                         <div class="guest-cart-div well well-sm">
                             <div class="login-image"></div>
-                            <h3 class="jumbotron"><span>Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To view items in Cart &amp; edit<span></h3>
+                            <h4 class="jumbotron"><span>Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To view items in Cart &amp; edit<span></h4>
                         </div>
                     </cfif>
 

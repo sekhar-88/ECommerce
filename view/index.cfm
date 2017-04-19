@@ -49,16 +49,17 @@
                             </form>
                         </div>
 
-                        <div class="filter filter-price">
+                        <!--- <div class="filter filter-price">
                             <div class="filter-header">Price</div>
                             <form id="filter-price">
 
                             </form>
 
                         </div>
+
                         <div class="filter filter-other">
                             <div class="filter-header"></div>
-                        </div>
+                        </div> --->
                     </div>
 
                     <div class="products">
@@ -105,28 +106,29 @@
                       <ol class="carousel-indicators">
                         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                         <li data-target="#myCarousel" data-slide-to="1"></li>
-                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                        <!--- <li data-target="#myCarousel" data-slide-to="2"></li> --->
                         <!--- <li data-target="#myCarousel" data-slide-to="3"></li> --->
                       </ol>
 
                       <!-- Wrapper for slides -->
                       <div class="carousel-inner" role="listbox">
 
-                        <div class="item active">
-                          <a href="product.cfm?cat=2&amp;scat=3"><img src="../assets/images/products/featured/frontpagecarousel/mensfashion.jpg" alt="mensfashion"></a>
-                        </div>
+                            <div class="item active">
+                              <a href="product.cfm?cat=2&amp;scat=3"><img src="../assets/images/products/featured/frontpagecarousel/mensfashion.jpg" alt="mensfashion"></a>
+                            </div>
 
-                        <div class="item">
-                          <a href="product.cfm?cat=1&amp;scat=1"><img src="../assets/images/products/featured/frontpagecarousel/mensfootwear.jpg" alt="mensfootwear"></a>
-                        </div>
+                            <div class="item">
+                              <a href="product.cfm?cat=1&amp;scat=1"><img src="../assets/images/products/featured/frontpagecarousel/mensfootwear.jpg" alt="mensfootwear"></a>
+                            </div>
 
-                        <div class="item">
-                            <a href=""><img src="../assets/images/products/featured/frontpagecarousel/casualstyle.jpg" alt="casualstyle"></a>
-                        </div>
+                            <!--- <div class="item">
+                                <a href=""><img src="../assets/images/products/featured/frontpagecarousel/casualstyle.jpg" alt="casualstyle"></a>
+                            </div> --->
 
-                        <!--- <div class="item">
-                              <img src="../assets/images/products/featured/frontpagecarousel/menstshirts.jpg" alt="menstshirts">
-                        </div> --->
+
+                            <!--- <div class="item">
+                                  <img src="../assets/images/products/featured/frontpagecarousel/menstshirts.jpg" alt="menstshirts">
+                            </div> --->
 
                       </div>
 

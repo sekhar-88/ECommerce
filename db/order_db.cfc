@@ -47,7 +47,7 @@
             </cfquery>
 
             <cfcatch >
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = {} />
                 <cfset LOCAL.response.message = "error while querying Orders table for details of user #SESSION.User.UserName#"/>
                 <cfreturn LOCAL.response />

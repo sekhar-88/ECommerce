@@ -60,12 +60,12 @@
 						</ul>
 					</li>
 
-					<li class="dropdown women">
+					<!--- <li class="dropdown women">
 						<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Women<span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="">category1</a></li>
 						</ul>
-					</li>
+					</li> --->
 				</ul>
 
 				<!---  search bar --->
@@ -86,7 +86,7 @@
 						<li class="dropdown">
 							<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> #session.User.UserName#</a>
 							<ul class="dropdown-menu">
-								<li><a href="account.cfm">Account</a></li>
+								<!--- <li><a href="account.cfm">Account</a></li> --->
                                 <li><a href="orders.cfm">orders</a></li>
                                 <li role="separator" class="separator"></li>
 								<li>

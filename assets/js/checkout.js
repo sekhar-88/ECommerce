@@ -46,7 +46,7 @@ function gotoCheckOutStep(){
         },
         error: function(error){
             alert("error: " + error);
-            console.log(error);
+            //console.log(error);
         }
     });
 }
@@ -70,7 +70,7 @@ function gotoStep(ajaxResponse){
             alert('did step 3');
             break;
         default:
-            alert("step is not specified Correctly " + ajaxResponse);
+            // alert("step is not specified Correctly " + ajaxResponse);
     }
 }
 
@@ -95,11 +95,11 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
             calledFrom : "ajax"
         },
         success: function(response){
-            console.log(response);       // response.itemsArray   // response.totalPrice
+            //console.log(response);       // response.itemsArray   // response.totalPrice
             $("#order_summary .items").empty();  //empty the previously populated items in ORDER SUMMARY
 
             $.each(response.itemsArray, function(index, item){
-                // console.log(item);
+                // //console.log(item);
                     var name = item.name;
                     var desc = "description";     //item.description
 
@@ -131,7 +131,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                         dataType: "json",
 
                         success: function(maxQty){
-                            console.log("Available Products: " + maxQty);
+                            //console.log("Available Products: " + maxQty);
 
                             //store (Product Id, prev_item_count)    in custom (Data-* attributes)  & inputItemsQuantity class is required to validate item quantity count while placing order
                             var itemQtyContent = "<span><span class='inputItemsQuantityleft'>Qty:</span><input type='number' data-toggle='tooltip' title='Max Quantity Exceeded' data-card_id='"+item.cartId+"' data-item_id="+ item.id +" + data-item_price='"+item.price+"' name='itemQty' value='"+item.qty+"' min='1' max='"+maxQty+"' class='inputItemsQuantity' onkeyup='validateItemCount(this, this.value, this.max, "+item.cartId+");' onmouseup='validateItemCount(this, this.value, this.max, "+item.cartId+")' readonly></span>";
@@ -146,7 +146,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
 
                         error: function(error){
                             notify("Error Availabing Product Quantity", "danger", "glyphicon glyphicon-info-sign");
-                            console.log(error);
+                            //console.log(error);
                         }
 
                     });
@@ -182,7 +182,7 @@ function validateItemCount(element, value, max, cartId){
             qty: element.value
         },
         success:function(cartTotal){
-            console.log(cartTotal);
+            //console.log(cartTotal);
             var x = parseInt(cartTotal).toLocaleString('en-IN');
             $("#total-checkout-price").text(x);
             amountPayble = x;
@@ -229,11 +229,11 @@ function removeItem(element){
         success: function(response){
             if(response == true) alert('session refreshed');
             else {  alert("error while refreshing session checkout list");
-                    console.log(response);
+                    //console.log(response);
                  }
         },
         error: function(error){
-            console.log(error);
+            //console.log(error);
         }
     });
 }
@@ -290,10 +290,12 @@ function storeAddressGotoStep1(el){  //gotoOrderSummary Section
 }
 
 function gotoPaymentSection(el){
+
     $("#order_summary .subsection").slideUp(300);  //this is only here because it is not needed when page refreshed
     gotoStep2();                             //others are in this function
 
 }
+
 function reviewOrder(el){
     $("#payment_section .subsection, #order_summary .show_when_collapsed").hide();
     $("#order_summary .subsection").show(); // animation 300
@@ -329,11 +331,11 @@ function addNewAddress(oform){
         },
         dataType: "json"
     }).done(function(response){
-        console.log(response);
+        //console.log(response);
         window.location.reload(false);
     }).fail(function(error){
-        console.log("Error");
-        console.log(error);
+        //console.log("Error");
+        //console.log(error);
     });
 }
 
@@ -343,10 +345,10 @@ function deleteAddress(dltBtn){
             url: "../cfc/checkout.cfc?method=deleteAddress&addressid="+dltBtn.value,
             dataType: "json"
         }).done(function(response){
-            console.log(response + " removed Address");
+            //console.log(response + " removed Address");
             $(dltBtn).parents(".address").remove();
         }).fail(function(error){
-            console.log(error);
+            //console.log(error);
         });
     }
     else {
@@ -364,14 +366,14 @@ function editAddressAndSave(form,address_id){
             formdata : $(form).serialize()
         },
         success: function(response){
-            console.log(response);
+            //console.log(response);
             window.location.reload();
         },
         error: function(error){
-            console.log(error);
+            //console.log(error);
         }
     })
-    console.log(form);
+    //console.log(form);
 
 }
 
@@ -404,7 +406,7 @@ var placeOrder = function(response){
                 dataType: "json",
                 success: function(response){
                     if(response.status){
-                        alert("added to Orders & Orderdetails");
+                        // alert("added to Orders & Orderdetails");
                         $("#section-checkout-header").remove();
                         // $("p").eq(0).css("height","45px");
                         str = '<div><h1 align="center" style="color: blue;"><span></span>Thank you for your order!</h1>'
@@ -419,7 +421,7 @@ var placeOrder = function(response){
                 },
                 error: function(error){
                     alert("error while processing COD request.");
-                    console.log(error);
+                    //console.log(error);
                 }
             });
         }
@@ -438,7 +440,7 @@ function validateItemQuantity(){
         var qty = element.value;
         var itemId = $(element).data('item_id');
 
-        console.log(qty + itemId);
+        //console.log(qty + itemId);
         if( parseInt(qty) > 0 ){
             $.ajax({
                     async: false,
@@ -449,7 +451,7 @@ function validateItemQuantity(){
                     dataType: "json",
                     success: function(maxQty){
                         if( qty > maxQty ) {
-                            console.log('item quntity manipulated/not authentic');
+                            //console.log('item quntity manipulated/not authentic');
                             result = false;
                         }
                         else result = true;

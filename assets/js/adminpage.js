@@ -32,10 +32,10 @@ function addProductToDB(oform){
         },
         dataType: "json",
         success: function(response){
-            console.log(response);
+            //console.log(response);
         },
         error: function(error){
-            console.log(error);
+            //console.log(error);
         }
     });
 }
@@ -61,14 +61,14 @@ function fillSubCategory(name){
             });
         },
         error: function(error){
-            console.log("error: ");
-            console.log(error);
+            //console.log("error: ");
+            //console.log(error);
         }
     });
 }
 
 function populateBrandsSuppliers(brand,supplier,ve){
-    console.log(ve);
+    //console.log(ve);
     var brandselectlist = "#" + brand;
     var supplierselectlist = "#" + supplier;
     $(brandselectlist).empty();
@@ -88,7 +88,7 @@ function populateBrandsSuppliers(brand,supplier,ve){
         dataType: "json",
         success: function(response){
             $.each(response, function(key,value){
-                // console.log("appending " + key + " " + value);
+                // //console.log("appending " + key + " " + value);
                 $(supplierselectlist).append("<option value="+ key +">" + value + "</option>");
             });
             if( ve != undefined){ $(supplierselectlist).val(ve.sid); }  //ve contains all
@@ -109,13 +109,13 @@ function getProductsAndShow(){     //after click retrieve products  (product act
         data: { scatid: subcategoryid },
         dataType: "json"
     }).done(function(response){
-        console.log("success");
+        //console.log("success");
         $.each(response , function(index, item){
             $("#products-list").append("<div class='products nav nav-tabs nav-stacked' data-product-id='"+item.ProductId+"' data-brand-id='"+item.BrandId+"' data-list-price='"+item.ListPrice+"' data-description='"+item.Description+"' data-name='"+item.Name+"' data-qty='"+item.Qty+"' data-supplier-id='"+item.SupplierId+"' data-subcategory-id='"+item.SubCategoryId+"' onclick="+ "showProduct(this);populateBrandsSuppliers('ve_brands_select_list','ve_suppliers_select_list',getBrandSellerId(this));" +"><a>"+ item.Name +"</a></div>");
         });
     }).fail(function(error){
-        console.log("error");
-        console.log(error);
+        //console.log("error");
+        //console.log(error);
     });
 }
 
@@ -240,7 +240,7 @@ function addSubCategory(el){
                 }
             },
             error:function(err){
-                console.log(err);
+                //console.log(err);
             }
         });
     }
@@ -261,7 +261,7 @@ function enableSubCategoryTextField(el){
             data: { categoryid: categoryid },
             dataType: "json",
             success:function(arr){
-                console.log(arr);
+                //console.log(arr);
                 $.each(arr, function(i, item){
                     $(".cnb-subcategory .list").append("<p class='list-item'>" + item + "</p>")
                 });
@@ -281,7 +281,7 @@ function enableSubCategoryTextField(el){
 // for PRODUCTS.CFM page
 
 function addNewProduct(el){
-    console.log("showing modal");
+    //console.log("showing modal");
     populateBrandsSuppliers("brands_select_list", "suppliers_select_list");
     $("#subCategoryValue").val($(el).data('scat'));
     $("#add-product-modal").modal('show');

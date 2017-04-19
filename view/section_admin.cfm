@@ -18,8 +18,8 @@
         <nav>
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#section-categories">Categories &amp; Brands</a></li>
-            <li><a data-toggle="tab" href="#section-product">Products</a></li>
-            <li><a>list</a></li>
+            <!--- <li><a data-toggle="tab" href="#section-product">Products</a></li>
+            <li><a>list</a></li> --->
         </ul>
         </nav>
         <div class="tab-content">

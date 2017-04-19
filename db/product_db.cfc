@@ -16,13 +16,19 @@ like adding to cart removing from cart, editing updating product details etc. --
                 Description =  <cfqueryparam value="#ARGUMENTS.productUpdate.Description#" cfsqltype="CF_SQL_NVARCHAR" />,
                 Image = <cfqueryparam value="#imagename#" cfsqltype="CF_SQL_NVARCHAR" />,
                 ModifiedDate = GETDATE()
+                <!--- for discount --->
+                <!--- <cfif ARGUMENTS.productUpdate.DiscountPercent NEQ 0 >
+                    , DiscountPercent = <cfqueryparam value="#ARGUMENTS.productUpdate.DiscountPercent#" cfsqltype="cf_sql_int" />
+                </cfif> --->
             WHERE ProductId = #ARGUMENTS.productUpdate.ProductId#
         </cfquery>
 
         <cfreturn true />
     </cffunction>
 
-
+<!---
+    Add product to Cart FOR Logged in User
+ --->
     <cffunction name = "insertIntoCart" access = "public" returntype = "void" >
 
         <cfargument name = "pid" type = "numeric" required = "true" />
@@ -39,7 +45,7 @@ like adding to cart removing from cart, editing updating product details etc. --
     </cffunction>
 
 
-
+<!--- check if a product is in cart or not --->
     <cffunction name = "queryCartForProduct" returntype = "query" access = "public" >
         <cfargument name = "pid" type = "numeric" required = "true" />
 
@@ -53,6 +59,10 @@ like adding to cart removing from cart, editing updating product details etc. --
     </cffunction>
 
 
+<!---
+    fetches products list
+    gets products for given subcategory in products page
+ --->
     <cffunction name = "queryProductsForSubCategory" returntype = "query" access = "public" >
         <cfargument name = "scat" required = "true" type = "numeric" output = "false" />
 
@@ -62,6 +72,7 @@ like adding to cart removing from cart, editing updating product details etc. --
                     Description, Image
             FROM [Product]
             WHERE SubCategoryId = <cfqueryparam value = "#ARGUMENTS.scat#" CFSQLType = "[cf_sql_integer]">
+                    AND DiscontinuedDate IS NULL
         </cfquery>
 
         <cfreturn #LOCAL.products# />
@@ -111,7 +122,7 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfquery>
 
             <cfcatch>
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
 
             </cfcatch>
 
@@ -197,7 +208,7 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfquery>
 
             <cfcatch>
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
             </cfcatch>
         </cftry>
 
@@ -219,7 +230,7 @@ like adding to cart removing from cart, editing updating product details etc. --
                 WHERE ProductId = <cfqueryparam value = "#ARGUMENTS.pid#" cfsqltype="cf_sql_bigint" />
             </cfquery>
             <cfcatch type="database">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfabort />
             </cfcatch>
         </cftry>
@@ -256,7 +267,7 @@ like adding to cart removing from cart, editing updating product details etc. --
             <cfset LOCAL.response = true />
 
             <cfcatch >
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = false />
             </cfcatch>
 
@@ -279,7 +290,7 @@ like adding to cart removing from cart, editing updating product details etc. --
             </cfquery>
             <cfset LOCAL.response = true />
             <cfcatch type="database">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = false />
             </cfcatch>
         </cftry>
@@ -304,7 +315,8 @@ like adding to cart removing from cart, editing updating product details etc. --
             <cfquery name = "LOCAL.productsQuery">
                 SELECT [ProductId], [Name], [BrandId], [SubCategoryId], [Weight], [ListPrice], [SupplierId], [DiscontinuedDate], [DiscountPercent], [DiscountedPrice], [Qty], [Description], [Image]
                   FROM [Product]
-                 WHERE SubCategoryId = #ARGUMENTS.scat#
+                 WHERE SubCategoryId = <cfqueryparam value="#ARGUMENTS.scat#" cfsqltype="cf_sql_bigint" >
+                        AND DiscontinuedDate IS NULL
                         <cfif ARGUMENTS.brandid NEQ -1 >
                             AND BrandId = #ARGUMENTS.brandid#
                         </cfif>
@@ -330,11 +342,11 @@ like adding to cart removing from cart, editing updating product details etc. --
                         "Qty"           = #LOCAL.productsQuery.Qty# ,
                         "Description"   = #LOCAL.productsQuery.Description# ,
                         "Image"         = #LOCAL.productsQuery.Image#
-                    })/>
+                    }) />
             </cfloop>
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response.status = "error"/>
                 <cfset LOCAL.response.error = {} />
                 <cfset LOCAL.response.error.message = "#cfcatch.message#" />

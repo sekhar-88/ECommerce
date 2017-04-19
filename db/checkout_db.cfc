@@ -10,7 +10,7 @@
             </cfquery>
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfdump var="#cfcatch#" />
             </cfcatch>
         </cftry>
@@ -58,7 +58,7 @@
             <cfset LOCAL.response = true >
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = false />
             </cfcatch>
         </cftry>
@@ -84,7 +84,7 @@
             <cfset LOCAL.response = true />
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = false />
             </cfcatch>
 
@@ -117,7 +117,7 @@
             <cfset LOCAL.response = true >
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = true />
             </cfcatch>
 
@@ -243,7 +243,7 @@
 
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response.message = "Error while inserting In Order Details Table" />
             </cfcatch>
         </cftry>
@@ -259,7 +259,7 @@
             </cfquery>
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
             </cfcatch>
         </cftry>
 

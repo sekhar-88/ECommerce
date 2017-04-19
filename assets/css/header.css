@@ -10,6 +10,12 @@
     width: 185px;
     padding: 5px;
 }
+
+li.dropdown.men > a.dropdown-toggle, li.dropdown.women > a.dropdown-toggle {
+    color: #dbfffc;
+    font-weight: bold;
+}
+
 form#login-form {
     padding: 4px;
     margin-bottom: 0;
@@ -58,7 +64,7 @@ label.error{
 }
 
 .dropdown.men, .dropdown.women {
-    background-color: #6bb0dc;
+    background-color: #8fc9ef;
     margin-right: 1px;
 }
 .subcat_list_div {

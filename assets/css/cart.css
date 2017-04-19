@@ -166,7 +166,8 @@ div.guest-cart-div .login-image {
     background-repeat: no-repeat;
     background-size: contain;
 }
-div.guest-cart-div h3 {
+
+div.guest-cart-div h4 {
     background-image: url(../images/cart/g/proceed.png);
     background-repeat: no-repeat;
     background-size: contain;
@@ -174,7 +175,7 @@ div.guest-cart-div h3 {
     background-position: 27% 47%;
 }
 
-div.guest-cart-div h3 span{
+div.guest-cart-div h4 span{
     margin-left: 30%;
 }
 

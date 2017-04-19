@@ -9,6 +9,7 @@ $().ready(function(){// password meter codes
         3: "Good",
         4: "Strong"
     };
+
     var password = document.getElementById("pswd");
     var meter = document.getElementById("password-strength-meter");
     var text = document.getElementById("password-strength-text");
@@ -18,7 +19,7 @@ $().ready(function(){// password meter codes
         var result = zxcvbn(val);
 
         // Update the password strength meter
-        console.log(result.feedback.suggestions);
+        //console.log(result.feedback.suggestions);
         meter.value = result.score;
 
         // Update the text indicator
@@ -60,7 +61,7 @@ $().ready(function(){// password meter codes
             "PhoneNo" : formElements.PhoneNo.value,
             "Password" : formElements.Password.value
         };
-        console.log(registrationForm);
+        //console.log(registrationForm);
 
         if( $(this).valid() ){
             $.ajax({
@@ -71,7 +72,7 @@ $().ready(function(){// password meter codes
                     formSerialized : JSON.stringify(registrationForm)
                 }
             }).done(function(response){
-                console.log(response.STATUS);
+                //console.log(response.STATUS);
                 if(response.STATUS == true ){
                     notify("Account Created Successfully", "success", "fa fa-check-circle");
                     $("#signup-content").empty();
@@ -80,7 +81,7 @@ $().ready(function(){// password meter codes
                                                  <h2><a href='index.cfm'>go to homepage</a></h2></div>");
                 }
                 else {
-                    console.log(response.ERROR);
+                    //console.log(response.ERROR);
                     $.each( response.ERROR , function(key, value){
                         signup_validator.showErrors({
                             Email : value
@@ -89,7 +90,7 @@ $().ready(function(){// password meter codes
                     })
                 }
             }).fail(function(error){
-                console.log(error);
+                //console.log(error);
             });
         }
 
@@ -112,7 +113,7 @@ $().ready(function(){// password meter codes
 //     //
 //     //     }).fail(function(error){
 //     //         alert("registration request couldn't be processed. check log");
-//     //         console.log("error")
+//     //         //console.log("error")
 //     //     });
 //     // }
 //     // $("#signup_form").validate();

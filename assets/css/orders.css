@@ -24,6 +24,8 @@ h4 {
     background-color: #c6d5dc;
     padding: 10px;
     margin-bottom: 40px;
+    /*min-width: 950px;
+    overflow: auto;*/
 }
 
 /*header section to orders container*/
@@ -45,15 +47,15 @@ h4 {
 .order {
     background-color: white;
     display: flex;
-    flex-direction: row;
-    height: 200px;
+    flex-flow: row wrap;
+    /*height: 200px;*/
     border-bottom: 1px solid #edf1f3;
 }
 .order > * {
 
 }
 .order-img {
-    width: 200px;
+    /*width: 200px;*/
     height: 200px;
     padding: 20px;
 }
@@ -72,8 +74,8 @@ h4 {
     border-left: 1px solid #edf1f3;
     border-right: 1px solid #edf1f3;
     padding: 20px;
-    height: 100%;
-    width: 370px;
+    /*height: 100%;*/
+    width: 35%;
 }
 .order-info .product-name {
     font-size : 17px;
@@ -86,7 +88,7 @@ h4 {
 
 
 .order-qty-price {
-    width: 200px;
+    /*width: 200px;*/
     display: flex;
     align-self: center;
     flex-direction: column;
@@ -106,7 +108,7 @@ h4 {
 
 .order-shippingaddress {
     border-left: 1px solid #edf1f3;
-    width: 250px;
+    /*width: 250px;*/
     display: flex;
     flex-direction: column;
     padding: 10px;

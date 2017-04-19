@@ -48,38 +48,37 @@
                         <div id="buttons-container">
                               <cfif NOT isNULL(VARIABLES.productDetails.DiscontinuedDate)>
 
-                            <!--- check for if already in cart  --->
-                              <cfset VARIABLES.incart = productCFC.isProductInCart(#URL.pid#)/>
-                              <cfif VARIABLES.incart>
+                                <!--- check for if already in cart  --->
+                                  <cfset VARIABLES.incart = productCFC.isProductInCart(#URL.pid#)/>
+                                  <cfif VARIABLES.incart>
 
-                                  <div id="gotocart_btn">    <!--- Show Go To Cart button --->
-                                      <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-lg btn-primary verdana btn-radius-1"><span class="glyphicon glyphicon"></span> Go To Cart</button>
-                                  </div>
+                                      <div id="gotocart_btn">    <!--- Show Go To Cart button --->
+                                          <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-lg btn-primary verdana btn-radius-1"><span class="glyphicon glyphicon"></span> Go To Cart</button>
+                                      </div>
+
+                                  <cfelse>
+
+                                      <div id="addtocart_btn">  <!--- Show Add to cart  button --->
+                                          <button type="button" value="#URL.pid#" onclick="addToCart(this);changeto_gotocart();" class="btn btn-lg btn-primary verdana btn-radius-1"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
+                                      </div>
+
+                                  </cfif>                         <!--- Show Buy Now Button --->
+
+                                  <cfif session.loggedin>
+                                      <div>
+                                          <button type="button" value="#URL.pid#" onclick="checkOut(this,#session.user.userid#);" class="btn btn-lg btn-success verdana btn-radius-1"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
+                                      </div>
+
+                                  <cfelse>
+                                      <div>
+                                          <button type="button" value="#URL.pid#" onclick="showLoginMsg();" class="btn btn-lg btn-success verdana btn-radius-1"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
+                                      </div>
+                                  </cfif>
 
                               <cfelse>
-
-                                  <div id="addtocart_btn">  <!--- Show Add to cart  button --->
-                                      <button type="button" value="#URL.pid#" onclick="addToCart(this);changeto_gotocart();" class="btn btn-lg btn-primary verdana btn-radius-1"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
-                                  </div>
-
-                              </cfif>                         <!--- Show Buy Now Button --->
-
-                              <cfif session.loggedin>
-                                  <div>
-                                      <button type="button" value="#URL.pid#" onclick="checkOut(this,#session.user.userid#);" class="btn btn-lg btn-success verdana btn-radius-1"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
-                                  </div>
-
-                              <cfelse>
-                                  <div>
-                                      <button type="button" value="#URL.pid#" onclick="showLoginMsg();" class="btn btn-lg btn-success verdana btn-radius-1"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
-                                  </div>
                               </cfif>
-
-                          <cfelse>
-
-                          </cfif>
-
                         </div>   <!--- end .pdi-buttons --->
+
                         <div class="well well-sm login-notify" style="display:none;">
                             <h4>Please <a href="##" data-toggle="dropdown" data-target = ".login_toggle">login</a> to continue.</h4>
                         </div>
@@ -208,7 +207,6 @@
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button type="submit" name="submit_productupdate" form="product-update-form" class="btn btn-primary">Save changes</button>
-                                <button type="reset" class="btn btn-default">Clear</button>
                               </div>
 
                             </div><!-- /.modal-content -->
@@ -223,10 +221,12 @@
           </cfif>
 
         <cfelse>
-            <h1 align="center">404</h2>
-                <h3 align="center">Reasons:</h3>
-                <h4 align="center">The requested Resource is not found</h4>
-                <h4 align="center">possibly malformed URL</h4>
+            <cftry>
+                <cf asdflsdf#
+                <cfcatch>
+                    <cfrethrow />
+                </cfcatch>
+            </cftry>
         </cfif>
     </div>
 

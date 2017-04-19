@@ -29,7 +29,7 @@ $(document).ready(function(){
             $.each( $("#category-checkbox :checkbox"), function(i, item){
                 if(this.checked)    filterDisplayRemove("display",  ".product.scat_"+this.value , "", "");   //signature: filterDisplayRemove(display/remove,  subcategory_class, Brand_class, Price_class)
             });
-            // console.log(this.value);
+            // //console.log(this.value);
         }
         else{
             if($("#category-checkbox :checkbox:checked").length == 0)

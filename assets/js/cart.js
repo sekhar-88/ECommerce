@@ -35,8 +35,8 @@ function removeFromCart(remove_button){
     var el = $(remove_button).parent().parent();
     var pid = $(el).data('product-id');
 
-    console.log(el);
-    console.log(pid);
+    //console.log(el);
+    //console.log(pid);
 
     $.ajax({
         url: "../cfc/cart.cfc?method=removeFromCart",
@@ -56,11 +56,11 @@ function removeFromCart(remove_button){
                 $("#checkout_pane").empty();
             }
             notify("<span style='color: #42a5f5; font-weight: bold;'>" + $(el).data('name') + "</span> \rremoved from cart", "info", 'fa fa-check-circle', "", "", "fadeInUp", "fadeOutDown");
-            console.log('cart Data Changed');
+            //console.log('cart Data Changed');
         }
         else{
             alert('response is not true ');
-            console.log(response);
+            //console.log(response);
         }
     });
 }
@@ -85,7 +85,7 @@ function validateItemCount(element, value, max, cartId){
             qty: element.value
         },
         success:function(cartTotal){
-            console.log(cartTotal);
+            //console.log(cartTotal);
             var x = parseInt(cartTotal).toLocaleString('en-IN');
             $("#total-checkout-price").text(x);
             amountPayble = x;

@@ -50,7 +50,7 @@ $(document).ready(function(){
         form = oform.elements;
         mail = form.email.value;
         pswd = form.password.value;
-        console.log(mail + " "+ pswd);
+        //console.log(mail + " "+ pswd);
 
         if( $("#login-form").valid() ) {
 
@@ -86,7 +86,7 @@ $(document).ready(function(){
                 },
                 error: function(error){
                     alert("check console for error");
-                    console.log(error);
+                    //console.log(error);
                 }
             });
         }
@@ -101,7 +101,7 @@ function updateCartCount(){
     }).done(function(response){
         $("#badge").text(response);
     }).fail(function(error){
-        console.log(error);
+        //console.log(error);
     });
 }
 // alert('header.js loaded');
@@ -126,7 +126,7 @@ function notify(msg, alertType, icon, title, icontype, enter_anim, exit_anim){
         // element: '#notify-div',
         type: 'pastel-' + alertType,
         // icon_type: icontype,
-        delay: 1000,
+        delay: 2000,
         animate:    {
                 enter: "animated " + enter_anim,
                 exit: "animated " + exit_anim

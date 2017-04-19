@@ -20,7 +20,7 @@
             </cfif>
 
             <cfcatch>
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
             </cfcatch>
 
         </cftry>
@@ -34,20 +34,20 @@
     User Regestration with storing the details
 --->
 
-    <cffunction name = "createUser" returntype = "Any" access = "public"  >
+    <cffunction name = "createUser" returntype = "Any" access = "public" output = "true" >
         <cfargument name = "form" type = "struct" required = "true" />
 
         <cftry>
                 <cfquery name = "signup" >
                     INSERT INTO [User]
-                        (FirstName, LastName, Email,	PhoneNo, 	Password, PasswordHash, Role)
+                        (FirstName, LastName, Email, PhoneNo, PasswordHash, Role)
                     VALUES
                     (
                         <cfqueryparam value = "#ARGUMENTS.form.FirstName#" cfsqltype = "cf_sql_varchar" >,
                         <cfqueryparam value = "#ARGUMENTS.form.LastName#" cfsqltype  = "cf_sql_nvarchar" >,
                         <cfqueryparam value = "#ARGUMENTS.form.Email#" cfsqltype     = "cf_sql_nvarchar" >,
                         <cfqueryparam value = "#ARGUMENTS.form.PhoneNo#" cfsqltype   = "cf_sql_bigint" >,
-                        <cfqueryparam value = "#ARGUMENTS.form.Password#" cfsqltype  = "cf_sql_nvarchar">,
+                        <!--- <cfqueryparam value = "#ARGUMENTS.form.Password#" cfsqltype  = "cf_sql_nvarchar">, --->
                         <cfqueryparam value = "#HASH(ARGUMENTS.form.Password)#" cfsqltype = "cf_sql_nvarchar">,
                         'user'
                     )
@@ -55,7 +55,8 @@
 
 
             <cfcatch type="DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="error While Creating User: message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cfdump var = '#cfcatch#' />
             </cfcatch>
         </cftry>
 

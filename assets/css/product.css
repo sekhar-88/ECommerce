@@ -42,6 +42,7 @@ a:hover{
 }
 .filter{
     background-color: white;
+    padding-bottom: 10px;
 }
 .filter-header{
     padding: 5px;
@@ -54,6 +55,7 @@ a:hover{
 }
 .products-section {
     float: right;
+    min-height: 500px;
     width: 78%;
     display: flex;
     flex-direction: column;

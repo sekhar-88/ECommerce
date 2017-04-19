@@ -12,6 +12,7 @@
         <cfoutput>
             <h1 color="red">Not logged in</h1>
         </cfoutput>
+        <cfabort />
     <cfelse>
         <!--- show page header - it is outside of container-fluid so displays in full width --->
         <h2 class="order-page-header" align="center">Order Details History</h2>
@@ -59,6 +60,7 @@
                                     <div>#AddressLine#  </div>
                                     <div>#PostalCode#   </div>
                                     <div>Phone - #PhoneNo#  </div>
+                                    <div>Ordered by using: <span style="color: blue;">#PaymentMethod#</span></div>
                                 </div>
                             </div>
                     </div>

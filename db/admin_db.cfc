@@ -9,7 +9,7 @@
             </cfquery>
 
             <cfcatch type = "DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response.message = "couldn't retrieve brands" />
             </cfcatch>
         </cftry>
@@ -29,7 +29,7 @@
             <cfset LOCAL.response.result = LOCAL.suppliers />
 
             <cfcatch>
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response.status = "error" />
             </cfcatch>
         </cftry>

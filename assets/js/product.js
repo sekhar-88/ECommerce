@@ -30,7 +30,7 @@ $(document).ready(function(){
     $("#product-add-form-submit-button").click(function(){
         if($(this).valid() ) {
             var pName = $("form#product-add-form")[0].elements.Name.value;
-            console.log("checking for already existing product: " + pName);
+            //console.log("checking for already existing product: " + pName);
             $.ajax({
                 url: "../cfc/product.cfc?method=checkExistingProduct",
                 data: {
@@ -38,9 +38,9 @@ $(document).ready(function(){
                 },
                 datatype: "json"
             }).done(function(response){
-                console.log("response: " + response);
+                //console.log("response: " + response);
                 if(response != "true" ){
-                    console.log("product doesn't exists");
+                    //console.log("product doesn't exists");
                     var desc = "";
                     // going to submit form
                     $.each( $(".product-desc-fields > input "), function(i, item){
@@ -53,17 +53,17 @@ $(document).ready(function(){
                         }
                     });
                     $("textarea#prdt-desc").val(desc);
-                    // console.log($("form"));
+                    // //console.log($("form"));
                     $("#product-add-form").submit();
                 }
                 else {
-                    console.log("product already exists;");
+                    //console.log("product already exists;");
                     productAddFormValidator.showErrors({
                         Name : "this product already exists"
                     });
                 }
             }).fail(function(error){
-                console.log(error);
+                //console.log(error);
             });
         }
     });
@@ -112,10 +112,10 @@ $(document).ready(function(){
                     },
                     dataType : "json"
                 }).done(function(response){
-                    console.log(response.STATUS);
+                    //console.log(response.STATUS);
                     if(response.STATUS == "success") {
                         var productsArray = response.RESULT;
-                        console.log(productsArray);
+                        //console.log(productsArray);
                         showInProductsList(productsArray);
                     }
                 }).fail();
@@ -132,10 +132,10 @@ $(document).ready(function(){
                     },
                     dataType : "json"
                 }).done(function(response){
-                    console.log(response.STATUS);
+                    //console.log(response.STATUS);
                     if(response.STATUS == "success") {
                         var productsArray = response.RESULT;
-                        console.log(productsArray);
+                        //console.log(productsArray);
                         showInProductsList(productsArray);
                     }
                 }).fail();
@@ -155,10 +155,10 @@ $(document).ready(function(){
                             },
                             dataType : "json"
                         }).done(function(response){
-                            console.log(response.STATUS);
+                            //console.log(response.STATUS);
                             if(response.STATUS == "success") {
                                 var productsArray = response.RESULT;
-                                console.log(productsArray);
+                                //console.log(productsArray);
                                 showInProductsList(productsArray);
                             }
                         }).fail();
@@ -170,7 +170,7 @@ $(document).ready(function(){
 
 function showInProductsList(productsArray){
     $.each(productsArray, function(i, productObj){
-        console.log(productObj);
+        //console.log(productObj);
 
         var link = '<a href="productDetails.cfm?pid='+productObj.ProductId+'"></a>' ;
         var image = '<div class="product-image">' +
@@ -198,7 +198,8 @@ function showInProductsList(productsArray){
 
         var product = link + image + content;
 
-        $(".products-inner").append("<div class='product'>" + product + "</div>");
+        $(".products-inner").append("<div class='product' style='display: none;'>" + product + "</div>");
+        $(".products-inner .product").fadeIn();
 
         // bind click event to the product div
         $(".product").click(function(){

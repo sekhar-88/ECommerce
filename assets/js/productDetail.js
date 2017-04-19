@@ -71,7 +71,7 @@ function checkOut(el, uid){
         },
         error: function(error){
             alert('error');
-            console.log(error);
+            //console.log(error);
         }
     })
 }
@@ -93,7 +93,7 @@ function addToCart(el){
                 // alert("cart changed");
                 $("#badge").text(val);
                 notify("Added to cart! <a href='cart.cfm' style='color: #42a5f5; font-weight: bold;'>Goto Cart</a>", "success", "fa fa-check-circle");
-                console.log('Cart Items Changed.. Resetting Checkout Step to 0');
+                //console.log('Cart Items Changed.. Resetting Checkout Step to 0');
             }
             else{
                 alert('already in cart' + response);

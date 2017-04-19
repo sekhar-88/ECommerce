@@ -42,7 +42,7 @@
             <cfset LOCAL.response = true />
 
             <cfcatch type = "DATABASE">
-                <cflog file = "#APPLICATION.db_logfile#" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
+                <cflog file = "ShoppingDBlog" text="message: #cfcatch.message# , NativeErrorCode: #cfcatch.nativeErrorCode#" type="error"  />
                 <cfset LOCAL.response = false />
             </cfcatch>
         </cftry>

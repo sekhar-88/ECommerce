@@ -1,3 +1,10 @@
+<!---
+    THIS COMPONENT CONTAINS ALL USER RELATED FUNCTIONS LIKE VALIDATING THE USER WHILE LOGGING IN
+    SETTING USER RELATED SESSION VARIABLES
+    GETTING LOGGED IN STATUS
+ --->
+
+
 <cfcomponent extends="product" >
     <cfset VARIABLES.userDB = CreateObject("db.user_db")/>
 
@@ -96,10 +103,12 @@ return response
     status for account creation status & error for which field has error
     like the email field already exists in database
 --->
-    <cffunction name="newUser" returntype="struct" access="remote"  returnformat="JSON">
+    <cffunction name="newUser" returntype="struct" access="remote"  returnformat="JSON" output = "true">
         <cfargument name="formSerialized" type="string" required="true" />
 
         <!--- deseriazed json string object for user registration  --->
+        <cftry>
+
         <cfset LOCAL.form = deserializeJSON(ARGUMENTS.formSerialized) />
 
         <cfset LOCAL.response = {
@@ -108,12 +117,10 @@ return response
                 } />
 
             <cfif isValid('email', FORM.Email)>
-                <cfinvoke method="searchExistingEmails" component="#VARIABLES.userDB#"
-                    returnvariable = "LOCAL.emailExists" email = "#LOCAL.form.Email#" />
+                <cfset LOCAL.emailExists = VARIABLES.userDB.searchExistingEmails( email = "#LOCAL.form.Email#" ) />
 
                 <cfif NOT LOCAL.emailExists>
-                    <cfinvoke method="createUser" component="#VARIABLES.userDB#"
-                        returnvariable = "LOCAL.createUserResponse" form = #LOCAL.form# />
+                    <cfset LOCAL.createUserResponse = VARIABLES.userDB.createUser( form = #LOCAL.form# ) />
 
                 <cfelse>
                     <!--- email error --->
@@ -127,6 +134,12 @@ return response
                 <cfset structInsert(LOCAL.response.error, 'Email', "Enter a valid Email Address") />
 
             </cfif>
+
+                <cfcatch type = "any">
+                    <cfdump var="#cfcatch#" />
+                    <cfabort />
+                </cfcatch>
+            </cftry>
 
             <cfreturn LOCAL.response />
     </cffunction>

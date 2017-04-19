@@ -16,9 +16,10 @@
     <cfset THIS.mappings[ "/commons" ] = "#THIS.rootDir#commons/" />
 
     <!--- <cfset THIS.rootDir = #server.ColdFusion.RootDir# /> --->
-    <cfset THIS.db_logfile = "ShoppingDBlog">
+    <cfset THIS.db_logfile = "ShoppingDBlog" >
+    <cfset APPLICATION.DB_LOGFILE = "ShoppingDBlog" />
     <!--- <cfset THIS.imagePath = "F:\WORK\ColdFusion\Shopping\assets\images\products\medium" /> --->
-    <cfset THIS.imagePath = "D:\ShoppingSite\assets\images\products\medium" />
+    <cfset APPLICATION.imagePath = "D:\ShoppingSite\assets\images\products\medium" />
 
     <cfsetting
         enablecfoutputonly = "no"
@@ -80,6 +81,7 @@
             required = "true"
             />
         <!--- <cfdump var="#REQUEST#" /> --->
+
 
         <cfinclude template = "/include/libraries.cfm" />
         <cfinclude template = "#ARGUMENTS.targetpage#" />
@@ -159,11 +161,11 @@
             <!--- WriteLog(type="Error", file="shoppingbuzz.log", text="[#arguments.exception.type#] #arguments.exception.message#") --->
 
 
-            <!--- <cfif #ARGUMENTS.Exception.type# EQ "Expression">
+            <cfif #ARGUMENTS.Exception.type# EQ "Expression">
                 <cflocation url="index.cfm" addtoken="false" />
             <cfelse>
                 <cfinclude template="/commons/error404.cfm" />
-            </cfif> --->
+            </cfif>
 
         <cfreturn />
     </cffunction>
