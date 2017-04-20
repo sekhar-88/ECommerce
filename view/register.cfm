@@ -9,11 +9,15 @@
  </head>
 
   <body>
-    <cfinclude template = "/commons/header.cfm">
 
 
-    <h1 class="signup-header" align="center">Register With Us</h1>
-      <div id="signup-content">
+
+    <div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
+
+
+      <div id="signup-content" class= "container-fluid container-fluid-page">
+
+        <h1 class="signup-header" align="center">Register With Us</h1>
         <form action="" method="post" id="signup_form"  autocomplete="off">
 
           <div class="form-group">

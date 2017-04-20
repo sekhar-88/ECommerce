@@ -176,13 +176,26 @@
     </cffunction>
 
 
-<!--- simple function to fetch category name from the Subcategory ID --->
+<!--- simple function to fetch SubCategory name from the Subcategory ID --->
     <cffunction name="getSubCategoryName" returntype = "String" access="remote" >
         <cfargument name="scat" type="numeric" required = "true" />
 
         <cfset LOCAL.subCategory = VARIABLES.productDB.getSubCategoryName( argumentcollection="#ARGUMENTS#" ) />
 
         <cfreturn LOCAL.subCategory.SubCategoryName />
+    </cffunction>
+
+<!---
+    this function returns category details like
+    categoryname , subcategoryname, categoryid, subcateogry id,
+    for a given product id
+ --->
+    <cffunction name="getSCategoryDetailsForProductId" returntype = "Query" >
+        <cfargument name="pid" type="numeric" required = "true" />
+
+        <cfset LOCAL.categoryDetails = VARIABLES.productDB.getSCategoryDetailsForProductId(ARGUMENTS.pid) />
+
+        <cfreturn LOCAL.categoryDetails/>
     </cffunction>
 
 
@@ -221,4 +234,6 @@
 
         <cfreturn LOCAL.success />
     </cffunction>
+
+
 </cfcomponent>

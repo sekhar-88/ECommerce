@@ -76,7 +76,7 @@ function generate(){
 
 
 <!--- This updates the password Hash from the Plain passwordboxes --->
-<cfquery name = "password">
+<!--- <cfquery name = "password">
     SELECT UserId, Password, PasswordHash FROM [User]
 </cfquery>
 <cfdump var="#password#" />
@@ -93,4 +93,17 @@ function generate(){
 <cfquery name = "password">
     SELECT Password,PasswordHash FROM [User]
 </cfquery>
-<cfdump var="#password#" />
+<cfdump var="#password#" /> --->
+
+
+
+<cfinclude template="/commons/header.cfm" />
+<script>
+    $().ready(function(){
+        showUpdateModal("test", 2000);
+    })
+</script>
+
+
+
+<cfinclude template="/commons/footer.cfm" />

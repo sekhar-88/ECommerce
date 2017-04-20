@@ -1,23 +1,3 @@
-/*modal styles for updaing the product while in admin mode*/
-h3.modal-title {
-    color: #F44336;
-    font-family: monospace;
-    font-size: 30px;
-}
-#product-update-form .form-group label:first-child {
-    width: 40%;
-    text-align: right;
-    font-size: 18px;
-    font-weight: 100;
-    padding-right: 20px;
-}
-span#product-name {
-    overflow: auto;
-    color: #ac23ff;
-    width: 245px;
-    display: inline-block;
-    font-size: 17px;
-}
 
 
 
@@ -67,6 +47,10 @@ div#buttons-container > * > * {
     border: 1px solid lightgrey;
     margin-left: 10px;
     min-height: 450px;
+}
+
+.category-details {
+    padding: 0 0 0 5px;
 }
 
 .pd-name {
@@ -133,4 +117,29 @@ div#buttons-container > * > * {
 }
 .btn-file {
     background-color: #B3E5FC;
+}
+
+
+
+
+
+/*modal styles for updaing the product while in admin mode*/
+h3.modal-title {
+    color: #F44336;
+    font-family: monospace;
+    font-size: 30px;
+}
+#product-update-form .form-group label:first-child {
+    width: 40%;
+    text-align: right;
+    font-size: 18px;
+    font-weight: 100;
+    padding-right: 20px;
+}
+span#product-name {
+    overflow: auto;
+    color: #ac23ff;
+    width: 245px;
+    display: inline-block;
+    font-size: 17px;
 }

@@ -13,18 +13,22 @@
 	<!--- <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css"> --->
 
 </head>
+
+<!--- refreshing / updating show modal..  function is defineds as showUpdateModal(message, delay, icon) --->
 	<div class="modal fade" id="refresh-modal" role="dialog">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<div class="modal-header">
   					<button type="button" class="close" data-dismiss="modal">&times;</button>
-  					<h4 class="modal-title">Checking Items</h4>
+  					<h4 class="modal-title">updating..</h4>
 				</div>
+
 				<div class="modal-body">
-					<h5 align="center"><i class="fa fa-refresh fa-spin fa-2x fa-fw"></i><h5>
-					<h3>Updating.. Please be patient</h3>
+					<h5 align="center"><i class="icon"></i><h5>
+					<h5 class="update-message"></h5>
 					<span class="sr-only">Loading...</span>
 				</div>
+
 				<div class="modal-footer">
   					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>

@@ -4,6 +4,17 @@ like adding to cart removing from cart, editing updating product details etc. --
 
 <cfcomponent>
 
+    <!--- get all products for Category only --->
+    <cffunction name="getProductsByCategory">
+        <!---
+         this function will send all products list to the useer Products page if there is NO
+         subcategory defined in URL
+         all products in the category will be shown
+         ...To be worked on...
+        --->
+    </cffunction>
+
+
 <!--- updates the product details from editing the product in product details page --->
     <cffunction name="updateProductDetails">
         <cfargument name="productUpdate" type="struct" required = "true"  />
@@ -183,12 +194,38 @@ like adding to cart removing from cart, editing updating product details etc. --
     </cffunction>
 
 
+<!---
+    get subcategory details  from given product id
+--->
+    <cffunction name="getSCategoryDetailsForProductId" returntype="Query" access = "public" >
+        <cfargument name="pid" type = "numeric" required = "true" />
+
+        <cftry>
+
+            <cfquery name = "LOCAL.categoryDetails">
+                SELECT p.SubCategoryId, psc.SubCategoryName, pc.CategoryId, pc.CategoryName
+                FROM [Product] p
+                INNER JOIN [ProductSubCategory] psc
+                    ON p.SubCategoryId = psc.SubCategoryId
+                INNER JOIN [ProductCategory] pc
+                    ON pc.CategoryId = psc.CategoryId
+                WHERE p.ProductId = <cfqueryparam value="#ARGUMENTS.pid#" cfsqltype="cf_sql_bigint" />
+            </cfquery>
+
+            <cfcatch type = "DATABASE">
+                <cflog text="error while retrieving category details for a productid, message: #cfcatch.message#, errorcode: #cfcatch.errorCode# detail: #cfcatch.detail#" file="ShoppingDBlog" />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.categoryDetails />
+    </cffunction>
+
 <!--- simple function to fetch category name from the Subcategory ID --->
     <cffunction name="getSubCategoryName" returntype = "Query" access="public" >
         <cfargument name="scat" type="numeric" required = "true" />
 
         <cfquery name="LOCAL.subCategory">
-            SELECT SubCategoryName
+            SELECT SubCategoryName, SubCategoryId
             FROM [ProductSubCategory]
             WHERE SubCategoryId = <cfqueryparam value="#ARGUMENTS.scat#" cfsqltype="cf_sql_int">
         </cfquery>

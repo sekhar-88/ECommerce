@@ -1,0 +1,31 @@
+.something-went-wrong {
+    /*border: 1px solid black;*/
+    padding: 2px;
+}
+.something-went-wrong .error-img {
+    height: 300px;
+    /*border: 1px solid black;*/
+    margin: 2px;
+    background-image: url(../images/something-went-wrong/404error.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+}
+.something-went-wrong .error-msg {
+    /*border: 1px solid black;*/
+    margin: 2px;
+}
+
+.error-msg h2 {
+    color: #313131;
+    /*font-weight: bold;*/
+}
+.error-msg h4 {
+    color: grey;
+}
+.error-msg h4 a {
+    background-color: #e8e8e8;
+    border-radius: 2px;
+    padding: 2px;
+}

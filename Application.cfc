@@ -158,7 +158,8 @@
 
             <cfdump var="#ARGUMENTS.Exception#" />
             <cfdump var="#ARGUMENTS.EventName#" />
-            <!--- WriteLog(type="Error", file="shoppingbuzz.log", text="[#arguments.exception.type#] #arguments.exception.message#") --->
+
+            <cflog file="eShoppingErrorLog"  text="in On Error method, errortype:  #ARGUMENTS.Exception.type#  message: #ARGUMENTS.Exception.message# detail: #ARGUMENTS.Exception.detail#" />
 
 
             <cfif #ARGUMENTS.Exception.type# EQ "Expression">

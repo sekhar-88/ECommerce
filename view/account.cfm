@@ -5,12 +5,15 @@
 </head>
 
 <body>
-    <cfinclude template="/commons/header.cfm" />
-    <cfif session.loggedin>
-        <h3>Under Construction..</h3>
-    <cfelse>
-        <cflocation url="index.cfm" addtoken="false" />
-    </cfif>
+    <div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
+
+    <div class="page-container-fluid">
+        <cfif session.loggedin>
+            <h3>Under Construction..</h3>
+        <cfelse>
+            <cflocation url="index.cfm" addtoken="false" />
+        </cfif>
+    </div>
 
     <cfinclude template="/commons/footer.cfm" />
 </body>

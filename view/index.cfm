@@ -13,12 +13,12 @@
     </style>
 </head>
 <body>
-<div id="header"><cfinclude template = "/commons/header.cfm"></div>
+<div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
 
 <!--- page refresh logic --->
 <input type="hidden" id="refreshed" value="no"/>
 
-<div class="container-fluid-parent">
+<div class="container-fluid-parent container-fluid-page">
     <cfif StructKeyExists(URL, "q") AND URL.q NEQ ''>
 
         <cfset VARIABLES.products = productCFC.hasProducts(URL.q) />
@@ -27,7 +27,6 @@
             <br />
 
             <div class="container-fluid">
-
             <cftry>
 
                 <cfif VARIABLES.products.recordCount >
@@ -95,6 +94,7 @@
             </cfcatch>
 
         </cftry>
+        </div>
         </cfoutput>
 
 

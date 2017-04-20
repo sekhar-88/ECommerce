@@ -12,19 +12,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href='http://fonts.googleapis.com/css?family=Fenix' rel='stylesheet' type='text/css'>
 </head>
 <body>
+    <cfinclude template = "/commons/header.cfm" />
+
+    <!--- <div class="error-img"></div> --->
 
   <div class="wrap">
 	 <div class="main">
-		<h3>ShoppingBuzz</h3>
 		<h1>Oops Could not found</h1>
+        <h3 align = "center"><a href="index.cfm">Way To Home</a></h3>
 		<p>There's a lot of reasons why this page is<span class="error"> 404</span>.<br>
 			<span>Don't waste your time enjoying the look of it</span></p>
-			<div class="search">
-				<form>
-					<input type="text" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter ur email';}" value="Enter ur email">
-					<input type="submit" value="Submit">
-				</form>
-			</div>
 		<div class="icons">
 		<p>Follow us on:</p>
 		  <ul>
@@ -36,9 +33,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		  </ul>
 	   </div>
    </div>
-	<div class="footer">
-		<p>&copy; All rights Reseverd by  <a href="http://shoppingbuzz.com">ShoppingBuzz</a></p>
-    </div>
   </div>
+    <div class="footer">
+        <p>&copy; All rights Reseverd by  <a href="http://shoppingbuzz.com">ShoppingBuzz</a></p>
+    </div>
+
+  <cfinclude template = "/commons/footer.cfm" />
+
 </body>
 </html>

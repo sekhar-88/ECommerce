@@ -8,7 +8,7 @@
     <script src="../assets/js/cart.js"></script>
 </head>
 <body>
-    <cfinclude template = "/commons/header.cfm">
+    <div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
     <!--- page refresh logic --->
     <input type="hidden" id="refreshed" value="no"/>
 
@@ -31,7 +31,7 @@
         #checkout_pane
     --->
 
-        <div class="container-fluid checkout_section">
+        <div class="container-fluid checkout_section container-fluid-page">
                 <cfif SESSION.loggedin>
                 <div id="items_pane">
 

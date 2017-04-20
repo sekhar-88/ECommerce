@@ -1,11 +1,11 @@
 <cfset productCFC = CreateObject("cfc.product") />
 
 <cfif IsNumeric(URL.cat) AND IsNumeric(URL.scat)>
-    <cfelse>
+<cfelse>
         <!--- <script>$(document).ready(function(){$(html).empty();});</script> --->
         <cfinclude template="/commons/error404.cfm" />
         <cfabort />
-    </cfif>
+</cfif>
 
 
 
@@ -31,9 +31,9 @@
 
 --->
     <body>
-    <div id="header"><cfinclude template = "/commons/header.cfm" /></div>
-    <!--- page refresh logic --->
-    <input type="hidden" id="refreshed" value="no"/>
+        <div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
+        <!--- page refresh logic --->
+        <input type="hidden" id="refreshed" value="no"/>
 
 
     <form class="" action="" enctype="multipart/form-data" method="post" id="product-add-form" name="product-add-form">
@@ -126,7 +126,7 @@
 
 <!--- Body content --->
 
-    <div class="container-fluid">
+    <div class="container-fluid container-fluid-page">
 
                 <div class="filters">
                     <h3 class="filter-section-header">
@@ -210,7 +210,7 @@
 
                                             <div class="product">
 
-                                                    <a href="productDetails.cfm?pid=#ProductId#"></a>
+                                                    <a href="productDetails.cfm?scat=#URL.scat#&amp;pid=#ProductId#"></a>
                                                     <div class="product-image">
                                                         <img class="" src="../assets/images/products/medium/#Image#">
                                                     </div>
@@ -254,6 +254,8 @@
 <cfinclude template = "/commons/footer.cfm">
 </body>
 </html>
+
+
 
 <cftry>
 

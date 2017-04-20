@@ -106,6 +106,14 @@ function updateCartCount(){
 }
 // alert('header.js loaded');
 
+
+
+
+
+
+
+// globally used functions
+
 function notify(msg, alertType, icon, title, icontype, enter_anim, exit_anim){
 
     // alert("message: " + msg + "\nalertType: " + alertType + "\nIcon: " + icon + "\nTitle: " + title + "\nIcontype: " + icontype + "\nEnterAnimation: " + enter_anim + "\nExitAnimation: " + exit_anim);
@@ -141,4 +149,39 @@ function notify(msg, alertType, icon, title, icontype, enter_anim, exit_anim){
 		//             '<span data-notify="message">{2}</span>' +
 	    //           '</div>'
     });
+}
+
+
+
+/*  REUSABLE
+
+    # the code for this modal is present in the footer.cfm file of the site in commons folder
+    this function shows a modal box for updating something for sometime  & then dissapears..
+    accepts arguments
+        message - to show in modal header ,
+        delay   - time delay to show modal,
+        icon    - icon to show in the body,
+        callback - a function to execute after the modal disappears..
+                        if not given it just reloads the page
+*/
+function showUpdateModal(message, delay, icon, callback) {
+    $("#refresh-modal .modal-body .update-message").text(message);
+    if(icon != undefined )
+        $("#refresh-modal .modal-body .icon").addClass(icon);
+    else
+        $("#refresh-modal .modal-body .icon").addClass("fa fa-refresh fa-spin fa-2x fa-fw");
+
+    $("#refresh-modal").modal('show');
+
+    setTimeout(function() {
+        $("#refresh-modal").modal('hide');
+
+            if(callback == undefined)
+                window.location.reload(); //just reload the page
+            else callback(); //do the task - call the callback functions ( no arguments available )
+    }, delay);
+}
+
+var gotoIndexPage = function(){
+    window.location.href = "index.cfm";
 }

@@ -1,11 +1,26 @@
-
-
 /*#header{
     position: fixed;
     top:0;
     right: 0;
     width: 100%;
 }*/
+
+/*page header fixing scope*/
+.page-header{
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    margin: 0px;
+    margin-top: -60px;
+    padding: 0px;
+    border: 0px;
+}
+/*moving down the page body*/
+.container-fluid-page {
+    margin-top: 60px;
+}
+
+
 .login_toggle .dropdown-menu {
     width: 185px;
     padding: 5px;

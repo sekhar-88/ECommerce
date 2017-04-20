@@ -1,7 +1,7 @@
 #signup-content{
   background-color: #F8FAFF;
   width: 95%;
-  margin: auto;
+  /*margin: auto;*/
   padding: 10px;
 }
 #signup_form{
@@ -13,6 +13,24 @@
     box-shadow: 1px 1px 10px;
     padding: 10px ;
     background-color: white;
+}
+.signup-success {
+    height: 300px;
+}
+.signup-success h3{
+    text-align: center;
+    height: 30px;
+    background-image: url(../images/user/success.png);
+    background-repeat: no-repeat;
+    background-position: 25% 0%;
+    background-size: contain;
+}
+.signup-success .signup-success-img{
+    height: 200px;
+    background-image: url(../images/user/signup-success.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 .form-group > label{

@@ -1,5 +1,6 @@
 <cfset productCFC = createObject("cfc.product")/>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,9 +8,9 @@
 </head>
 <body>
 
-<div id="header"><cfinclude template = "/commons/header.cfm" /></div>
-<!--- page refresh logic --->
-<input type="hidden" id="refreshed" value="no" />
+    <div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
+    <!--- page refresh logic --->
+    <input type="hidden" id="refreshed" value="no" />
 
 
 <!---   [to be designed] / [WORKED UPON]
@@ -32,8 +33,8 @@
             .fp_price
 --->
 
-    <div class="container-fluid page">
-        <cfif StructKeyExists(URL, "pid") AND IsNumeric(URL.pid) >
+    <div class="container-fluid page container-fluid-page">
+        <cfif StructKeyExists(URL, "pid") AND IsNumeric(URL.pid) AND StructKeyExists(URL, "scat") AND IsNumeric(URL.scat)>
         <cfset VARIABLES.productDetails = productCFC.fetchProductDetails(URL.pid) />
 
           <cfif VARIABLES.productdetails.recordCount> <!--- Product Exists --->
@@ -97,31 +98,53 @@
                             </div>
                         </cfif>
 
-                    <cfsavecontent variable="productDetailsHTML" >
+                        <cfsavecontent variable="productDetailsHTML" >
+                            <cfset categoryDetails = productCFC.getSCategoryDetailsForProductId(URL.pid) />
 
-                        <div class="pd-name">
-                            #productDetails.Name#
-                        </div>
-                        <div class="pd-rating">
-                            <span class="badge">4</span>
-                        </div>
-                        <div class="pd-price">
-                            <span></span><span>#productDetails.ListPrice#</span>
-                        </div>
-                        <div class="product-specification">
-                            <div class="ps-header">Specifications: </div>
-                            <div class="ps-content">
-                                <div class="ps-content-header"></div>
-                                    <ul>
-                                        <cfloop index="i" list="#productDetails.Description#" delimiters="`"  >
-                                            <li>#i#</li>
-                                        </cfloop>
-                                    </ul>
+                            <div class="category-details">#categoryDetails.CategoryName# &gt; <a href="product.cfm?cat=#categoryDetails.CategoryId#&amp;scat=#categoryDetails.SubCategoryId#">#categoryDetails.SubCategoryName#</a></div>
+
+                            <div class="pd-name">
+                                #productDetails.Name#
                             </div>
-                        </div>
 
-                    </cfsavecontent>
-                    #productDetailsHTML#
+                            <div class="pd-rating">
+                                <span class="badge">4</span>
+                            </div>
+
+                            <div class="pd-price">
+                                <span></span><span>#productDetails.ListPrice#</span>
+                            </div>
+
+                            <div class="product-specification">
+                                <div class="ps-header">Specifications: </div>
+                                <div class="ps-content">
+                                    <div class="ps-content-header"></div>
+                                        <ul>
+                                            <cfloop index="i" list="#productDetails.Description#" delimiters="`"  >
+                                                <li>#i#</li>
+                                            </cfloop>
+                                        </ul>
+                                </div>
+                            </div>
+
+                        </cfsavecontent>
+                        #productDetailsHTML#
+                    </div>
+
+
+                    <!--- show similar products --->
+                    <div class = "similar-products-div" >
+                        <div class = "similar-inner-div" >
+<!---
+                                <cfquery name="similarproducts" >
+                                    SELECT TOP 3 productID
+                                    FROM Products
+                                    WHERE SubCategoryId = <cfqueryparam value="#URL.scat#" cfsqltype="cf_sql_bigint" />
+                                    ORDER BY NEWID()
+                                </cfquery>
+ --->
+                            <div></div>
+                        </div>
                     </div>
 
 
@@ -217,29 +240,22 @@
               </cfoutput>
 
           <cfelse>  <!--- Product Not found for the provided pID --->
-              <h3 class="text text-danger">Error Getting Product Details</h3>
+              <!--- something went wrong message  --->
+              <cfinclude template="/commons/something-went-wrong.cfm" />
           </cfif>
 
-        <cfelse>
-            <cftry>
-                <cf asdflsdf#
-                <cfcatch>
-                    <cfrethrow />
-                </cfcatch>
-            </cftry>
-        </cfif>
+          <cfelse>
+              <cfinclude template="/commons/something-went-wrong.cfm" />
+          </cfif>
     </div>
 
 
 
 
-
-<!--- modal for updating the product details / --->
-
-
-
     <script src="../assets/js/productDetail.js"></script>
     <cfinclude template = "/commons/footer.cfm">
+
+
 </body>
 </html>
 

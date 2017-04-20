@@ -389,11 +389,9 @@ function isCartDataChanged(callback){
     }).done(function(response){
         if(response == false) callback(response);  //place order cartData Didn't change
         else {
-            $("#refresh-modal").modal('show');
-            setTimeout(function() {
-                $("#refresh-modal").modal('hide');
-                window.location.reload();
-            }, 2000);
+            var message = "Updating Cart Items...";
+            var delay = 1500;
+            showUpdateModal(message, delay);
         }
     })
 }

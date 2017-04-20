@@ -12,7 +12,7 @@
 <cfset headerCFC = createObject("cfc.header") />
 <cfset categories = headerCFC.getCategories() />
 
-	<nav class="navbar navbar-default" style="background-color:#70b6e3;z-index: 500;">       <!-- main navbar type -->
+	<nav class="navbar navbar-default" style="background-color:#70b6e3;z-index: 500; border: 0px; border-radius: 0px;">       <!-- main navbar type -->
 		<div class="container-fluid">         <!-- navbar container -->
 			<div class="navbar-header">         <!-- navbar header with contents which show after collapsing -->
 

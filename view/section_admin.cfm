@@ -10,11 +10,14 @@
   </style>
 </head>
 <body>
-<div id="header"><cfinclude template = "/commons/header.cfm"></div>
+    <div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
+
     <cfif session.loggedin>
-    <cfif session.User.Role EQ 'admin'>  <!--can include a admin module .cfm file from other folders --->
-    <div class="admin-panel">
+    <cfif session.User.Role EQ 'admin'> 
+    <div class="admin-panel container-fluid-page">
+
         <div class="admin-logo">Admin Panel</div>
+
         <nav>
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#section-categories">Categories &amp; Brands</a></li>
@@ -22,6 +25,7 @@
             <li><a>list</a></li> --->
         </ul>
         </nav>
+
         <div class="tab-content">
             <div id="section-product" class="tab-pane fade">
                 <div role="navigation" class="nav nav-bar">

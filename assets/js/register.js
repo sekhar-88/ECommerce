@@ -77,8 +77,13 @@ $().ready(function(){// password meter codes
                     notify("Account Created Successfully", "success", "fa fa-check-circle");
                     $("#signup-content").empty();
 
-                    $("#signup-content").append("<div style='height: 500px;'><h1 align='center' style='color:blue;'>Account Created Successfully.</h1>\
-                                                 <h2><a href='index.cfm'>go to homepage</a></h2></div>");
+                    var successStr = '<div class="signup-success" style="height: 500px;">' +
+                                        '<div class="signup-success-img"></div>' +
+                                        '<h3>Account Created Successfully.</h3>' +
+                                        '<h5 align="center"><a href="index.cfm">go to homepage</a></h5>' +
+                                     '</div>';
+
+                    $("#signup-content").append(successStr);
                 }
                 else {
                     //console.log(response.ERROR);
