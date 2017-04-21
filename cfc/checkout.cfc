@@ -250,8 +250,7 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
         <cfargument name="pid" required="true" type="numeric"  />
         <cfargument name="qty" required="true" type="numeric" />
 
-        <cfset SESSION.cartDataChanged = true />
-        <cfset LOCAL.price = getPriceOfProduct(ARGUMENTS.pid)/>
+        <cfset LOCAL.price = getPriceOfProduct(ARGUMENTS.pid) />
         <cfset LOCAL.totalPrice = LOCAL.price * #ARGUMENTS.qty# />
 
         <cftry>
@@ -314,4 +313,28 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
         <cfreturn SESSION.cartDataChanged
         />
     </cffunction>
+
+<!---
+    this function sets the payment data changed to false
+    while going into the payments section after reviewing the order
+ --->
+    <cffunction name="setPaymentDataChangedToFalse" returntype = "boolean" returnformat = "JSON" access = "remote" >
+
+        <cfif SESSION.User.paymentDataChanged >
+            <cfset SESSION.User.paymentDataChanged = false />
+        </cfif>
+
+        <cfreturn true />
+    </cffunction>
+
+<!--- simply returns if the paymentData changed or not in User session Scope  --->
+    <cffunction name="isPaymentDataChanged" returntype = "boolean" returnformat = "JSON" access = "remote" output = "true">
+        <cftry >
+            <cfreturn SESSION.User.paymentDataChanged />
+            <cfcatch >
+                <cfdump var="#cfcatch#" />
+            </cfcatch>
+        </cftry>
+    </cffunction>
+
 </cfcomponent>

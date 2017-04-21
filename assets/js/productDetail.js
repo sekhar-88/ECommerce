@@ -112,7 +112,12 @@ function changeto_gotocart(){
 }
 
 function showLoginMsg(){
-    $(".login-notify").show(300);
+    $(".login-notify").show(300, function(){
+        var el = $(this);
+        setTimeout(function(){
+            el.hide(300);
+        }, 2000);
+    });
 }
 
 function showUpdateModal(pid){

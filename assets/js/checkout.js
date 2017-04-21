@@ -1,3 +1,17 @@
+// contains checkout.cfm  related  functions .. etc...
+
+
+/*
+functions used :
+
+isPaymentDataChanged(callback)
+    fires the callback after ajax success returns true,
+    or updates the page (refreshes) if ajax success returns false
+
+... to be written
+*/
+
+
 var addressid = undefined;
 var orderSummary = "";
 var amountPayble = 0;
@@ -88,7 +102,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
     $("#order_summary .subsection").show();  //animation 300 delay
     $("#address_section .show_when_collapsed").fadeIn();
     $.ajax({
-        async: false,
+        // async: false,
         url: "../cfc/checkout.cfc?method=getOrderSummary",
         dataType: "json",
         data: {
@@ -125,7 +139,7 @@ function gotoStep1(){  //hide delivery address pane & show review order pane
                                         + "></span></div>" ;
 
                     $.ajax({
-                        async: false,
+                        // async: false,
                         url: "../cfc/checkout.cfc?method=getAvailableQuantity",
                         data: { itemid: item.id },
                         dataType: "json",
@@ -174,7 +188,7 @@ function validateItemCount(element, value, max, cartId){
     }
 
     $.ajax({
-        async: false,
+        // async: false,
         url: "../cfc/checkout.cfc?method=updateCartAndTotalPrice",
         data: {
             cartid: cartId,
@@ -290,10 +304,9 @@ function storeAddressGotoStep1(el){  //gotoOrderSummary Section
 }
 
 function gotoPaymentSection(el){
-
-    $("#order_summary .subsection").slideUp(300);  //this is only here because it is not needed when page refreshed
-    gotoStep2();                             //others are in this function
-
+    //set paymentDataChanged to false -- if it's true
+    // for more info see SESSION.User.paymentDataChanged in application.cfc > onSessionStart method
+    ifPaymentDataNotChanged(proceedToPaymentSection, setPaymentDataChangedToFalse);
 }
 
 function reviewOrder(el){
@@ -374,30 +387,35 @@ function editAddressAndSave(form,address_id){
         }
     })
     //console.log(form);
-
 }
 
 
 function placeOrderByCOD(){
-    isCartDataChanged(placeOrder);
+    ifPaymentDataNotChanged(placeOrder);
 }
 
-function isCartDataChanged(callback){
+
+// check for proceeding in placing order
+function ifPaymentDataNotChanged(callback, failcallback){
     $.ajax({
-        url: "../cfc/checkout.cfc?method=isCartDataChanged",
+        url: "../cfc/checkout.cfc?method=isPaymentDataChanged",
         dataType: "json"
     }).done(function(response){
-        if(response == false) callback(response);  //place order cartData Didn't change
-        else {
+
+        if(response == true) {
             var message = "Updating Cart Items...";
             var delay = 1500;
-            showUpdateModal(message, delay);
+            showUpdateModal(message, delay, undefined, failcallback);
         }
-    })
+
+        else {
+            callback(response);  //place order cartData Didn't change -- or goto payment section
+        }
+    });
 }
 
 var placeOrder = function(response){
-        if(validateItemQuantity()){  //purchasee section handling
+        if( validateItemQuantity() ){  //purchasee section handling
             $.ajax({
                 url: "../cfc/checkout.cfc?method=orderPlacedByCOD",
                 data:{},
@@ -429,6 +447,26 @@ var placeOrder = function(response){
 
 }
 
+var proceedToPaymentSection = function(response){
+    $("#order_summary .subsection").slideUp(300);  //this is only here because it is not needed when page refreshed
+    gotoStep2();                                   //others are in this function
+}
+
+var setPaymentDataChangedToFalse = function(response) {
+    $.ajax({
+
+        url: "../cfc/checkout.cfc?method=setPaymentDataChangedToFalse",
+        dataType: "json"
+
+    }).done(function(response){
+
+        console.log(response)
+        if ( response == true ) window.location.reload();
+
+    }).fail(function(error){
+        console.log("someerror occured");
+    });
+}
 
 function validateItemQuantity(){
     var result;
@@ -441,7 +479,7 @@ function validateItemQuantity(){
         //console.log(qty + itemId);
         if( parseInt(qty) > 0 ){
             $.ajax({
-                    async: false,
+                    // async: false,
                     url: "../cfc/checkout.cfc?method=getAvailableQuantity",
                     data: {
                         itemid: itemId

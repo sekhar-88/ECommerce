@@ -13,28 +13,10 @@
     <input type="hidden" id="refreshed" value="no" />
 
 
-<!---   [to be designed] / [WORKED UPON]
-.product_details_pd_container
 
-    pd_image
-        pd_image-thumbnails
-        pd_image-preview
-    pd_info
-        pd_name
-        pd_price
-        pd_description
-        pd_specification
-
-.featured_product_fp_container
-    fp_products carousel
-        .fp_product
-            .fp_image
-            .fp_name
-            .fp_price
---->
-
+    <!--- page body --->
     <div class="container-fluid page container-fluid-page">
-        <cfif StructKeyExists(URL, "pid") AND IsNumeric(URL.pid) AND StructKeyExists(URL, "scat") AND IsNumeric(URL.scat)>
+        <cfif StructKeyExists(URL, "pid") AND IsNumeric(URL.pid)>
         <cfset VARIABLES.productDetails = productCFC.fetchProductDetails(URL.pid) />
 
           <cfif VARIABLES.productdetails.recordCount> <!--- Product Exists --->

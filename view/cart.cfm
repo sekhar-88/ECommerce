@@ -136,3 +136,5 @@
     <cfabort />
 </cfcatch>
 </cftry>
+
+<cfdump var="#SESSION#" />

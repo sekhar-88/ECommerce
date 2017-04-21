@@ -47,7 +47,15 @@
         <cfset SESSION.loggedin = false />
         <cfset SESSION.cart = [] />
         <cfset SESSION.cartDataChanged = false />
-        <cfset SESSION.User = { role = "guest" } />
+
+        <!--- SESSION.User.paymentDataChanged ===
+
+            to check if any new cart data is added or not ...
+            for refreshing while placing order ..
+            if payment data changed .. it will refresh the page..
+            if it is true
+            (this is set to false only when user clicks on proceed to payment section) --->
+        <cfset SESSION.User = { role = "guest", paymentDataChanged = false } />
 
 
         <cfreturn />

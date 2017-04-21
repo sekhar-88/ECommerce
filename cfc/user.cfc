@@ -69,7 +69,8 @@ return response
                             UserName = "#LOCAL.result.FirstName#" & " " & "#LOCAL.result.LastName#",
                             UserEmail = "#LOCAL.result.Email#",
                             UserPhoneNo = "#LOCAL.result.PhoneNo#",
-                            Role = "#LOCAL.result.Role#"
+                            Role = "#LOCAL.result.Role#",
+                            paymentDataChanged = false
                         } />
 
                             <cfset SESSION.loggedin="true" />

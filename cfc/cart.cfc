@@ -36,6 +36,7 @@
 
                 <cfset VARIABLES.cartDB.removeItemFromUserCart( argumentcollection = "#ARGUMENTS#" ) />
                 <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
+                <cfset SESSION.User.paymentDataChanged = true />
 
                 <cfcatch>
                     <cfdump var="#cfcatch#" />
@@ -49,6 +50,15 @@
     <cffunction name="removeFromSessionCart" output="false" returnType="boolean" returnFormat="json" access="remote" >
         <cfargument name="pid" type="numeric" required="true"/>
                 <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
+
+                <!--- for refreshing while placing order ..
+                    to check if any new cart data is added or not ...
+                    if payment data changed .. it will refresh the page..
+                    if it is true
+                    (this is set to false only when user clicks on proceed to payment section) --->
+                <cfset SESSION.User.paymentDataChanged = true />
+
+
                 <cfreturn arrayDelete(session.cart, #arguments.pid#)/>
     </cffunction>
 

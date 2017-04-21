@@ -69,76 +69,77 @@
 </div>
 
     <div class="container-fluid checkout_section container-fluid-page">
-        <div>
-            <h3 id="section-checkout-header" style="background-color: #fff59d;" class="color-grey padding-10 margin-0 margin-top--19">
-                <span class="glyphicon glyphicon-shopping-cart color-black font-size-20"></span> Product checkout
-            </h3>
-            <p></p>
-        </div>
+            <div>
+                <h3 id="section-checkout-header" style="background-color: #fff59d;" class="color-grey padding-10 margin-0 margin-top--19">
+                    <span class="glyphicon glyphicon-shopping-cart color-black font-size-20"></span> Product checkout
+                </h3>
+                <p></p>
+            </div>
 
         <cfset cartIsEmpty = cartCFC.isCartEmpty()/>
+        <cfif NOT session.loggedin>
 
-    <cfif NOT session.loggedin>
-        <h4 class="jumbotron well">Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To complete Checkout Process</h4>
-    <cfelseif cartIsEmpty>
+            <h4 class="jumbotron well">Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To complete Checkout Process</h4>
 
-        <cfset val =( #cgi.HTTP_REFERER# EQ '' )/>
+        <cfelseif cartIsEmpty>
 
-        <cfif val EQ "YES">
-            <cfoutput>
-                <cflocation url="index.cfm" addtoken="false" />
-            </cfoutput>
+            <cfset val =( #cgi.HTTP_REFERER# EQ '' )/>
+
+            <cfif val EQ "YES">
+                <cfoutput>
+                    <cflocation url="index.cfm" addtoken="false" />
+                </cfoutput>
+            <cfelse>
+                <cflocation url="cart.cfm" addtoken="false" />
+            </cfif>
+
         <cfelse>
-            <cflocation url="cart.cfm" addtoken="false" />
-        </cfif>
+            <!--- loggedin >>  show address  --->
+            <cfif NOT StructKeyExists(session.User, "checkout")>
+                <cfset session.User.checkout = { step = 0 } />
+            </cfif>
 
-    <cfelse>
-        <!--- loggedin >>  show address  --->
-        <cfif NOT StructKeyExists(session.User, "checkout")>
-            <cfset session.User.checkout = { step = 0 } />
-        </cfif>
+            <div id="address_section" class="section">
+                <div id="address_header" class="section_header">
+                    <div class="header_text">Delivery Address</div>
+                    <div class="show_when_collapsed" style="display:none;">
+                        <button type="button" class="btn btn-review border-radius-2" onclick="revertToStep0();">Change address</button>
+                    </div>
+                </div>
 
-        <div id="address_section" class="section">
-            <div id="address_header" class="section_header">
-                <div class="header_text">Delivery Address</div>
-                <div class="show_when_collapsed" style="display:none;">
-                    <button type="button" class="btn btn-review border-radius-2" onclick="revertToStep0();">Change address</button>
+                <cfset addresses = checkoutCFC.getAddressesOfUser() />
+                <div class="subsection" style="display:none;">
+                <div class="addresses">
+                    <cfif addresses.recordCount>    <!--- populate the address inside addres section --->
+                    <cfoutput>
+                    <cfloop query="addresses" >
+                        <div class="address" style="position:relative;" data-addressid="#AddressId#" data-name="#Name#" data-address-line="#AddressLine#" data-postal-code="#PostalCode#" data-city="#City#" data-state="#State#" data-phone-no="#PhoneNo#" data-landmark="#LandMark#">
+                                <h5>#Name#</h5>
+                                <span class="separator" role="separator"></span>
+                                <div style="height:120px; padding: 4px;">
+                                #AddressLine#   <br />
+                                <span class="text-success">PIN</span>: #PostalCode#    <br />
+                                <span class="text-success">Mob</span>: #PhoneNo#
+                                </div>
+                                <div style="">
+                                    <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);" style="float: left;">   Deliver Here  </button>
+                                    <!--- <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button> --->
+                                    <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);" style="float: right;">  Delete        </button>
+                                </div>
+                        </div>
+                    </cfloop>
+                    </cfoutput>
+                    <cfelse>  <!--- no addresses available for the user--->
+                            <div class="no_address">
+                                No Addresses.
+                            </div>
+                    </cfif>
+                </div>
+                <div class="new_address"  onclick="addNewAddressShowModal();" >
+                    <span class=""><span class="glyphicon glyphicon-plus"></span> New Address</span>
+                </div>
                 </div>
             </div>
-
-            <cfset addresses = checkoutCFC.getAddressesOfUser() />
-            <div class="subsection" style="display:none;">
-            <div class="addresses">
-                <cfif addresses.recordCount>    <!--- populate the address inside addres section --->
-                <cfoutput>
-                <cfloop query="addresses" >
-                    <div class="address" style="position:relative;" data-addressid="#AddressId#" data-name="#Name#" data-address-line="#AddressLine#" data-postal-code="#PostalCode#" data-city="#City#" data-state="#State#" data-phone-no="#PhoneNo#" data-landmark="#LandMark#">
-                            <h5>#Name#</h5>
-                            <span class="separator" role="separator"></span>
-                            <div style="height:120px; padding: 4px;">
-                            #AddressLine#   <br />
-                            <span class="text-success">PIN</span>: #PostalCode#    <br />
-                            <span class="text-success">Mob</span>: #PhoneNo#
-                            </div>
-                            <div style="">
-                                <button type="button"  value="#AddressId#" class="btn btn-success btn-sm" onclick="storeAddressGotoStep1(this);" style="float: left;">   Deliver Here  </button>
-                                <!--- <button type="button"  value="#AddressId#" class="btn btn-info btn-sm" onclick="editAddress(this);">    Edit          </button> --->
-                                <button type="button"  value="#AddressId#" class="btn btn-warning btn-sm" onclick="deleteAddress(this);" style="float: right;">  Delete        </button>
-                            </div>
-                    </div>
-                </cfloop>
-                </cfoutput>
-                <cfelse>  <!--- no addresses available for the user--->
-                        <div class="no_address">
-                            No Addresses.
-                        </div>
-                </cfif>
-            </div>
-            <div class="new_address"  onclick="addNewAddressShowModal();" >
-                <span class=""><span class="glyphicon glyphicon-plus"></span> New Address</span>
-            </div>
-            </div>
-        </div>
 
 
         <div id="order_summary" class="section">
@@ -183,7 +184,7 @@
                 -->
                 </div>
                 <div>
-                    <button type="button" class="btn btn-success" onclick="if(validateItemQuantity()) { gotoPaymentSection(this);}" style="float:right;padding: 10px; font-size: 17px; font-weight: 400;box-shadow:1px 1px 5px lightgrey; border-radius: 2px; z-index: 100;">Proceed to Payment</button>
+                    <button type="button" class="btn btn-success" onclick="gotoPaymentSection(this);" style="float:right;padding: 10px; font-size: 17px; font-weight: 400;box-shadow:1px 1px 5px lightgrey; border-radius: 2px; z-index: 100;">Proceed to Payment</button>
                     <div style="float:right;padding: 5px;">
                         <span style="font-weight:bold; padding: 10px;">Total:</span>
                         <span class="fa fa-inr checkoutPrice"></span> <span class="checkoutPrice" id="total-checkout-price"> </span><span class="checkoutPrice">/-</span>

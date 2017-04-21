@@ -1,6 +1,6 @@
-<cfcomponent>
+<cfcomponent displayname="prodct.cfc" hint="this_component contains all Product related functions" >
 
-    <cfset VARIABLES.productDB = CreateObject("db.product_db")/>
+    <cfset VARIABLES.productDB = CreateObject("db.product_db") />
 
 
 <!--- This function updates the product details from editing the product in product details page --->
@@ -8,7 +8,8 @@
         <cfargument name="productUpdate" type="struct" required = "true"  />
         <cfargument name="imagename" type="string" required = "true" />
 
-        <cfset LOCAL.success = VARIABLES.productDB.updateProductDetails(argumentcollection = "#ARGUMENTS#") />
+        <cfset LOCAL.success = VARIABLES.productDB.updateProductDetails( argumentcollection = "#ARGUMENTS#" ) />
+
         <cfreturn LOCAL.success />
     </cffunction>
 
@@ -38,7 +39,8 @@
                     <cfset VARIABLES.productDB.insertIntoCart( pid = #ARGUMENTS.pid#, price = "#LOCAL.price#" ) />
 
                     <!--- cart data changed --->
-                    <cfset SESSION.cartDataChanged = true/>;
+                    <cfset SESSION.cartDataChanged = true />
+                    <cfset SESSION.User.paymentDataChanged = true />
                     <cfreturn true />
                 </cfif>
 
@@ -48,6 +50,7 @@
                 <cfelse>
                     <cfset ArrayAppend(session.cart, #arguments.pid#) /> <!--- Store in Session --->
                     <cfset session.cartDataChanged = true/>
+                    <cfset SESSION.User.paymentDataChanged = true />
                     <cfreturn true />
                 </cfif>
             </cfif>
