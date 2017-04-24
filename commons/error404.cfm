@@ -14,10 +14,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <body>
     <cfinclude template = "/commons/header.cfm" />
 
-        <div class = "" >
-            <div class = "" >
+        <div class = "main" >
+
+            <div class = "error-img" >
+            </div>
+
+            <div class = "error-msg" >
+                <h4>Try going <a href="index.cfm">Home</a> </h4>
 
             </div>
+
         </div>
 
     <cfinclude template = "/commons/footer.cfm" />

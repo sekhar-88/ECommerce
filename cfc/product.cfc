@@ -1,7 +1,42 @@
+<!---
+    component info : product.cfc
+    created :
+
+    this component contains all the product related fuctions & objects which are used mostly on
+    product.cfm or productDetails.cfm page of the ecommerce application
+--->
+
 <cfcomponent displayname="prodct.cfc" hint="this_component contains all Product related functions" >
 
+    <!--- creating ontime object of its underlying Database logic --->
     <cfset VARIABLES.productDB = CreateObject("db.product_db") />
 
+
+    <!---
+        this function checks if the provided category or subcategory id in the URL is valid or not.
+        returns true or false accordingly, if any error found the result is always false
+        return type boolean
+    --->
+    <cffunction name="categorySubcategoryExists" returntype="boolean" access = "remote" output = "true" >
+        <cfargument name="cat" required = "true"  type = "numeric" />
+        <cfargument name="scat" required = "true" type = "numeric" />
+
+        <cftry>
+            <cfset LOCAL.categorySubcategoryValid = VARIABLES.productDB.categorySubcategoryExists( argumentcollection = #ARGUMENTS# ) />
+
+            <cfif IsBoolean(LOCAL.categorySubcategoryValid)>
+                <cfset LOCAL.response = LOCAL.categorySubcategoryValid />
+            <cfelse>
+                <cfset LOCAL.response = false />
+            </cfif>
+
+            <cfcatch type = "any">
+                <cfset LOCAL.response = false />
+            </cfcatch>
+        </cftry>
+
+        <cfreturn LOCAL.response />
+    </cffunction>
 
 <!--- This function updates the product details from editing the product in product details page --->
     <cffunction name = "updateProductDetails" returntype = "Any" access = "remote" >

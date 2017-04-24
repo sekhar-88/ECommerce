@@ -4,14 +4,33 @@ like adding to cart removing from cart, editing updating product details etc. --
 
 <cfcomponent>
 
-    <!--- get all products for Category only --->
-    <cffunction name="getProductsByCategory">
-        <!---
-         this function will send all products list to the useer Products page if there is NO
-         subcategory defined in URL
-         all products in the category will be shown
-         ...To be worked on...
-        --->
+
+    <!--- this function checks any row exists in Database with given category and subcategory Id --->
+    <cffunction name="categorySubcategoryExists" returntype="boolean" access = "public"  >
+        <cfargument name="cat" type = "numeric" required = "true" />
+        <cfargument name="scat" type = "numeric" required = "true" />
+
+        <cftry>
+
+            <cfquery name = "LOCAL.categorySubcategoryValid" >
+                SELECT psc.SubCategoryName
+                FROM [ProductSubCategory] psc
+                WHERE psc.CategoryId = <cfqueryparam value = "#ARGUMENTS.cat#" cfsqltype = "cf_sql_bigint" />
+                      AND psc.SubCategoryId = <cfqueryparam value = "#ARGUMENTS.scat#" cfsqltype = "cf_sql_bigint" />
+
+            </cfquery>
+
+            <cfif LOCAL.categorySubcategoryValid.recordCount >  <cfset LOCAL.response = true />
+            <cfelse>    <cfset LOCAL.response = false />
+            </cfif>
+
+            <cfcatch type = "DATABASE">
+                <cfset LOCAL.response = false />
+            </cfcatch>
+
+        </cftry>
+
+        <cfreturn LOCAL.response />
     </cffunction>
 
 
@@ -394,6 +413,16 @@ like adding to cart removing from cart, editing updating product details etc. --
         </cftry>
 
         <cfreturn LOCAL.response />
+    </cffunction>
+
+    <!--- get all products for Category only --->
+    <cffunction name="getProductsByCategory">
+        <!---
+        this function will send all products list to the useer Products page if there is NO
+        subcategory defined in URL
+        all products in the category will be shown
+        ...To be worked on...
+        --->
     </cffunction>
 
 </cfcomponent>
