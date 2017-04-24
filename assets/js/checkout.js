@@ -479,7 +479,7 @@ function validateItemQuantity(){
         //console.log(qty + itemId);
         if( parseInt(qty) > 0 ){
             $.ajax({
-                    // async: false,
+                    async: false,
                     url: "../cfc/checkout.cfc?method=getAvailableQuantity",
                     data: {
                         itemid: itemId
