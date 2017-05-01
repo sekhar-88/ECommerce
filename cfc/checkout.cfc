@@ -1,17 +1,26 @@
+<!---
+    Controller name: checkout.cfc
+    contains functionalities of checkout page.
+--->
+
 <cfcomponent extends="product" >
     <cfset VARIABLES.checkoutDB = CreateObject("db.checkout_db") />
 
+    <!--- deletes the session cart data in User section of the session while in different checkout steps ..  --->
     <cffunction name="refreshSessionCheckoutList" returntype="boolean" returnformat="json" access="remote">
         <cfargument name="arrayindex" required="true" type="numeric" />
         <cfset ArrayDeleteAt(session.User.checkout.itemsInfo, arguments.arrayindex)/>
     </cffunction>
 
+    <!--- gets the shipping addresses of a user--->
     <cffunction name="getAddressesOfUser" output="false" returntype="query" access="remote" >
         <cfset LOCAL.addresses = VARIABLES.checkoutDB.getAddressForUser() />
 
         <cfreturn LOCAL.addresses />
     </cffunction>
 
+
+    <!--- gets the checkout step for the checkout page 1 for address section & 2 for order review session. --->
     <cffunction name="getCheckOutStep" access="remote" returntype="numeric" returnFormat="json" >
         <cftry>
         <!---   if loggedin > if cartdata cartDataChanged  > if at checkout step 1
@@ -43,6 +52,7 @@
         </cftry>
     </cffunction>
 
+    <!--- sets checkout address in session after choosing a delivery address.  --->
     <cffunction name="setCheckoutAddress" output="true" returntype="boolean" returnformat="json" access="remote" >
         <cfargument name="addressid" required="true" type="numeric" />
         <cftry >
@@ -56,6 +66,9 @@
         </cftry>
     </cffunction>
 
+
+    <!--- reverting the step 1 or 2 depending on the user clicked on choose delivery address or
+    review order button after going into the next step on checkout page. --->
     <cffunction name="revertToStep" output="true" access="remote" returnType="boolean" returnFormat="json">
         <cfargument name="step" type="numeric" required="true" />
 
@@ -137,7 +150,7 @@ this function returns cart items details &  price & image for showing in cart se
         <cfreturn #itemsInfo#/>
     </cffunction>
 
-
+    <!--- get the product available quantity for the particular product. --->
     <cffunction name="getAvailableQuantity" returnType="Numeric" returnFormat="json" access="remote">
         <cfargument name="itemid" required="true" type="numeric" />
 
@@ -146,7 +159,7 @@ this function returns cart items details &  price & image for showing in cart se
         <cfreturn #LOCAL.Qty# />
     </cffunction>
 
-
+    <!--- insert a new shipping address for the user . --->
     <cffunction name="saveShippingAddress" output="true" access="remote" returnformat="JSON" returntype="boolean"  >
         <cfargument name="AddressLine" type="string" required="true" >
         <cfargument name="Name"        type="string" required="true" >
@@ -161,9 +174,10 @@ this function returns cart items details &  price & image for showing in cart se
             <cfelse>
             <cfreturn false/>
         </cfif>
-
     </cffunction>
 
+
+    <!--- delete a shipping address mark deleted in db. --->
     <cffunction name="deleteAddress" access="remote" output="true" returntype="any" returnFormat="json">
         <cfargument name="addressid" required="true" type="numeric" />
 
@@ -177,6 +191,7 @@ this function returns cart items details &  price & image for showing in cart se
         </cftry>
     </cffunction>
 
+    <!--- decode the URL into a general string. & extract a stringified OBJ/structure --->
     <cffunction name="URLstringToObj" returntype="struct" access= "public" >
         <cfargument name="formdata" type="string" required = "true" />
 
@@ -191,6 +206,8 @@ this function returns cart items details &  price & image for showing in cart se
         <cfreturn #formStruct# />
     </cffunction>
 
+
+    <!--- save the shipping address after updating the address.. not used may be. --->
     <cffunction name="updateShippingAddress" access="remote" output="true" returntype="string" returnformat="json">
         <cfargument name="addressid" required="true" type="numeric" />
         <cfargument name="formdata" required="true" type="string" />
@@ -203,6 +220,10 @@ this function returns cart items details &  price & image for showing in cart se
             <cfreturn #LOCAL.success# />
     </cffunction>
 
+    <!--- order placed by COD (cash on delivery)
+            insert into order table..   get generated .. order id...
+            insert into order details table... etc..
+    --->
     <cffunction name="orderPlacedByCOD" output="true" returntype="Struct" returnformat="JSON" access="remote">
         <cfset response = {}/>
         <!--- <cfset subTotal = getCartTotal()/> --->
@@ -241,10 +262,10 @@ this function returns cart items details &  price & image for showing in cart se
         <cfreturn #response#/>
     </cffunction>
 
-<!---
-UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
-& RETURN THE TOTAL PRICE OF PRODUCTS IN CART
- --->
+    <!---
+        UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
+        & RETURN THE TOTAL PRICE OF PRODUCTS IN CART
+    --->
     <cffunction name="updateCartAndTotalPrice" returntype="Any" returnformat="JSON" access="remote" output="false">
         <cfargument name="cartid" required="true" type="numeric"/>
         <cfargument name="pid" required="true" type="numeric"  />
@@ -266,7 +287,7 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
         </cftry>
     </cffunction>
 
-<!--- TOTAL CART AMOUNT --->
+    <!--- Calculate Total total amount of Cart --->
     <cffunction name="getCartTotal" returntype="Numeric" returnFormat="JSON" access="remote" output="true" >
 
         <cftry>
@@ -300,7 +321,7 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
         </cftry>
     </cffunction>
 
-
+    <!--- get the price of a product given its Product ID --->
     <cffunction name="getPriceOfProduct" access="remote" returntype="boolean" output="true">
         <cfargument name="pid" required="true" type="numeric"/>
 
@@ -308,7 +329,9 @@ UPDATE CART ITEM COUNT & UPDATE THE TOTAL PRICE AS SUCH
         <cfreturn #LOCAL.productPrice# />
     </cffunction>
 
-
+    <!--- check for cart data chaged (session variable) or not. from JAVASCRIPT
+        used for checking if the cart Data (items , quantity , or something changed or not .. )
+        depending on resets the ckeout step  in checkout page.. & used in some error handling. --->
     <cffunction name="isCartDataChanged" returntype="boolean" returnformat="json" access="remote" >
         <cfreturn SESSION.cartDataChanged
         />

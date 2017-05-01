@@ -1,3 +1,5 @@
+<!--- this page is for testing purpose ... & hence not used anywhere  --->
+
 <!--- <cfoutput>
     <h3>this file logs in the main user Automatically.<h3>
         User caution!

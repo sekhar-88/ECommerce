@@ -1,4 +1,8 @@
-<!--A Design by W3layouts
+<!--
+    page name: error404.cfm
+    it serves the purpose for displaying a error page displaying an error that page not found.
+
+A Design by W3layouts
 Author: W3layout
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported

@@ -1,3 +1,8 @@
+<!---
+    Controller name: header.cfc
+    contains functaionalities of header part of the page.
+--->
+
 <cfcomponent>
     <cfset VARIABLES.headerDB = CreateObject("db.header_db") />
 

@@ -1,3 +1,9 @@
+<!---
+        == USER ORDERS PAGE ==
+    contains all the order item history ..
+    user ordered in the past..
+--->
+
 <cfset ordersCFC = CreateObject("cfc.orders") />
 
 <!DOCTYPE html>

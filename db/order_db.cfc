@@ -1,3 +1,8 @@
+<!---
+    Component Name: order_db.cfc
+    This Component Contains partially/all the database related operations/functions relating to the product Orders 
+--->
+
 <cfcomponent>
 
 

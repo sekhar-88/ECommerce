@@ -1,3 +1,10 @@
+<!---
+    Page Name: cart.cfm
+    This is the cart page of the site.
+    this will show option to login if not logged in
+    or show the items in the cart.
+--->
+
 <cftry>
 <cfset cartCFC = createObject("cfc.cart") />
 

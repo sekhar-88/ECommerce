@@ -1,8 +1,11 @@
+<!---
+    == PRODUCT PAGE ==
+    shows products list in a category or subcategory
+    admin has previlates to add a product under that subcategory
+--->
+
+
 <cfset productCFC = CreateObject("cfc.product") />
-
-
-
-
 
 <!DOCTYPE html>
 <head>

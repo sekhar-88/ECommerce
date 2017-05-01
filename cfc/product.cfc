@@ -1,7 +1,5 @@
 <!---
-    component info : product.cfc
-    created :
-
+    Controller info : product.cfc
     this component contains all the product related fuctions & objects which are used mostly on
     product.cfm or productDetails.cfm page of the ecommerce application
 --->
@@ -38,7 +36,7 @@
         <cfreturn LOCAL.response />
     </cffunction>
 
-<!--- This function updates the product details from editing the product in product details page --->
+    <!--- This function updates the product details from editing the product in product details page --->
     <cffunction name = "updateProductDetails" returntype = "Any" access = "remote" >
         <cfargument name="productUpdate" type="struct" required = "true"  />
         <cfargument name="imagename" type="string" required = "true" />
@@ -48,7 +46,12 @@
         <cfreturn LOCAL.success />
     </cffunction>
 
-
+    <!---
+        Function     : user_checkout
+        Hint         : adds the product to cart if user directly clicked on buy now button instead of clicking the add to cart button
+        Return Type  : boolean
+        return format: JSON
+     --->
     <cffunction name = "user_checkout" returntype = "boolean" returnformat = "json" output = "true" access = "remote">
         <cfargument name = "pid" type = "numeric" required = "true" />
           <cfset addedToCart = addToCart(arguments.pid)/>
@@ -56,7 +59,7 @@
     </cffunction>
 
 
-<!--- HINT : this method is called while adding to cart by clicking "addtocart" or directy clicking on "buynow" button --->
+    <!--- HINT : this method is called while adding to cart by clicking "addtocart" or directy clicking on "buynow" button --->
     <cffunction name = "addToCart" returnType = "boolean" returnFormat = "json" access = "remote" output = "false">
         <cfargument name = "pid" type = "numeric" required = "true" />
 
@@ -92,7 +95,12 @@
     </cffunction>
 
 
-
+    <!---
+        Function     :
+        Hint         :
+        Return Type  :
+        return format:
+     --->
     <cffunction name = "getProductsForSubCat" access = "remote" returntype = "Query" output = "false" >
         <cfargument name = "scat" required = "true" type = "numeric" output = "false" />
 
@@ -174,7 +182,12 @@
         <cfreturn LOCAL.subCategoryFilters />
     </cffunction>
 
-
+    <!---
+        Function     : filterBrands
+        Hint         : filter & show the brands depending on the product that based on products subcateogry.
+        Return Type  : Query
+        return format: N/A
+     --->
     <cffunction name = "filterBrands" returntype = "Query" access = "remote"  >
         <cfargument name = "scat" type = "numeric" required = "true" />
         <cftry>
@@ -190,6 +203,12 @@
         <cfreturn LOCAL.brandsFilter />
     </cffunction>
 
+    <!---
+        Function     : hasProducts
+        Hint         : if the cart has products or not.
+        Return Type  : query
+        return format: N/A
+     --->
     <cffunction name = "hasProducts" returntype = "Query" access = "remote" >
         <cfargument name = "q" type = "string" required = "true" />
         <cfset LOCAL.q = #Trim(ARGUMENTS.q)# />
@@ -237,9 +256,11 @@
     </cffunction>
 
 
-<!---   CHECKS FOR PRODUCTS EXISTS OR NOT
-        BEFORE ADDING TO THE PRODUCT DATABASE
---->
+    <!---
+        function: checkExistingProduct
+        Hint    : CHECKS FOR PRODUCTS EXISTS OR NOT
+                  BEFORE ADDING TO THE PRODUCT DATABASE
+    --->
     <cffunction name="checkExistingProduct" returnformat = "json" returntype="boolean" access = "remote" >
         <cfargument name="name" type = "string" required = "true" />
 
@@ -255,7 +276,10 @@
     </cffunction>
 
 
-<!--- tries to delete a product based on its pid --->
+    <!---
+        function: deleteProduct
+        hint    : tries to delete a product based on its pid
+    --->
     <cffunction name="deleteProduct" returntype = "boolean" returnformat = "json" access = "remote"  output= "true">
         <cfargument name="pid" type="numeric" required = "true" />
 
@@ -275,3 +299,13 @@
 
 
 </cfcomponent>
+
+
+
+<!--- format: --->
+<!---
+    Function     :
+    Hint         :
+    Return Type  :
+    return format:
+ --->

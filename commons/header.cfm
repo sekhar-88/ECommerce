@@ -1,3 +1,12 @@
+<!---
+    File Name: header.cfm
+    this file is a common file which gets displayed at the top of every page on the
+    shopping site.
+    It contains functionalities like --
+        showing brand logo, providing navigation to product categories section
+        searching products functionalities.. , cart icon, & account section details ..
+--->
+
 <head>
   <link rel="stylesheet" href="../assets/css/header.css">
   <script src="../assets/js/header.js"></script>

@@ -1,3 +1,11 @@
+<!---
+    --Checkout page --
+        redirected to this page
+        after selecting the item quantities or or
+        clicking on the buy now button on the product detias page
+--->
+
+
 <cfset checkoutCFC = createObject("cfc.checkout") />
 <cfset cartCFC = createObject("cfc.cart")/>
 

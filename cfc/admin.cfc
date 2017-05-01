@@ -1,3 +1,9 @@
+<!---
+    Controller name: admin.cfc
+    contains all admin related functions
+--->
+
+
 <!--- THE return response is structure containing function run status & result --->
 <cfcomponent extends = "header" >
     <cfset VARIABLES.adminDB = CreateObject("db.admin_db") />
@@ -14,7 +20,7 @@
         <cfreturn #LOCAL.brandlist#/>
     </cffunction>
 
-
+    <!--- sends suppliers list  --->
     <cffunction name = "getSuppliers" access = "remote" returnType = "any" returnFormat = "json">
         <cfset supplierlist = {}/>
 
@@ -27,7 +33,7 @@
         <cfreturn #supplierlist#/>
     </cffunction>
 
-
+    <!--- gets products list for subcategory id --->
     <cffunction name = "getProducts" access = "remote" returntype = "Any" returnformat = "json"  >
         <cfargument name = "scatid" type = "numeric" required = "true"  />
         <cfset LOCAL.productsObj = []/>
@@ -52,6 +58,7 @@
     </cffunction>
 
 
+    <!--- get subcategories name in json object format  --->
     <cffunction name = "getSubCategoriesJSON" returntype = "Array" returnformat = "JSON" output = "false" access = "remote">
         <cfargument name = "categoryid" type = "numeric" required = "true"  />
         <cfset LOCAL.result = []/>
@@ -65,6 +72,7 @@
     </cffunction>
 
 
+    <!--- adds a subcategory by the admin --->
     <cffunction name = "addSubCategory" access = "remote" returntype = "any" returnformat = "JSON" output = "true" >
         <cfargument name = "categoryid" type = "numeric" required = "true" />
         <cfargument name = "subcategoryname" type = "string" required = "true" />
@@ -85,7 +93,7 @@
         </cftry>
     </cffunction>
 
-
+    <!--- for adding a brand --->
     <cffunction name = "addBrand" access = "remote" returntype = "any" returnformat = "JSON" output = "true">
         <cfargument name = "brand" required = "true" type = "string"/>
         <cftry>
@@ -105,7 +113,7 @@
         </cftry>
     </cffunction>
 
-
+    <!--- for adding a category  --->
     <cffunction name = "addCategory" output = "true" returntype = "Any" returnformat = "JSON" access = "remote" >
         <cfargument name = "categoryname" required = "true" type = "string" />
 
@@ -126,7 +134,7 @@
         </cftry>
     </cffunction>
 
-
+    <!--- for searching duplicate brands , categories Or Subcategorie.  switch case used. --->
     <cffunction name = "searchDuplicates" output = "true" returntype = "boolean" access = "remote">
         <cfargument name = "query" required = "true" type = "string"/>
         <cftry>
@@ -179,7 +187,7 @@
 
 
 
-
+    <!--- for adding a product form admin page.  --->
     <cffunction name = "addProduct" output = "true" access = "remote" returntype = "boolean" >
         <cfdump var = "#arguments#" />
         <!--- <cfquery name = "insertProduct">
@@ -199,7 +207,7 @@
         </cfquery> --->
     </cffunction>
 
-
+    <!--- for adding a new product dummy returning the same data for some purpose. I don 't remember --->
     <cffunction name = "addNewProduct" access = "remote" returnType = "any" returnFormat = "json">
         <cfargument name = "formdata" type = "any" required = "true" />
         <cftry>

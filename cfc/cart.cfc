@@ -1,6 +1,13 @@
+<!---
+    Controller name: cart.cfc
+    contains all cart related functionalities.. adding removing changing cart items count
+    depending on the usr logged in or not operations done on session or Cart Tables in DB.
+--->
+
 <cfcomponent extends="checkout" >
     <cfset VARIABLES.cartDB = CreateObject("db.cart_db") />
 
+    <!--- checking for empty cart both for loggedin or guest user  --->
     <cffunction  name="isCartEmpty" output="false" returntype="boolean"  returnFormat="json" access="remote">
         <cfif session.loggedin>
             <cfset LOCAL.result = "false" />
@@ -15,7 +22,7 @@
     </cffunction>
 
 
-<!--- removes Product from either session OR User Cart --->
+    <!--- removes Product from either session OR User Cart --->
     <cffunction name="removeFromCart" returnFormat = "JSON" returntype = "boolean" access="remote" >
         <cfargument name="pid" type="numeric" required = "true" />
 
@@ -28,7 +35,7 @@
         <cfreturn LOCAL.response />
     </cffunction>
 
-
+    <!--- remove an item from User Cart table. --->
     <cffunction name="removeFromUserCart" output="true" returntype="boolean" returnformat="json" access="remote">
         <cfargument name="pid" type="numeric" required="true" />
 
@@ -47,6 +54,7 @@
     </cffunction>
 
 
+    <!--- remove a cart item from session data --->
     <cffunction name="removeFromSessionCart" output="false" returnType="boolean" returnFormat="json" access="remote" >
         <cfargument name="pid" type="numeric" required="true"/>
                 <cfset session.cartDataChanged = true/> <!---for resetting checkout step --->
@@ -63,9 +71,7 @@
     </cffunction>
 
 
-<!---
-    both for USER & SESSION CART
- --->
+    <!--- getting the count of items in cart both for user & guest  --->
     <cffunction name="getCartCount" output="true" returnType="numeric" returnFormat="json" access="remote" >
 
         <cfif session.loggedin>
@@ -125,4 +131,5 @@
 
         <cfreturn #LOCAL.pList# />
     </cffunction>
+
 </cfcomponent>

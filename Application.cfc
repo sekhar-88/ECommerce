@@ -1,3 +1,6 @@
+<!---
+    application.cfc for the whole project
+--->
 <cfcomponent
     displayname = "Application"
     output = "true"
@@ -25,6 +28,7 @@
         enablecfoutputonly = "no"
         requesttimeout = "20"
         showdebugoutput = "yes" />
+
 
 
 

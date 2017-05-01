@@ -1,3 +1,9 @@
+<!---
+    Component Name: user_db.cfc
+    This Component Contains partially/all the database related operations/functions
+    relating to the user
+--->
+
 <cfcomponent>
 
 <!---

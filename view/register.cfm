@@ -1,3 +1,8 @@
+<!---
+    == USER REGISTRATION PAGE ==
+    this page is for new registration of a user
+--->
+
 <!DOCTYPE html>
 <html>
 <head>

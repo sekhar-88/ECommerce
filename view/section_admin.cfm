@@ -1,3 +1,9 @@
+<!---
+    == ADMIN'S PAGE ==
+    this page is for admin
+    he can add category , subcategory, brands from here.
+--->
+
 <!--- <cfparam name="form.Image" default="" /> --->
 <!DOCTYPE html>
 <html>
@@ -13,7 +19,7 @@
     <div class="page-header"><cfinclude template = "/commons/header.cfm" /></div>
 
     <cfif session.loggedin>
-    <cfif session.User.Role EQ 'admin'> 
+    <cfif session.User.Role EQ 'admin'>
     <div class="admin-panel container-fluid-page">
 
         <div class="admin-logo">Admin Panel</div>

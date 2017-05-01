@@ -1,3 +1,8 @@
+<!---
+    Component Name: cart_db.cfc
+    This Model Contains Database Operations related to CART Page..
+--->
+
 <cfcomponent>
 
     <!--- returns cart item details with their respective product names --->

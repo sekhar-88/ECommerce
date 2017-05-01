@@ -1,3 +1,8 @@
+<!---
+    Controller name: order.cfc
+    contains the functions based on order / order details page.     
+--->
+
 <cfcomponent>
 
     <cfset VARIABLES.orderDB = CreateObject("db.order_db") />

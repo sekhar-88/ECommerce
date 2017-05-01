@@ -1,3 +1,10 @@
+<!---
+	Page Name: footer.cfm
+	it is a commons file which gets displayed at the end of every page of the shopping site.
+	it shows a link to admin section while an admin is logged in.
+--->
+
+
 <head>
 
 	<meta charset="utf-8">

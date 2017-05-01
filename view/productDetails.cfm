@@ -1,5 +1,11 @@
-<cfset productCFC = createObject("cfc.product")/>
+<!---
+    == PRODUCT DETAILS PAGE ==
+    this page shows detils of a product
+    along with its informations ..
+    ADMIN can update the product details info.
+--->
 
+<cfset productCFC = createObject("cfc.product")/>
 
 <!DOCTYPE html>
 <html>

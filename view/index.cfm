@@ -1,3 +1,9 @@
+<!---
+    --index page--
+    of the shopping site.
+    show page carousel or search results are redirected & showed in this page    
+--->
+
 <cftry>
 <cfset productCFC = CreateObject("cfc.product") />
 

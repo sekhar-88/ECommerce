@@ -1,3 +1,8 @@
+<!---
+    Component Name: admin_db.cfc
+    Contains Datebase operations related to ADMIN
+--->
+
 <cfcomponent>
 
     <cffunction name="queryBrands" returntype="Query" access = "public"  >

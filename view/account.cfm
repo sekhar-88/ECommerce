@@ -1,3 +1,9 @@
+<!---
+    Page Name: Account.cfm
+    view account related informations in this page
+    edit user details etc...
+--->
+
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,3 +1,8 @@
+<!---
+    Component Name: checkout_db.cfc
+    This Model Contains DATABASE Operations done on CHECKOUT Page functionality
+--->
+
 <cfcomponent>
 
     <cffunction name="getAddressForUser" returntype="query" access="public" >

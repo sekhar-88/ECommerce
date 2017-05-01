@@ -1,3 +1,8 @@
+<!---
+    Component Name : header_db.cfc
+    This Model contains Database Opearations related to HEADER of the page.
+--->
+
 <cfcomponent>
     <cffunction name="getCategories" returntype="query" access="public"   >
 

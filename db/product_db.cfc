@@ -1,5 +1,8 @@
-<!--- This database layer handles all the calls to Dabatase related actions which relates in anyway to the products management
-like adding to cart removing from cart, editing updating product details etc. --->
+<!---
+    This database layer handles all the calls to Dabatase related actions which relates in anyway
+    to the products management like adding to cart removing from cart,
+    editing updating product details etc.
+--->
 
 
 <cfcomponent>
