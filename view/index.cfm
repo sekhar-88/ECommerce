@@ -1,7 +1,7 @@
 <!---
     --index page--
     of the shopping site.
-    show page carousel or search results are redirected & showed in this page    
+    show page carousel or search results are redirected & showed in this page
 --->
 
 <cftry>
