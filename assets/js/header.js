@@ -1,8 +1,13 @@
 // TEMPLATE function
 // function notify(msg, alertType, icon, title, icontype, enter_anim, exit_anim)
 
-var login_validator
+var login_validator;
 $(document).ready(function(){
+    // expand search box on focus & contract on blur
+    $("input#product_searchbox").focus(function(){ $(this).animate({width: "400px"}); });
+    $("input#product_searchbox").blur(function(){ $(this).animate({width: "100%"}); });
+
+    // validator variable (global)
     login_validator = $("#login-form").validate({
         messages: {
             email: "Enter your email",

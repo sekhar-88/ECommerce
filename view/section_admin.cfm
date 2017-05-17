@@ -34,8 +34,11 @@
 
         <div class="tab-content">
 
+            <!--- adding categories , subcategories , & brands section of tab  --->
             <div id="section-categories" class="tab-pane active fade in">
                 <div class="sections">
+
+                    <!--- adding category section --->
                     <div class="cnb-section">  <!---cnb for Category And Brand --->
                         <h2 align="center">Add Category</h2>
                         <input type="text">
@@ -52,6 +55,7 @@
                         </div>
                     </div>
 
+                    <!--- adding subcategory section  --->
                     <div class="cnb-section">
                         <h2 align="center">Add Subcategory</h2>
                         <select style="padding: 3px; width: 100%;" onchange="enableSubCategoryTextField(this);">
@@ -72,6 +76,7 @@
                         </div>
                     </div>
 
+                    <!--- adding brand section  --->
                     <div class="cnb-section">
                         <h2 align="center">Add Brands</h2>
                         <input type="text" value="" placeholder="New Brand..">
@@ -80,7 +85,7 @@
                             <input type="text" placeholder="search brands..." class="cnb-search">
                             <div class="list">
                                     <cfquery name="brands">
-                                        SELECT * from [Brand]
+                                        SELECT [BrandId] ,[BrandName] from [Brand]
                                     </cfquery>
                                     <cfoutput>
                                     <cfloop query="brands">
@@ -90,8 +95,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+                </div> <!---end section --->
+            </div>  <!--- end cnb - section  parent --->
 
 
             <!--- product section tab content  -- not shown (not used ) --->
@@ -172,6 +178,8 @@
 
         </div>  <!--- end tab content --->
     </div>      <!--- end admin panel--->
+
+    <!--- if not an admin --->
     <cfelse>
         <cflocation url="index.cfm" addtoken="false" />
     </cfif>
@@ -179,9 +187,6 @@
         <cflocation url="index.cfm" addtoken="false" />
     </cfif>
 
-    <div id="response">
-    </div>
-    <!--- <cfinclude template="/commons/footer.cfm" /> --->
 </body>
 </html>
 <cftry>

@@ -28,42 +28,35 @@
           <cfif VARIABLES.productdetails.recordCount> <!--- Product Exists --->
               <cfoutput>
 
+                  <div class="pd-container">
                     <div class="image-view">
-
                         <div class="image-container-lg" style="background-image: url('../assets/images/products/medium/#VARIABLES.productDetails.Image#');">
                             <!--- <img src="../assets/images/products/medium/#VARIABLES.productDetails.Image#" alt=""> --->
                         </div>
-
                         <div id="buttons-container">
                               <cfif NOT isNULL(VARIABLES.productDetails.DiscontinuedDate)>
-
                                 <!--- check for if already in cart  --->
                                   <cfset VARIABLES.incart = productCFC.isProductInCart(#URL.pid#)/>
-                                  <cfif VARIABLES.incart>
 
+                                  <cfif VARIABLES.incart>
                                       <div id="gotocart_btn">    <!--- Show Go To Cart button --->
                                           <button type="button" value="##" onclick="window.location.href='cart.cfm';" class="btn btn-lg btn-primary verdana btn-radius-1"><span class="glyphicon glyphicon"></span> Go To Cart</button>
                                       </div>
-
                                   <cfelse>
-
                                       <div id="addtocart_btn">  <!--- Show Add to cart  button --->
                                           <button type="button" value="#URL.pid#" onclick="addToCart(this);changeto_gotocart();" class="btn btn-lg btn-primary verdana btn-radius-1"><span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart</button>
                                       </div>
-
                                   </cfif>                         <!--- Show Buy Now Button --->
 
                                   <cfif session.loggedin>
                                       <div>
                                           <button type="button" value="#URL.pid#" onclick="checkOut(this,#session.user.userid#);" class="btn btn-lg btn-success verdana btn-radius-1"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
                                       </div>
-
                                   <cfelse>
                                       <div>
                                           <button type="button" value="#URL.pid#" onclick="showLoginMsg();" class="btn btn-lg btn-success verdana btn-radius-1"><span class="glyphicon glyphicon-usd"></span> Buy Now</button>
                                       </div>
                                   </cfif>
-
                               <cfelse>
                               </cfif>
                         </div>   <!--- end .pdi-buttons --->
@@ -88,21 +81,16 @@
 
                         <cfsavecontent variable="productDetailsHTML" >
                             <cfset categoryDetails = productCFC.getSCategoryDetailsForProductId(URL.pid) />
-
                             <div class="category-details">#categoryDetails.CategoryName# &gt; <a href="product.cfm?cat=#categoryDetails.CategoryId#&amp;scat=#categoryDetails.SubCategoryId#">#categoryDetails.SubCategoryName#</a></div>
-
                             <div class="pd-name">
                                 #productDetails.Name#
                             </div>
-
                             <div class="pd-rating">
                                 <span class="badge">4</span>
                             </div>
-
                             <div class="pd-price">
                                 <span></span><span>#productDetails.ListPrice#</span>
                             </div>
-
                             <div class="product-specification">
                                 <div class="ps-header">Specifications: </div>
                                 <div class="ps-content">
@@ -114,24 +102,34 @@
                                         </ul>
                                 </div>
                             </div>
-
                         </cfsavecontent>
                         #productDetailsHTML#
                     </div>
+                </div>  <!-- end  ".pd-container"  product detials view (image & details section)-->
 
+                <!--- show similar products --->
+                <span class="clearfix"></span>
 
-                    <!--- show similar products --->
-                    <div class = "similar-products-div" >
+                    <div class = "similar-products-div"  style="margin-top: 50px;">
+                        <!--- header --->
+                        <div><h3 class="text-capitalize" style="padding: 10px;">similar products</h2></div>
                         <div class = "similar-inner-div" >
-<!---
-                                <cfquery name="similarproducts" >
-                                    SELECT TOP 3 productID
-                                    FROM Products
-                                    WHERE SubCategoryId = <cfqueryparam value="#URL.scat#" cfsqltype="cf_sql_bigint" />
-                                    ORDER BY NEWID()
-                                </cfquery>
- --->
-                            <div></div>
+
+                            <cfset VARIABLES.similarProducts = productCFC.getSimilarProducts(#URL.scat#, #URL.pid#) >
+                                <cfloop query="#VARIABLES.similarproducts#" >
+                                    <cfoutput>
+
+                                        <cfset VARIABLES.similars = productCFC.fetchProductDetails(#VARIABLES.similarProducts.ProductID#)/>
+                                        <div class="similar-product">
+                                            <a href="productDetails.cfm?scat=#VARIABLES.similars.SubCategoryId#&pid=#VARIABLES.similars.ProductID#"></a>
+                                            <div class="similar-product-image" style=" background-image: url('../assets/images/products/medium/#VARIABLES.similars.Image#');"></div>
+                                            <p style="color:black;">#VARIABLES.similars.Name#</p>
+                                            <h5 align = "center"><span class="fa fa-inr"></span><span class="similar-product-price">#VARIABLES.similars.ListPrice#</span><h5>
+                                        </div>
+
+                                    </cfoutput>
+                                </cfloop>
+
                         </div>
                     </div>
 

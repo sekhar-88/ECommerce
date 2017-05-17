@@ -15,7 +15,6 @@
 .image-view {
     float: left;
     width: 400px;
-
 }
 .image-container-lg {
     width: 400px;
@@ -25,12 +24,6 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-.image-container-lg > img{
-    object-fit: contain;
-    width: 100%;
-    height: 100%;
 }
 
 #buttons-container {
@@ -44,10 +37,20 @@ div#buttons-container > * {
 div#buttons-container > * > * {
     width: 100%;
 }
-
+@media screen and(min-width: 1300px) {
+    .product-details {
+        width: 800px;
+    }
+}
+@media screen and(min-width: 1000px ){
+    .product-details {
+        width: 90%;
+        margin: auto;
+    }
+}
 .product-details {
-    float: left;
-    border: 1px solid lightgrey;
+    display: inline-block;
+    border: 1px solid whitesmoke;
     margin-left: 10px;
     min-height: 450px;
 }
@@ -86,19 +89,18 @@ div#buttons-container > * > * {
     font-size: 20px;
     /*font-weight: bold;*/
     padding: 5px;
-    margin: 10px;
+    margin:  0  10px;
 }
 .ps-content {
-    /*border: 10px solid #fbfbfb;*/
-    border-radius: 10px;
-
+    background-color: #fdfdfd;
+    margin:  0 10px;
+    /*border: 1px solid  #efefef;*/
 }
 .ps-content > ul {
     list-style: none;
     padding: 20px;
     margin-left: 20px;
     margin-right: 20px;
-    border: 1px solid #efefef
 }
 .ps-content > ul > li {
     padding: 5px;
@@ -124,6 +126,42 @@ div#buttons-container > * > * {
 
 
 
+div.similar-inner-div {
+    overflow-x:  auto;
+    overflow-y:  hidden;
+}
+
+.similar-product-image {
+    width: 190px;
+    height: 190px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.similar-product-price {
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #03a9f4;
+}
+.similar-product {
+    display:inline-block;
+    padding: 10px;
+    margin: 5px;
+    margin-right: 10px;
+    width: 220px;
+    background-color: white;
+    transition: box-shadow 1s cubic-bezier(0, 0, 0.2, 1);
+    cursor: pointer;
+}
+.similar-product:hover {
+    box-shadow: 3px 0px 33px #e0e0e0;
+}
+.similar-products-div {
+    padding: 10px;
+    color: #0fdede;
+    background-color: #f9f9f9;
+}
 
 
 /*modal styles for updaing the product while in admin mode*/

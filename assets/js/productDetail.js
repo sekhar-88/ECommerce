@@ -1,6 +1,12 @@
 $(document).ready(function(){
     $("form#product-update-form").validate();
 
+    // make similar products clickable through inner links
+    $(".similar-product").click(function(){
+        window.location = $(this).find("a").attr("href");
+        return false;
+    });
+
     $("form#product-update-form").submit(function(){
         var productDescription = "";
         $.each($(".product-desc-fields > .desc-fields > .y"), function(i, item){
@@ -43,6 +49,9 @@ $(document).ready(function(){
 
     // CHANGE PRICE FORMAT TO LOCAL FORMAT WITH COMMAS
     $(".pd-price > span:last-child").text(parseInt($(".pd-price > span:last-child").text()).toLocaleString('en-IN'));
+    $.each($(".similar-product-price") , function(i, element){
+        $(element).text(parseInt($(element).text()).toLocaleString('en-IN'));
+    })
 });
 
 function checkOut(el,uid){

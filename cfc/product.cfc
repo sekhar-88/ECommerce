@@ -297,15 +297,31 @@
         <cfreturn LOCAL.success />
     </cffunction>
 
+    <cffunction name="getSimilarProducts" returntype="Query" access = "public"  output="true">
+        <cfargument name="scat" required = "true" type="numeric" />
+        <cfargument name="pid" required = "true" type="numeric" />
+        <cftry >
+
+            <cfquery name="LOCAL.similarproducts" >
+
+                    SELECT TOP 5 [ProductID]
+                    FROM [Product]
+                        WHERE SubCategoryId = <cfqueryparam value="#ARGUMENTS.scat#" cfsqltype="cf_sql_integer" />
+                                    AND ProductID != <cfqueryparam value= "#ARGUMENTS.pid#" cfsqltype="cf_sql_integer"  />
+
+            </cfquery>
+            <cfset LOCAL.returnValue = LOCAL.similarproducts />
+
+            <cfcatch type="DATABASE">
+                <cfdump var="#cfcatch#" />
+                <cfabort />
+                <!--- <cflog file="" text="" /> --->
+            </cfcatch>
+
+        </cftry>
+
+        <cfreturn LOCAL.returnValue />
+    </cffunction>
+
 
 </cfcomponent>
-
-
-
-<!--- format: --->
-<!---
-    Function     :
-    Hint         :
-    Return Type  :
-    return format:
- --->
