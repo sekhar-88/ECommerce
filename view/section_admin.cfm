@@ -26,7 +26,8 @@
 
         <nav>
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#section-categories">Categories &amp; Brands</a></li>
+            <li class="active"><a data-toggle="tab" href="#section-statistics">Statistics</a></li>
+            <li><a data-toggle="tab" href="#section-categories">Categories &amp; Brands</a></li>
             <!--- <li><a data-toggle="tab" href="#section-product">Products</a></li>
             <li><a>list</a></li> --->
         </ul>
@@ -34,12 +35,40 @@
 
         <div class="tab-content">
 
+            <!--- for showing statistics for products --->
+            <div id="section-statistics" class="tab-pane active fade in">
+                statistics data goes here
+
+
+                <cfset sessionTracker = CreateObject("java", "coldfusion.runtime.SessionTracker")/>
+                <cfdump var="#sessionTracker#" />
+
+                <cfset sessionCollection = sessionTracker.getSessionCollection("Shopping")>
+                <cfset sessionCountForApplication = structCount(sessionCollection)>
+
+                <p>There are <cfoutput>#sessionCountForApplication#</cfoutput> sessions in existence for this application.</p>
+
+                <cfset loggedinUsers = 0 />
+                <cfloop collection="#sessionCollection#" item="SessionId" >
+                    <cftry>
+                        <cfcatch >
+                            <cfdump var="#cfcatch#" />
+                        </cfcatch>
+                    </cftry>
+
+                    <cfif StructKeyExists(sessionCollection[SessionId].user, "UserId")>
+                        <cfset loggedinUsers += 1 />
+                    </cfif>
+                </cfloop>
+                <p>There are currently <cfoutput>#loggedinUsers#</cfoutput> sessions having loggedin users.</p>
+            </div>
+
             <!--- adding categories , subcategories , & brands section of tab  --->
-            <div id="section-categories" class="tab-pane active fade in">
-                <div class="sections">
+            <div id="section-categories" class="tab-pane active fade">
+                <div class="sections row">
 
                     <!--- adding category section --->
-                    <div class="cnb-section">  <!---cnb for Category And Brand --->
+                    <div class="cnb-section col-sm-3  col-xs-8">  <!---cnb for Category And Brand --->
                         <h2 align="center">Add Category</h2>
                         <input type="text">
                         <button type="button" class="btn btn-success btn-sm" onclick="addCategory(this)">Add Category</button>
@@ -56,7 +85,7 @@
                     </div>
 
                     <!--- adding subcategory section  --->
-                    <div class="cnb-section">
+                    <div class="cnb-section col-sm-4 col-sm-offset-1  col-xs-8 col-xs-offset-2">
                         <h2 align="center">Add Subcategory</h2>
                         <select style="padding: 3px; width: 100%;" onchange="enableSubCategoryTextField(this);">
                             <option value="invalid">Select Category</option>
@@ -77,7 +106,7 @@
                     </div>
 
                     <!--- adding brand section  --->
-                    <div class="cnb-section">
+                    <div class="cnb-section  col-sm-3 col-sm-offset-1  col-xs-8 col-xs-offset-2">
                         <h2 align="center">Add Brands</h2>
                         <input type="text" value="" placeholder="New Brand..">
                         <button type="button" class="btn btn-success btn-sm" onclick="addBrands(this)">Add Brands</button>

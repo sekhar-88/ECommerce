@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+     <title>eShopping</title>
       <link href="../assets/css/productDetail.css" rel="stylesheet">
 </head>
 <body>
@@ -112,7 +113,7 @@
 
                     <div class = "similar-products-div"  style="margin-top: 50px;">
                         <!--- header --->
-                        <div><h3 class="text-capitalize" style="padding: 10px;">similar products</h2></div>
+                        <div><h3 class="text-capitalize" style="padding: 10px;">similar products</h3></div>
                         <div class = "similar-inner-div" >
 
                             <cfset VARIABLES.similarProducts = productCFC.getSimilarProducts(#URL.scat#, #URL.pid#) >
@@ -124,7 +125,7 @@
                                             <a href="productDetails.cfm?scat=#VARIABLES.similars.SubCategoryId#&pid=#VARIABLES.similars.ProductID#"></a>
                                             <div class="similar-product-image" style=" background-image: url('../assets/images/products/medium/#VARIABLES.similars.Image#');"></div>
                                             <p style="color:black;">#VARIABLES.similars.Name#</p>
-                                            <h5 align = "center"><span class="fa fa-inr"></span><span class="similar-product-price">#VARIABLES.similars.ListPrice#</span><h5>
+                                            <h5 align = "center"><span class="inr"></span><span class="similar-product-price">#VARIABLES.similars.ListPrice#</span><h5>
                                         </div>
 
                                     </cfoutput>

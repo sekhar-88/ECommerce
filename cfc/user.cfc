@@ -1,5 +1,5 @@
 <!---
-    Controller name: User.cfc 
+    Controller name: User.cfc
     THIS COMPONENT CONTAINS ALL USER RELATED FUNCTIONS LIKE VALIDATING THE USER WHILE LOGGING IN
     SETTING USER RELATED SESSION VARIABLES
     GETTING LOGGED IN STATUS
@@ -52,9 +52,10 @@ return response
         <cfargument name="email" type="string" required="true">
         <cfargument name="password" type="string" required="true">
 
-            <cfset response = {
+            <cfset LOCAL.response = {
                     "status" = "true",
-                    "errortype" = ""
+                    "errortype" = "",
+                    "role" = ""
                 }/>
 
                 <cfset LOCAL.findUser = VARIABLES.userDB.getUserPassword( argumentcollection="#ARGUMENTS#" ) />
@@ -62,9 +63,11 @@ return response
 
                     <cfif LOCAL.findUser.PasswordHash EQ #HASH(ARGUMENTS.password)# >   <!--- login success --->
 
-                        <!--- AUTHENTICATED --->
+                        <!--- AUTHENTICATED  - get other user details from DB--->
                         <cfset LOCAL.result = VARIABLES.userDB.getUserDetails( argumentcollection="#ARGUMENTS#" ) />
                         <cfset sessionrotate() />
+
+                        <!--- set session variables for logged in user --->
                         <cfset session.User = {
                             UserId = "#LOCAL.result.UserId#",
                             UserName = "#LOCAL.result.FirstName#" & " " & "#LOCAL.result.LastName#",
@@ -82,19 +85,20 @@ return response
                                 <cfset SUPER.addToCart(#pid#)/>
                             </cfloop>
 
-                            <cfset response.status = "true" />
+                            <cfset LOCAL.response.status = "true" />
+                            <cfset LOCAL.response.role = "#LOCAL.result.Role#"/>
 
                     <cfelse>
-                        <cfset response.status = "false" />
-                        <cfset response.errortype = "password" />
+                        <cfset LOCAL.response.status = "false" />
+                        <cfset LOCAL.response.errortype = "password" />
                     </cfif>
 
                 <cfelse>
-                    <cfset response.status = "false">
-                    <cfset response.errortype = "email" >
+                    <cfset LOCAL.response.status = "false" >
+                    <cfset LOCAL.response.errortype = "email" >
                 </cfif>
 
-                <cfreturn #response# />
+                <cfreturn #LOCAL.response# />
     </cffunction>
 
 

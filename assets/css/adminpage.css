@@ -1,13 +1,10 @@
-.sections{
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-    overflow: auto;
+.sections.row{
+    margin: 0 70px;
 }
-.cnb-section{
+/*.cnb-section{
     margin: 5px;
     padding: 5px;
-}
+}*/
 .cnb-content{
     margin-top: 20px;
 }

@@ -69,7 +69,10 @@ $(document).ready(function(){
                 success: function(response){
                     if(response.status == true){
                         // alert("user successfully validated");
-                        $("#login-form").submit();
+                        // console.log(response);
+                        if(response.role == "admin") location.href = "section_admin.cfm";
+                        else                                            location.reload();
+                        // $("#login-form").submit();
                     }
                     else{
                         var error = response.errortype;
