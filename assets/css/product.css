@@ -94,8 +94,6 @@ a:hover{
 /*product left side content*/
 /*containg only image*/
 .product-image{
-    /*padding: 10px;*/
-    /*margin: 10px;*/
     width: 250px;
     height: 179px;
     border-right: 1px solid lightgrey;
@@ -103,6 +101,9 @@ a:hover{
     flex-direction: row;
     align-items: center;
     padding: 15px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 .product-image > img {
     object-fit: contain;

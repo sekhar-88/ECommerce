@@ -33,6 +33,68 @@
         </nav>
 
         <div class="tab-content">
+
+            <div id="section-categories" class="tab-pane active fade in">
+                <div class="sections">
+                    <div class="cnb-section">  <!---cnb for Category And Brand --->
+                        <h2 align="center">Add Category</h2>
+                        <input type="text">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addCategory(this)">Add Category</button>
+                        <div class="cnb-content cnb-category">
+                            <input type="text" placeholder="search categories..." class="cnb-search">
+                            <div class="list">
+                                <cfoutput>
+                                    <cfloop query="categories">
+                                        <p class='list-item'>#CategoryName#</p>
+                                    </cfloop>
+                                </cfoutput>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cnb-section">
+                        <h2 align="center">Add Subcategory</h2>
+                        <select style="padding: 3px; width: 100%;" onchange="enableSubCategoryTextField(this);">
+                            <option value="invalid">Select Category</option>
+                            <cfoutput>
+                                <cfloop query="categories">
+                                    <option value="#CategoryName#" id="#CategoryId#">#CategoryName#</option>
+                                </cfloop>
+                            </cfoutput>
+                        </select>
+                        <span class="clearfix"></span>
+                        <input type="text" id="subcategory_textbox" data-categoryid="" data-categoryname="">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addSubCategory(this)">Add SubCategory</button>
+                        <div class="cnb-content cnb-subcategory">
+                            <input type="text" placeholder="search subcategories..." class="cnb-search">
+                            <div class="list">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cnb-section">
+                        <h2 align="center">Add Brands</h2>
+                        <input type="text" value="" placeholder="New Brand..">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addBrands(this)">Add Brands</button>
+                        <div class="cnb-content cnb-brand">
+                            <input type="text" placeholder="search brands..." class="cnb-search">
+                            <div class="list">
+                                    <cfquery name="brands">
+                                        SELECT * from [Brand]
+                                    </cfquery>
+                                    <cfoutput>
+                                    <cfloop query="brands">
+                                <p class='list-item'>#BrandName#</p>
+                                    </cfloop>
+                                    </cfoutput>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--- product section tab content  -- not shown (not used ) --->
             <div id="section-product" class="tab-pane fade">
                 <div role="navigation" class="nav nav-bar">
                     <ul class="nav nav-tabs">
@@ -107,64 +169,7 @@
                 </div>
             </div>      <!--- end product view section --->
 
-            <div id="section-categories" class="tab-pane active fade in">
-                <div class="sections">
-                    <div class="cnb-section">  <!---cnb for Category And Brand --->
-                        <h2 align="center">Add Category</h2>
-                        <input type="text">
-                        <button type="button" class="btn btn-success btn-sm" onclick="addCategory(this)">Add Category</button>
-                        <div class="cnb-content cnb-category">
-                            <input type="text" placeholder="search categories..." class="cnb-search">
-                            <div class="list">
-                                <cfoutput>
-                                    <cfloop query="categories">
-                                        <p class='list-item'>#CategoryName#</p>
-                                    </cfloop>
-                                </cfoutput>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="cnb-section">
-                            <h2 align="center">Add Subcategory</h2>
-                            <select style="padding: 3px; width: 100%;" onchange="enableSubCategoryTextField(this);">
-                                    <option value="invalid">Select Category</option>
-                                <cfoutput>
-                                <cfloop query="categories">
-                                    <option value="#CategoryName#" id="#CategoryId#">#CategoryName#</option>
-                                </cfloop>
-                                </cfoutput>
-                            </select>
-                            <span class="clearfix"></span>
-                            <input type="text" id="subcategory_textbox" data-categoryid="" data-categoryname="">
-                        <button type="button" class="btn btn-success btn-sm" onclick="addSubCategory(this)">Add SubCategory</button>
-                        <div class="cnb-content cnb-subcategory">
-                            <input type="text" placeholder="search subcategories..." class="cnb-search">
-                            <div class="list">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="cnb-section">
-                        <h2 align="center">Add Brands</h2>
-                        <input type="text" value="" placeholder="New Brand..">
-                        <button type="button" class="btn btn-success btn-sm" onclick="addBrands(this)">Add Brands</button>
-                        <div class="cnb-content cnb-brand">
-                            <input type="text" placeholder="search brands..." class="cnb-search">
-                            <div class="list">
-                                    <cfquery name="brands">
-                                    SELECT * from [Brand]
-                                    </cfquery>
-                                    <cfoutput>
-                                    <cfloop query="brands">
-                                <p class='list-item'>#BrandName#</p>
-                                    </cfloop>
-                                    </cfoutput>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>  <!--- end tab content --->
     </div>      <!--- end admin panel--->
     <cfelse>

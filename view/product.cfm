@@ -208,8 +208,8 @@
                                         <div class="product">
 
                                                 <a href="productDetails.cfm?scat=#URL.scat#&amp;pid=#ProductId#"></a>
-                                                <div class="product-image">
-                                                    <img class="" src="../assets/images/products/medium/#Image#">
+                                                <div class="product-image" style="background-image: url('../assets/images/products/medium/#Image#');">
+                                                    <!--- <img class="" src="../assets/images/products/medium/#Image#"> --->
                                                 </div>
 
                                                 <div class="product-content">

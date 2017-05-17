@@ -30,8 +30,8 @@
 
                     <div class="image-view">
 
-                        <div class="image-container-lg">
-                            <img src="../assets/images/products/medium/#VARIABLES.productDetails.Image#" alt="">
+                        <div class="image-container-lg" style="background-image: url('../assets/images/products/medium/#VARIABLES.productDetails.Image#');">
+                            <!--- <img src="../assets/images/products/medium/#VARIABLES.productDetails.Image#" alt=""> --->
                         </div>
 
                         <div id="buttons-container">

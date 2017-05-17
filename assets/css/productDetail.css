@@ -22,6 +22,9 @@
     height: 400px;
     padding: 20px;
     border: 1px solid lightgrey;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .image-container-lg > img{
