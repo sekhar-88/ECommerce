@@ -5,7 +5,7 @@
     ADMIN can update the product details info.
 --->
 
-<cfset productCFC = createObject("cfc.product")/>
+<cfset VARIABLES.productCFC = createObject("cfc.product")/>
 
 <!DOCTYPE html>
 <html>
@@ -21,10 +21,10 @@
 
 
 
-    <!--- page body --->
+        <!--- page body --->
     <div class="container-fluid page container-fluid-page">
         <cfif StructKeyExists(URL, "pid") AND IsNumeric(URL.pid)>
-        <cfset VARIABLES.productDetails = productCFC.fetchProductDetails(URL.pid) />
+        <cfset VARIABLES.productDetails = VARIABLES.productCFC.fetchProductDetails(URL.pid) />
 
           <cfif VARIABLES.productdetails.recordCount> <!--- Product Exists --->
               <cfoutput>
@@ -37,7 +37,7 @@
                         <div id="buttons-container">
                               <cfif NOT isNULL(VARIABLES.productDetails.DiscontinuedDate)>
                                 <!--- check for if already in cart  --->
-                                  <cfset VARIABLES.incart = productCFC.isProductInCart(#URL.pid#)/>
+                                  <cfset VARIABLES.incart = VARIABLES.productCFC.isProductInCart(#URL.pid#)/>
 
                                   <cfif VARIABLES.incart>
                                       <div id="gotocart_btn">    <!--- Show Go To Cart button --->
@@ -81,7 +81,7 @@
                         </cfif>
 
                         <cfsavecontent variable="productDetailsHTML" >
-                            <cfset categoryDetails = productCFC.getSCategoryDetailsForProductId(URL.pid) />
+                            <cfset categoryDetails = VARIABLES.productCFC.getSCategoryDetailsForProductId(URL.pid) />
                             <div class="category-details">#categoryDetails.CategoryName# &gt; <a href="product.cfm?cat=#categoryDetails.CategoryId#&amp;scat=#categoryDetails.SubCategoryId#">#categoryDetails.SubCategoryName#</a></div>
                             <div class="pd-name">
                                 #productDetails.Name#
@@ -116,11 +116,11 @@
                         <div><h3 class="text-capitalize" style="padding: 10px;">similar products</h3></div>
                         <div class = "similar-inner-div" >
 
-                            <cfset VARIABLES.similarProducts = productCFC.getSimilarProducts(#URL.scat#, #URL.pid#) >
+                            <cfset VARIABLES.similarProducts = VARIABLES.productCFC.getSimilarProducts(#URL.scat#, #URL.pid#) >
                                 <cfloop query="#VARIABLES.similarproducts#" >
                                     <cfoutput>
 
-                                        <cfset VARIABLES.similars = productCFC.fetchProductDetails(#VARIABLES.similarProducts.ProductID#)/>
+                                        <cfset VARIABLES.similars = VARIABLES.productCFC.fetchProductDetails(#VARIABLES.similarProducts.ProductID#)/>
                                         <div class="similar-product">
                                             <a href="productDetails.cfm?scat=#VARIABLES.similars.SubCategoryId#&pid=#VARIABLES.similars.ProductID#"></a>
                                             <div class="similar-product-image" style=" background-image: url('../assets/images/products/medium/#VARIABLES.similars.Image#');"></div>
@@ -270,10 +270,10 @@
             <!--- <cfdump var="#uploadresult#" /> --->
             <cfset VARIABLES.imagename = "#uploadresult.SERVERFILE#" />
 
-            <cfset updateProduct = productCFC.updateProductDetails(FORM,#imagename#) />
+            <cfset updateProduct = VARIABLES.productCFC.updateProductDetails(FORM,#imagename#) />
             <cflocation url="#cgi.HTTP_REFERER#" addtoken="false"   />
         <cfelse>
-            <cfset updateProduct = productCFC.updateProductDetails(FORM,FORM.Image_old) />
+            <cfset updateProduct = VARIABLES.productCFC.updateProductDetails(FORM,FORM.Image_old) />
             <cflocation url="#cgi.HTTP_REFERER#" addtoken="false"   />
         </cfif>
 

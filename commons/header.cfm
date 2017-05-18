@@ -4,7 +4,7 @@
     shopping site.
     It contains functionalities like --
         showing brand logo, providing navigation to product categories section
-        searching products functionalities.. , cart icon, & account section details ..
+        searching products functionalities.. , cart icon, & user account functionalities ..
 --->
 
 <head>
@@ -17,9 +17,9 @@
 
 <body>
 
-<cfset userCFC = createObject("cfc.user") />
-<cfset headerCFC = createObject("cfc.header") />
-<cfset categories = headerCFC.getCategories() />
+<cfset VARIABLES.userCFC = createObject("cfc.user") />
+<cfset VARIABLES.headerCFC = createObject("cfc.header") />
+<cfset categories = VARIABLES.headerCFC.getCategories() />
 
 	<nav class="navbar navbar-default" style="background-color:#70b6e3;z-index: 500; border: 0px; border-radius: 0px;">       <!-- main navbar type -->
 		<div class="container-fluid">         <!-- navbar container -->
@@ -53,7 +53,7 @@
 
                                            <div class="subcat_list_div hideSubCat" style="z-index: 1000;">
 <!--- Men -  SubCategory --->              <ul class="subcategory list-group">
-                                           <cfset subcategories = headerCFC.getSubCategories(#categories.CategoryId#) />
+                                           <cfset subcategories = VARIABLES.headerCFC.getSubCategories(#categories.CategoryId#) />
 										   <cfloop query = "subcategories">        <!--looping through subcategory list-->
 										      <li class="subcategory_list_li list-group-item" id="subcat_#subcategories.SubCategoryId#">
                                                   <cfset querystr = "cat=#categories.CategoryId#" & "&scat=#subcategories.SubCategoryId#" />

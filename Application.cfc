@@ -6,7 +6,6 @@
     output = "true"
     hint = "handle the shopping project" >
 
-
     <cfset THIS.Name = "Shopping" />
     <cfset THIS.sessionManagement = true />
     <cfset THIS.applicationTimeout = CreateTimeSpan(0,0,30,0) />
@@ -47,6 +46,7 @@
         returntype = "void"
         output = "false"
         hint = "fires when the session is first created." >
+
 
         <cfset SESSION.loggedin = false />
         <cfset SESSION.cart = [] />

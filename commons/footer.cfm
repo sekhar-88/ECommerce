@@ -4,24 +4,20 @@
 	it shows a link to admin section while an admin is logged in.
 --->
 
-
 <head>
-
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<!--- <meta name="viewport" content="width=device-width, initial-scale=1"> --->
 	<!--- <meta name="keywords" content="footer, address, phone, icons" /> --->
 
-	<!--- <link rel="stylesheet" href="css/demo.css"> --->
 	<link rel="stylesheet" href="../assets/css/footer-distributed-with-address-and-phones.css">
-
+	<!--- <link rel="stylesheet" href="css/demo.css"> --->
 	<!--- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"> --->
-
 	<!--- <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css"> --->
-
 </head>
 
 <!--- refreshing / updating show modal..  function is defineds as showUpdateModal(message, delay, icon) --->
+
 	<div class="modal fade" id="refresh-modal" role="dialog">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
@@ -29,13 +25,11 @@
   					<button type="button" class="close" data-dismiss="modal">&times;</button>
   					<h4 class="modal-title">updating..</h4>
 				</div>
-
 				<div class="modal-body">
 					<h5 align="center"><i class="icon"></i><h5>
 					<h5 class="update-message"></h5>
 					<span class="sr-only">Loading...</span>
 				</div>
-
 				<div class="modal-footer">
   					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
@@ -52,9 +46,7 @@
 			</cfif>
 
 			<div class="footer-left">
-
 				<h3>Shopping<span>BUZZ</span></h3>
-
 				<p class="footer-links">
 					<a href="index.cfm">Home</a>
 					&#8226;
@@ -118,10 +110,9 @@
 	SERVER CODES for CHECKING LOGOUT CLICKED OR NOT.
 --->
 
-		<cfif StructKeyExists(FORM, "LOGOUT")>
+		<cfif StructKeyExists(FORM, "logout")>
 
 		    <cfset structClear(SESSION.User) />
-
 		    <!--- <cfset StructDelete(SESSION, "CFTOKEN")/>
 		    <cfset StructDelete(SESSION, "CFID" )/>
 		    <cfcookie name="CFID" expires="now" />
@@ -129,5 +120,8 @@
 
 		    <cfset session.loggedin = "false" />
 			<cfset sessionRotate() />
+
+			<!--- decrease session timeout once the user logs out --->
+			<cfset THIS.sessionTimeout = CreateTimeSpan(0,0,10,0) />
 			<cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
 		</cfif>

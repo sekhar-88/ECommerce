@@ -6,8 +6,8 @@
 --->
 
 
-<cfset checkoutCFC = createObject("cfc.checkout") />
-<cfset cartCFC = createObject("cfc.cart")/>
+<cfset VARIABLES.checkoutCFC = createObject("cfc.checkout") />
+<cfset VARIABLES.cartCFC = createObject("cfc.cart")/>
 
 <!DOCTYPE html>
 <html>
@@ -84,7 +84,7 @@
                 <p></p>
             </div>
 
-        <cfset cartIsEmpty = cartCFC.isCartEmpty()/>
+        <cfset cartIsEmpty = VARIABLES.cartCFC.isCartEmpty()/>
         <cfif NOT session.loggedin>
 
             <h4 class="jumbotron well">Please <a href="" data-toggle="dropdown" data-target=".login_toggle">Login</a> To complete Checkout Process</h4>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
 
-                <cfset addresses = checkoutCFC.getAddressesOfUser() />
+                <cfset addresses = VARIABLES.checkoutCFC.getAddressesOfUser() />
                 <div class="subsection" style="display:none;">
                 <div class="addresses">
                     <cfif addresses.recordCount>    <!--- populate the address inside addres section --->

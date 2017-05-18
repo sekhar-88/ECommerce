@@ -37,17 +37,10 @@
 
             <!--- for showing statistics for products --->
             <div id="section-statistics" class="tab-pane active fade in">
-                statistics data goes here
-
-
                 <cfset sessionTracker = CreateObject("java", "coldfusion.runtime.SessionTracker")/>
-                <cfdump var="#sessionTracker#" />
-
                 <cfset sessionCollection = sessionTracker.getSessionCollection("Shopping")>
                 <cfset sessionCountForApplication = structCount(sessionCollection)>
-
                 <p>There are <cfoutput>#sessionCountForApplication#</cfoutput> sessions in existence for this application.</p>
-
                 <cfset loggedinUsers = 0 />
                 <cfloop collection="#sessionCollection#" item="SessionId" >
                     <cftry>
@@ -215,9 +208,15 @@
     <cfelse>
         <cflocation url="index.cfm" addtoken="false" />
     </cfif>
-
+    <!---  include footer --->
+    <cfinclude template="/commons/footer.cfm" />
 </body>
 </html>
+<!--- end of html document --->
+
+
+
+<!--- for uploading Image of the product to the page & updating the database with the image --->
 <cftry>
 <cfif IsDefined("form.Image")>
     <cfset path = "E:\EclipseWorkSpace\ColdFusion\Project\assets\images\products\medium"/>

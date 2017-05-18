@@ -61,6 +61,7 @@ $(document).ready(function(){
 
             $.ajax({
                 url: "../cfc/user.cfc?method=validate",
+                method: "POST",
                 data: {
                     email: mail,
                     password: pswd

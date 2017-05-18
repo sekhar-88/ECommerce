@@ -6,7 +6,7 @@
 --->
 
 <cftry>
-<cfset cartCFC = createObject("cfc.cart") />
+<cfset VARIABLES.cartCFC = createObject("cfc.cart") />
 
 <!DOCTYPE html>
 <html>
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
 
-                            <cfset VARIABLES.isCartEmpty = cartCfC.isCartEmpty()/>
+                            <cfset VARIABLES.isCartEmpty = VARIABLES.cartCFC.isCartEmpty()/>
                             <cfif NOT VARIABLES.isCartEmpty>
 
                                 <div class="subsection">
@@ -61,7 +61,7 @@
                                     </div>
 
 
-                                    <cfset orderSummary = cartCFC.getOrderSummary( calledFrom = "cfm_page_not_ajax") />
+                                    <cfset orderSummary = VARIABLES.cartCFC.getOrderSummary( calledFrom = "cfm_page_not_ajax") />
                                     <cfloop query="orderSummary" >
                                     <cfoutput>
 
@@ -79,7 +79,7 @@
                                                     <div class="itemQty">
                                                         <span>
                                                             <span class='inputItemsQuantityleft'>Qty:</span>
-                                                            <cfset maxQty = cartCFC.getAvailableQuantity(#ProductId#) />
+                                                            <cfset maxQty = VARIABLES.cartCFC.getAvailableQuantity(#ProductId#) />
                                                             <input type='number' data-toggle='tooltip' title='Invalid Amount' data-card_id ='#CartId#' data-item_id="#ProductId#" data-item_price='#ListPrice#' name='itemQty' value='#Qty#' min='1' max='#maxQty#' class='inputItemsQuantity' onkeyup='validateItemCount( this, this.value, this.max, #CartId# )' onmouseup='validateItemCount( this, this.value, this.max, #CartId# )'>
                                                         </span>
                                                     </div>
@@ -126,7 +126,7 @@
                     </cfif>
 
                 <div id="checkout_pane">
-                    <cfif SESSION.loggedin AND (NOT cartCFC.isCartEmpty()) >
+                    <cfif SESSION.loggedin AND (NOT VARIABLES.cartCFC.isCartEmpty()) >
                         <button type="button" class="btn btn-success btn-lg" onclick="checkout();">Checkout</button>
                     </cfif>
                 </div> <!---  #checkout pane --->

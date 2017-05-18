@@ -5,7 +5,7 @@
 --->
 
 
-<cfset productCFC = CreateObject("cfc.product") />
+<cfset VARIABLES.productCFC = CreateObject("cfc.product") />
 
 <!DOCTYPE html>
 <head>
@@ -125,7 +125,7 @@
 
     <!--- Body content --->
     <div class="container-fluid container-fluid-page">
-        <cfif StructKeyExists(URL, "cat") AND IsNumeric(URL.cat) AND StructKeyExists(URL, "scat") AND IsNumeric(URL.scat) AND productCFC.categorySubcategoryExists(cat = URL.cat , scat = URL.scat)>
+        <cfif StructKeyExists(URL, "cat") AND IsNumeric(URL.cat) AND StructKeyExists(URL, "scat") AND IsNumeric(URL.scat) AND VARIABLES.productCFC.categorySubcategoryExists(cat = URL.cat , scat = URL.scat)>
 
             <div class="filters">
 
@@ -134,7 +134,7 @@
                 <div class="filter filter-brand">
                     <div class="filter-header">Brands</div>
 
-                    <cfset VARIABLES.brandFilter = productCFC.filterBrands(URL.scat) />
+                    <cfset VARIABLES.brandFilter = VARIABLES.productCFC.filterBrands(URL.scat) />
                     <cfoutput>
 
                         <form id="brands-filter">
@@ -161,7 +161,7 @@
 
 
             <div class="products-section">
-                    <cfset subCategoryName = productCFC.getSubCategoryName(URL.scat) />
+                    <cfset subCategoryName = VARIABLES.productCFC.getSubCategoryName(URL.scat) />
 
                     <h3 class="product-section-header">
                         <cfoutput>
@@ -192,7 +192,7 @@
                     </cfif>
 
 
-                    <cfset productsQuery = productCFC.getProductsForSubCat(scat = #URL.scat#) />
+                    <cfset productsQuery = VARIABLES.productCFC.getProductsForSubCat(scat = #URL.scat#) />
                     <!---
                     productsQuery - contains these attributes
                     ProductId, Name, BrandId, SubCategoryid, ListPrice, SupplierId,
@@ -268,12 +268,12 @@
                 <cfdump var="#uploadresult#" />
                 <cfset VARIABLES.image = "#uploadresult.SERVERFILE#" />
 
-                <cfset newProduct = productCFC.addNewProduct(form = FORM, imageName = VARIABLES.image ) />
+                <cfset newProduct = VARIABLES.productCFC.addNewProduct(form = FORM, imageName = VARIABLES.image ) />
 
                 <cflocation url="#cgi.HTTP_REFERER#" addtoken="false" />
 
-                <!--- <cfset adminCFC = createObject("cfc.admin") />
-                <cfset productAdd = adminCFC.addProduct(#FORM#,#image#)/>
+                <!--- <cfset VARIABLES.adminCFC = createObject("cfc.admin") />
+                <cfset productAdd = VARIABLES.adminCFC.addProduct(#FORM#,#image#)/>
                 <cfdump var="#productAdd#"> --->
 
     </cfif>

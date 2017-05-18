@@ -67,6 +67,9 @@ return response
                         <cfset LOCAL.result = VARIABLES.userDB.getUserDetails( argumentcollection="#ARGUMENTS#" ) />
                         <cfset sessionrotate() />
 
+                        <!--- increase seession timeout once the user logs in  --->
+                        <cfset THIS.sessionTimeout = CreateTimeSpan(0,0,5,0) />
+
                         <!--- set session variables for logged in user --->
                         <cfset session.User = {
                             UserId = "#LOCAL.result.UserId#",
