@@ -61,7 +61,7 @@
                 <div class="sections row">
 
                     <!--- adding category section --->
-                    <div class="cnb-section col-sm-3  col-xs-8">  <!---cnb for Category And Brand --->
+                    <div class="cnb-section col-sm-3  col-sm-offset-0 col-xs-8 col-xs-offset-2">  <!---cnb for Category And Brand --->
                         <h2 align="center">Add Category</h2>
                         <input type="text">
                         <button type="button" class="btn btn-success btn-sm" onclick="addCategory(this)">Add Category</button>
@@ -78,7 +78,7 @@
                     </div>
 
                     <!--- adding subcategory section  --->
-                    <div class="cnb-section col-sm-4 col-sm-offset-1  col-xs-8 col-xs-offset-2">
+                    <div class="cnb-section  col-xs-8 col-xs-offset-2  col-sm-4 col-sm-offset-1">
                         <h2 align="center">Add Subcategory</h2>
                         <select style="padding: 3px; width: 100%;" onchange="enableSubCategoryTextField(this);">
                             <option value="invalid">Select Category</option>
@@ -99,7 +99,7 @@
                     </div>
 
                     <!--- adding brand section  --->
-                    <div class="cnb-section  col-sm-3 col-sm-offset-1  col-xs-8 col-xs-offset-2">
+                    <div class="cnb-section  col-sm-3 col-sm-offset-1 col-xs-8 col-xs-offset-2">
                         <h2 align="center">Add Brands</h2>
                         <input type="text" value="" placeholder="New Brand..">
                         <button type="button" class="btn btn-success btn-sm" onclick="addBrands(this)">Add Brands</button>
@@ -111,7 +111,7 @@
                                     </cfquery>
                                     <cfoutput>
                                     <cfloop query="brands">
-                                <p class='list-item'>#BrandName#</p>
+                                        <p class='list-item'>#BrandName#</p>
                                     </cfloop>
                                     </cfoutput>
                             </div>
